@@ -1,0 +1,21 @@
+{
+  "switch": {
+    "battles": 100,
+    "completed": 100,
+    "outcomes": {
+      "win": 7,
+      "loss": 93,
+      "tie": 0,
+      "truncated": 0
+    },
+    "win_rate_completed": 0.07,
+    "win_rate_95pct_wilson": [
+      0.03431926106727268,
+      0.137495147390735
+    ],
+    "truncation_rate": 0.0,
+    "mean_turns": 6.59,
+    "seconds": 1.7481537498533726,
+    "battles_per_second": 57.20320653053975
+  }
+}

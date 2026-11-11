@@ -1,0 +1,59 @@
+{
+  "random": {
+    "battles": 100,
+    "completed": 100,
+    "outcomes": {
+      "win": 92,
+      "loss": 8,
+      "tie": 0,
+      "truncated": 0
+    },
+    "win_rate_completed": 0.92,
+    "win_rate_95pct_wilson": [
+      0.8500189229905127,
+      0.9589065385156194
+    ],
+    "truncation_rate": 0.0,
+    "mean_turns": 6.9,
+    "seconds": 1.9848454578313977,
+    "battles_per_second": 50.3817562246171
+  },
+  "damage": {
+    "battles": 100,
+    "completed": 100,
+    "outcomes": {
+      "win": 27,
+      "loss": 73,
+      "tie": 0,
+      "truncated": 0
+    },
+    "win_rate_completed": 0.27,
+    "win_rate_95pct_wilson": [
+      0.1926958414957634,
+      0.36432116767944994
+    ],
+    "truncation_rate": 0.0,
+    "mean_turns": 5.65,
+    "seconds": 1.7606633328832686,
+    "battles_per_second": 56.7967754722532
+  },
+  "switch": {
+    "battles": 100,
+    "completed": 100,
+    "outcomes": {
+      "win": 55,
+      "loss": 45,
+      "tie": 0,
+      "truncated": 0
+    },
+    "win_rate_completed": 0.55,
+    "win_rate_95pct_wilson": [
+      0.45244602997442135,
+      0.6438546202048803
+    ],
+    "truncation_rate": 0.0,
+    "mean_turns": 6.36,
+    "seconds": 1.844742791960016,
+    "battles_per_second": 54.20809905631953
+  }
+}

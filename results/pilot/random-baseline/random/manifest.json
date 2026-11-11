@@ -1,0 +1,40 @@
+{
+  "created_utc": "2026-11-11T07:12:54.064635+00:00",
+  "args": {
+    "command": "battle",
+    "seed": 10000,
+    "run_dir": "runs/pilot-random-v-random",
+    "team": "teams/sun.txt",
+    "opponent_teams": [
+      "teams/balance.txt",
+      "teams/sun.txt"
+    ],
+    "format": "gen9championsvgc2026regmc",
+    "max_turns": 200,
+    "replays": 0,
+    "threads": 1,
+    "opponent": "random",
+    "battles": 100,
+    "agent": "random"
+  },
+  "git_commit": "f47173762a4b0cc3479468f30ff744abfe19d78f",
+  "git_dirty": false,
+  "python": "3.12.10",
+  "torch": "2.15.0",
+  "numpy": "2.5.4",
+  "simulator": {
+    "repository": "https://github.com/smogon/pokemon-showdown.git",
+    "commit": "965a535ef892d13cd68cf75c076db26f9f32842a",
+    "node": "22.22.0"
+  },
+  "teams": {
+    "teams/sun.txt": {
+      "sha256": "2da20701dc8bd65ad39f779201bb1aea8f313e20ad4c0b7ac7d1393adcc463a3",
+      "text": "Charizard @ Charizardite Y\nAbility: Blaze\nLevel: 50\nEVs: 32 SpA / 2 SpD / 32 Spe\nTimid Nature\n- Flamethrower\n- Air Slash\n- Solar Beam\n- Protect\n\nGarchomp\nAbility: Rough Skin\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Dragon Claw\n- Earthquake\n- Rock Slide\n- Protect\n\nRotom-Wash\nAbility: Levitate\nLevel: 50\nEVs: 32 HP / 32 SpA / 2 SpD\nModest Nature\n- Thunderbolt\n- Hydro Pump\n- Will-O-Wisp\n- Protect\n\nScizor @ Scizorite\nAbility: Technician\nLevel: 50\nEVs: 32 HP / 32 Atk / 2 SpD\nAdamant Nature\n- Bullet Punch\n- X-Scissor\n- Swords Dance\n- Protect\n\n\nVenusaur\nAbility: Chlorophyll\nLevel: 50\nEVs: 32 HP / 32 SpA / 2 SpD\nModest Nature\n- Giga Drain\n- Sludge Bomb\n- Sleep Powder\n- Protect\n\nTalonflame\nAbility: Gale Wings\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Brave Bird\n- Flare Blitz\n- Tailwind\n- Protect\n"
+    },
+    "teams/balance.txt": {
+      "sha256": "d1cc0efc48fd422572de26bf599afa3a744f1f3c9fbc85536a202c94f6dfa497",
+      "text": "Gyarados\nAbility: Intimidate\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Waterfall\n- Ice Fang\n- Dragon Dance\n- Protect\n\nGardevoir @ Gardevoirite\nAbility: Trace\nLevel: 50\nEVs: 32 SpA / 2 SpD / 32 Spe\nTimid Nature\n- Moonblast\n- Psychic\n- Calm Mind\n- Protect\n\nTyranitar @ Tyranitarite\nAbility: Sand Stream\nLevel: 50\nEVs: 32 HP / 32 Atk / 2 SpD\nAdamant Nature\n- Rock Slide\n- Crunch\n- Dragon Dance\n- Protect\n\nArcanine\nAbility: Intimidate\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Flare Blitz\n- Extreme Speed\n- Will-O-Wisp\n- Protect\n\n\nVenusaur\nAbility: Chlorophyll\nLevel: 50\nEVs: 32 HP / 32 SpA / 2 SpD\nModest Nature\n- Giga Drain\n- Sludge Bomb\n- Sleep Powder\n- Protect\n\nTalonflame\nAbility: Gale Wings\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Brave Bird\n- Flare Blitz\n- Tailwind\n- Protect\n"
+    }
+  }
+}

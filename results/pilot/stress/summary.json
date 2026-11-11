@@ -1,0 +1,21 @@
+{
+  "mixture": {
+    "battles": 1000,
+    "completed": 1000,
+    "outcomes": {
+      "win": 45,
+      "loss": 955,
+      "tie": 0,
+      "truncated": 0
+    },
+    "win_rate_completed": 0.045,
+    "win_rate_95pct_wilson": [
+      0.03379951228563171,
+      0.059682837936223455
+    ],
+    "truncation_rate": 0.0,
+    "mean_turns": 5.752,
+    "seconds": 13.330107209039852,
+    "battles_per_second": 75.018151341037
+  }
+}

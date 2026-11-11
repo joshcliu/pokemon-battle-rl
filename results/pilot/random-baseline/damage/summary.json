@@ -1,0 +1,21 @@
+{
+  "damage": {
+    "battles": 100,
+    "completed": 100,
+    "outcomes": {
+      "win": 0,
+      "loss": 100,
+      "tie": 0,
+      "truncated": 0
+    },
+    "win_rate_completed": 0.0,
+    "win_rate_95pct_wilson": [
+      3.469446951953614e-18,
+      0.03699349820698568
+    ],
+    "truncation_rate": 0.0,
+    "mean_turns": 4.86,
+    "seconds": 1.481205124873668,
+    "battles_per_second": 67.5125938472087
+  }
+}

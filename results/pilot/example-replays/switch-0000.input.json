@@ -1,0 +1,84 @@
+[
+  {
+    "op": "reset",
+    "format": "gen9championsvgc2026regmc",
+    "seed": [
+      60786,
+      33749,
+      12354,
+      28414
+    ],
+    "teams": [
+      "Charizard @ Charizardite Y\nAbility: Blaze\nLevel: 50\nEVs: 32 SpA / 2 SpD / 32 Spe\nTimid Nature\n- Flamethrower\n- Air Slash\n- Solar Beam\n- Protect\n\nGarchomp\nAbility: Rough Skin\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Dragon Claw\n- Earthquake\n- Rock Slide\n- Protect\n\nRotom-Wash\nAbility: Levitate\nLevel: 50\nEVs: 32 HP / 32 SpA / 2 SpD\nModest Nature\n- Thunderbolt\n- Hydro Pump\n- Will-O-Wisp\n- Protect\n\nScizor @ Scizorite\nAbility: Technician\nLevel: 50\nEVs: 32 HP / 32 Atk / 2 SpD\nAdamant Nature\n- Bullet Punch\n- X-Scissor\n- Swords Dance\n- Protect\n\n\nVenusaur\nAbility: Chlorophyll\nLevel: 50\nEVs: 32 HP / 32 SpA / 2 SpD\nModest Nature\n- Giga Drain\n- Sludge Bomb\n- Sleep Powder\n- Protect\n\nTalonflame\nAbility: Gale Wings\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Brave Bird\n- Flare Blitz\n- Tailwind\n- Protect\n",
+      "Charizard @ Charizardite Y\nAbility: Blaze\nLevel: 50\nEVs: 32 SpA / 2 SpD / 32 Spe\nTimid Nature\n- Flamethrower\n- Air Slash\n- Solar Beam\n- Protect\n\nGarchomp\nAbility: Rough Skin\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Dragon Claw\n- Earthquake\n- Rock Slide\n- Protect\n\nRotom-Wash\nAbility: Levitate\nLevel: 50\nEVs: 32 HP / 32 SpA / 2 SpD\nModest Nature\n- Thunderbolt\n- Hydro Pump\n- Will-O-Wisp\n- Protect\n\nScizor @ Scizorite\nAbility: Technician\nLevel: 50\nEVs: 32 HP / 32 Atk / 2 SpD\nAdamant Nature\n- Bullet Punch\n- X-Scissor\n- Swords Dance\n- Protect\n\n\nVenusaur\nAbility: Chlorophyll\nLevel: 50\nEVs: 32 HP / 32 SpA / 2 SpD\nModest Nature\n- Giga Drain\n- Sludge Bomb\n- Sleep Powder\n- Protect\n\nTalonflame\nAbility: Gale Wings\nLevel: 50\nEVs: 32 Atk / 2 SpD / 32 Spe\nJolly Nature\n- Brave Bird\n- Flare Blitz\n- Tailwind\n- Protect\n"
+    ]
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "team 123456",
+      "p2": "team 123456"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "move airslash 2, move rockslide",
+      "p2": "move solarbeam mega 2, move rockslide"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "switch Scizor, pass",
+      "p2": "switch Rotom, pass"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "move xscissor 2, move rockslide",
+      "p2": "switch Scizor, move rockslide"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "move xscissor mega 1, move rockslide",
+      "p2": "move xscissor 2, move dragonclaw 2"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "pass, switch Rotom"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "move bulletpunch 2, move hydropump 1",
+      "p2": "switch Rotom, move dragonclaw 1"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p2": "pass, switch Scizor"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "move xscissor 1, move thunderbolt 2",
+      "p2": "move thunderbolt 1, move xscissor 2"
+    }
+  },
+  {
+    "op": "step",
+    "choices": {
+      "p1": "move bulletpunch 1, move thunderbolt 1",
+      "p2": "move thunderbolt 1, pass"
+    }
+  }
+]
