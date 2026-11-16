@@ -19,16 +19,20 @@ from .battle import ROOT
 from .env import BattleEnv
 from .opponents import Heuristic
 from .policy import Policy, advantages
+from .rewards import RewardEnv
 
 
 def make_env(args, opponent=None):
-    return BattleEnv(
+    options = dict(
         opponent=opponent or args.opponent,
         team=args.team,
         opponent_teams=args.opponent_teams,
         battle_format=args.format,
         max_turns=args.max_turns,
     )
+    if args.command == "train" and getattr(args, "reward_mode", "win-loss") != "win-loss":
+        return RewardEnv(mode=args.reward_mode, gamma=args.gamma, **options)
+    return BattleEnv(**options)
 
 
 def prepare_run(args):

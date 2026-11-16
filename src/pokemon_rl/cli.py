@@ -36,6 +36,12 @@ def main():
                 )
                 p.add_argument("--deterministic", action="store_true")
         else:
+            p.add_argument(
+                "--reward-mode",
+                choices=["win-loss", "damage-only", "win-plus-hp"],
+                default="win-loss",
+                help="Training reward; evaluation always scores wins",
+            )
             p.add_argument("--steps", type=int, default=4096)
             p.add_argument("--rollout-steps", type=int, default=256)
             p.add_argument("--batch-size", type=int, default=64)
