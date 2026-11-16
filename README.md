@@ -52,6 +52,12 @@ The `damage` heuristic scores base power, accuracy, STAB, and type effectiveness
 
 ## Experiment workflow
 
+Joshua runs training and evaluation on **Sketch5**. The project checkout there is
+`/mnt/md0/jcliu/pokemon-battle-rl/project`. Run compute commands from a shell
+on that host. The reward replication uses the server's CPU build of PyTorch.
+The [four-seed reward comparison](results/sketch5-rewards/README.md) includes
+the win rates, per-seed gains, and follow-up experiments.
+
 Start with [the experiment plan](docs/experiment-plan.md) and [related work](docs/literature.md). The first controlled comparison is damage-only, switch-only, and a 50/50 mixture, using identical architectures, teams, rewards, and training budgets.
 
 ```sh
