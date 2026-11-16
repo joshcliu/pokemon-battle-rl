@@ -43,6 +43,8 @@ def main():
                 help="Training reward; evaluation always scores wins",
             )
             p.add_argument("--steps", type=int, default=4096)
+            p.add_argument("--save-at", nargs="+", type=int, default=[],
+                           help="Retain checkpoints after these completed PPO updates (learner steps)")
             p.add_argument("--rollout-steps", type=int, default=256)
             p.add_argument("--batch-size", type=int, default=64)
             p.add_argument("--epochs", type=int, default=4)
@@ -66,6 +68,11 @@ def main():
     ):
         if hasattr(args, name) and getattr(args, name) <= 0:
             parser.error(f"--{name.replace('_', '-')} must be positive")
+    if args.command == "train" and any(
+        s <= 0 or s > args.steps or (s != args.steps and s % args.rollout_steps)
+        for s in args.save_at
+    ):
+        parser.error("--save-at requires a positive rollout boundary or the final step")
     from .experiments import run_battles, train
 
     (train if args.command == "train" else run_battles)(args)

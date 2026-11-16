@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import platform
 import subprocess
 import time
@@ -273,6 +274,9 @@ def train(args):
             temporary = out / "checkpoint.tmp"
             torch.save(checkpoint, temporary)
             temporary.replace(out / "checkpoint.pt")
+            if total in getattr(args, "save_at", ()):
+                # The next update replaces the latest file; this link keeps its current contents.
+                os.link(out / "checkpoint.pt", out / f"checkpoint-{total}.pt")
         (out / "summary.json").write_text(json.dumps(metrics, indent=2))
     finally:
         env.close()
