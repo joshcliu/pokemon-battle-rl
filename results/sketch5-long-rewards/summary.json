@@ -1,0 +1,57 @@
+{
+  "comparisons": [
+    {
+      "steps": 65536,
+      "mean_win_rates_pct": {
+        "win-loss": {
+          "random": 96.875,
+          "damage": 61.25,
+          "switch": 67.875,
+          "damage_switch_mean": 64.5625
+        },
+        "damage-only": {
+          "random": 98.625,
+          "damage": 58.0,
+          "switch": 71.875,
+          "damage_switch_mean": 64.9375
+        }
+      },
+      "paired_gaps_pp": [
+        8.25,
+        4.0,
+        -1.0,
+        -9.75
+      ],
+      "mean_gap_pp": 0.375
+    },
+    {
+      "steps": 262144,
+      "mean_win_rates_pct": {
+        "win-loss": {
+          "random": 97.75,
+          "damage": 80.75,
+          "switch": 78.25,
+          "damage_switch_mean": 79.5
+        },
+        "damage-only": {
+          "random": 97.875,
+          "damage": 70.25,
+          "switch": 77.875,
+          "damage_switch_mean": 74.0625
+        }
+      },
+      "paired_gaps_pp": [
+        -14.0,
+        -2.0,
+        -4.0,
+        -1.75
+      ],
+      "mean_gap_pp": -5.4375
+    }
+  ],
+  "outcomes": {
+    "win": 7658,
+    "loss": 1942
+  },
+  "all_16k_weights_match_prior": true
+}

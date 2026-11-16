@@ -16,10 +16,26 @@ BUDGETS = (65536, 262144)
 def evaluate(job, budget, checkpoint):
     with (job / f"eval-{budget}.log").open("x") as log:
         subprocess.run(
-            CLI + ["evaluate", "--checkpoint", str(checkpoint), "--seed", "10000",
-                   "--battles", "200", "--opponents", "random", "damage", "switch",
-                   "--run-dir", str(job / f"eval-{budget}")],
-            stdout=log, stderr=subprocess.STDOUT, cwd=ROOT, check=True,
+            CLI
+            + [
+                "evaluate",
+                "--checkpoint",
+                str(checkpoint),
+                "--seed",
+                "10000",
+                "--battles",
+                "200",
+                "--opponents",
+                "random",
+                "damage",
+                "switch",
+                "--run-dir",
+                str(job / f"eval-{budget}"),
+            ],
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            cwd=ROOT,
+            check=True,
         )
 
 
@@ -29,10 +45,26 @@ def run_one(root, seed, reward):
     train = job / "train"
     with (job / "train.log").open("x") as log:
         proc = subprocess.Popen(
-            CLI + ["train", "--seed", str(seed), "--reward-mode", reward, "--opponent", "mixture",
-                   "--steps", str(BUDGETS[-1]), "--save-at", "16384", str(BUDGETS[0]),
-                   "--run-dir", str(train)],
-            stdout=log, stderr=subprocess.STDOUT, cwd=ROOT,
+            CLI
+            + [
+                "train",
+                "--seed",
+                str(seed),
+                "--reward-mode",
+                reward,
+                "--opponent",
+                "mixture",
+                "--steps",
+                str(BUDGETS[-1]),
+                "--save-at",
+                "16384",
+                str(BUDGETS[0]),
+                "--run-dir",
+                str(train),
+            ],
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            cwd=ROOT,
         )
         try:
             early = train / f"checkpoint-{BUDGETS[0]}.pt"
@@ -62,7 +94,10 @@ if __name__ == "__main__":
     root = args.output.resolve()
     root.mkdir(parents=True, exist_ok=False)
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
-        jobs = [pool.submit(run_one, root, seed, mode)
-                for seed in (2, 3, 4, 5) for mode in ("win-loss", "damage-only")]
+        jobs = [
+            pool.submit(run_one, root, seed, mode)
+            for seed in (2, 3, 4, 5)
+            for mode in ("win-loss", "damage-only")
+        ]
         for job in jobs:
             job.result()

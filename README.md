@@ -57,6 +57,9 @@ Joshua runs training and evaluation on **Sketch5**. The project checkout there i
 on that host. The reward replication uses the server's CPU build of PyTorch.
 The [four-seed reward comparison](results/sketch5-rewards/README.md) includes
 the win rates, per-seed gains, and follow-up experiments.
+In the [longer reward study](results/sketch5-long-rewards/README.md), the two
+rewards scored within 0.38 percentage points at 65,536 decisions. Terminal
+win/loss led by 5.44 points at 262,144 decisions and won all four seed comparisons.
 
 Start with [the experiment plan](docs/experiment-plan.md) and [related work](docs/literature.md). The first controlled comparison is damage-only, switch-only, and a 50/50 mixture, using identical architectures, teams, rewards, and training budgets.
 

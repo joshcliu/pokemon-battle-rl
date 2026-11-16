@@ -43,8 +43,13 @@ def main():
                 help="Training reward; evaluation always scores wins",
             )
             p.add_argument("--steps", type=int, default=4096)
-            p.add_argument("--save-at", nargs="+", type=int, default=[],
-                           help="Retain checkpoints after these completed PPO updates (learner steps)")
+            p.add_argument(
+                "--save-at",
+                nargs="+",
+                type=int,
+                default=[],
+                help="Retain checkpoints after these completed PPO updates (learner steps)",
+            )
             p.add_argument("--rollout-steps", type=int, default=256)
             p.add_argument("--batch-size", type=int, default=64)
             p.add_argument("--epochs", type=int, default=4)
