@@ -48,7 +48,7 @@ Pinned Showdown engine ↔ JSON-lines bridge ↔ player-visible poke-env state
 - PPO with GAE, terminal rewards `+1 / −1 / 0`, zero intermediate rewards, and truncation bootstrapping. Turn/decision limits are logged separately from wins, losses, and ties.
 - Seeded simulation, per-episode opponent sampling, replay export, checkpoints, raw episode records, and evaluation confidence intervals.
 
-The `damage` heuristic scores base power, accuracy, STAB, and type effectiveness. It is **not** an exact damage calculator. `switch` sometimes switches and otherwise uses that score. `mixture` samples one of those two styles per battle. `setup` prioritizes self-boosting moves and is reserved for the planned final comparison. These opponents are not strength-matched.
+The `damage` heuristic scores base power, accuracy, STAB, and type effectiveness. It is **not** an exact damage calculator. `switch` sometimes switches and otherwise uses that score. `mixture` samples one of those two styles per battle. `setup` prioritizes self-boosting moves and is held out of training for the final comparison. These opponents are not strength-matched.
 
 ## Experiment workflow
 
@@ -61,15 +61,21 @@ In the [longer reward study](results/sketch5-long-rewards/README.md), the two
 rewards scored within 0.38 percentage points at 65,536 decisions. Terminal
 win/loss led by 5.44 points at 262,144 decisions and won all four seed comparisons.
 
-Start with [the experiment plan](docs/experiment-plan.md) and [related work](docs/literature.md). The first controlled comparison is damage-only, switch-only, and a 50/50 mixture, using identical architectures, teams, rewards, and training budgets.
+The [opponent diversity study](results/sketch5-opponent-diversity/README.md)
+compares damage-bot training, switching-bot training, and a 50/50 mixture on
+four matched training seeds. Each final checkpoint plays the held-out setup bot
+on the same 100 battle seeds. Damage-bot training won 74.75% against setup,
+ahead of the 50/50 mix at 64.50% and switching-bot training at 58.75%.
+The [experiment plan](docs/experiment-plan.md)
+and [related work](docs/literature.md) describe the research question.
+
+To repeat all twelve policies from scratch on Sketch5:
 
 ```sh
-# Full proposed study; run deliberately after freezing development choices.
-# Nine training runs, then evaluation against four styles for every checkpoint.
-uv run python scripts/run_sweep.py --steps 262144 --output runs/study-v1
+.venv/bin/python scripts/opponent_diversity.py --output runs/diversity-repeat
+.venv/bin/python scripts/analyze_opponent_diversity.py --runs runs/diversity-repeat \
+  --output results/diversity-repeat
 ```
-
-The sweep is a runnable plan, not a completed experiment. Pilot results, when available, live in [results/pilot](results/pilot). Do not use a single pilot run to conclude that opponent diversity helps.
 
 To plot a training run, install the optional analysis dependencies and use:
 

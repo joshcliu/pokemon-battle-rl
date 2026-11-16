@@ -1,0 +1,62 @@
+{
+  "means_pct": {
+    "damage": {
+      "random": 97.25,
+      "damage": 92.25,
+      "switch": 75.75,
+      "setup": 74.75,
+      "setup_on_balance": 64.28571428571429,
+      "setup_on_sun": 88.06818181818181,
+      "damage_switch_mean": 84.0
+    },
+    "switch": {
+      "random": 99.0,
+      "damage": 83.75,
+      "switch": 83.0,
+      "setup": 58.75,
+      "setup_on_balance": 38.839285714285715,
+      "setup_on_sun": 84.0909090909091,
+      "damage_switch_mean": 83.375
+    },
+    "mixture": {
+      "random": 97.5,
+      "damage": 85.75,
+      "switch": 82.75,
+      "setup": 64.5,
+      "setup_on_balance": 52.232142857142854,
+      "setup_on_sun": 80.11363636363636,
+      "damage_switch_mean": 84.25
+    }
+  },
+  "setup_sample_sd_pp": {
+    "damage": 8.180260794538684,
+    "switch": 9.776672917374977,
+    "mixture": 3.3166247903554
+  },
+  "mixture_minus_specialist_setup_pp_in_seed_order": {
+    "damage": [
+      -10.0,
+      -17.0,
+      4.0,
+      -18.0
+    ],
+    "switch": [
+      -1.0,
+      -2.0,
+      22.0,
+      4.0
+    ]
+  },
+  "eval_outcomes": {
+    "win": 3980,
+    "loss": 820
+  },
+  "setup_outcomes": {
+    "win": 792,
+    "loss": 408
+  },
+  "teams_per_100": {
+    "sun": 44,
+    "balance": 56
+  }
+}

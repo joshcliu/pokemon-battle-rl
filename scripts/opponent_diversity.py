@@ -43,7 +43,10 @@ def launch(job, command, arguments):
     with (job / f"{command}.log").open("x") as log:
         subprocess.run(
             [sys.executable, "-m", "pokemon_rl.cli", command, *arguments],
-            cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True,
+            cwd=ROOT,
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            check=True,
         )
 
 
@@ -52,17 +55,41 @@ def run_one(output, seed, condition, prior):
     job.mkdir(parents=True)
     if prior is None:
         train = job / "train"
-        launch(job, "train", [
-            "--seed", str(seed), "--opponent", condition, "--reward-mode", "win-loss",
-            "--steps", str(STEPS), "--run-dir", str(train),
-        ])
+        launch(
+            job,
+            "train",
+            [
+                "--seed",
+                str(seed),
+                "--opponent",
+                condition,
+                "--reward-mode",
+                "win-loss",
+                "--steps",
+                str(STEPS),
+                "--run-dir",
+                str(train),
+            ],
+        )
         checkpoint = train / "checkpoint.pt"
     else:
         checkpoint = prior
-    launch(job, "evaluate", [
-        "--checkpoint", str(checkpoint), "--opponents", *OPPONENTS, "--seed",
-        str(EVAL_SEED), "--battles", str(BATTLES), "--run-dir", str(job / "eval"),
-    ])
+    launch(
+        job,
+        "evaluate",
+        [
+            "--checkpoint",
+            str(checkpoint),
+            "--opponents",
+            *OPPONENTS,
+            "--seed",
+            str(EVAL_SEED),
+            "--battles",
+            str(BATTLES),
+            "--run-dir",
+            str(job / "eval"),
+        ],
+    )
     print(f"Finished seed {seed}, training opponent {condition}", flush=True)
 
 
@@ -79,8 +106,11 @@ if __name__ == "__main__":
     root.mkdir(parents=True, exist_ok=False)
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
         jobs = [
-            pool.submit(run_one, root, seed, condition, prior.get(seed) if condition == "mixture" else None)
-            for condition in CONDITIONS for seed in SEEDS
+            pool.submit(
+                run_one, root, seed, condition, prior.get(seed) if condition == "mixture" else None
+            )
+            for condition in CONDITIONS
+            for seed in SEEDS
         ]
         for job in jobs:
             job.result()
