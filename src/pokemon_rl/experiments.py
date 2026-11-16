@@ -52,6 +52,7 @@ def prepare_run(args):
             ).stdout.strip()
         ),
         "python": platform.python_version(),
+        "host": platform.node(),
         "torch": str(torch.__version__),
         "numpy": str(np.__version__),
         "simulator": json.loads((ROOT / "simulator.lock.json").read_text()),
