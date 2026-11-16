@@ -27,6 +27,7 @@ def make_env(args, opponent=None):
     options = dict(
         opponent=opponent or args.opponent,
         team=args.team,
+        learner_teams=getattr(args, "learner_teams", None),
         opponent_teams=args.opponent_teams,
         battle_format=args.format,
         max_turns=args.max_turns,
@@ -39,7 +40,7 @@ def make_env(args, opponent=None):
 def prepare_run(args):
     out = Path(args.run_dir).resolve()
     out.mkdir(parents=True, exist_ok=False)
-    files = [args.team, *args.opponent_teams]
+    files = [*(getattr(args, "learner_teams", None) or [args.team]), *args.opponent_teams]
     git = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True
     ).stdout.strip()
@@ -175,6 +176,20 @@ def train(args):
     try:
         obs, _ = env.reset(seed=args.seed)
         model = Policy(len(obs), args.hidden_size).to(device)
+        if getattr(args, "save_initial", False):
+            torch.save(
+                {
+                    "policy": model.state_dict(),
+                    "obs_size": len(obs),
+                    "hidden_size": args.hidden_size,
+                    "steps": 0,
+                    "seed": args.seed,
+                    "format": args.format,
+                    "feature_schema": 1,
+                    "args": vars(args),
+                },
+                out / "checkpoint-0.pt",
+            )
         optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, eps=1e-5)
         while total < args.steps:
             buffer = []

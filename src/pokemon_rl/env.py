@@ -21,10 +21,12 @@ class BattleEnv(gym.Env):
         battle_format=DEFAULT_FORMAT,
         max_turns=200,
         max_decisions=600,
+        learner_teams=None,
     ):
         super().__init__()
         self.style = opponent
-        self.team = (ROOT / team).read_text()
+        self.learner_paths = list(learner_teams or [team])
+        self.learner_teams = [(ROOT / p).read_text() for p in self.learner_paths]
         self.opponent_teams = [
             (ROOT / p).read_text()
             for p in (opponent_teams or ["teams/balance.txt", "teams/sun.txt"])
@@ -46,7 +48,15 @@ class BattleEnv(gym.Env):
         opponent_rng = np.random.default_rng(np.random.SeedSequence([episode_seed, 19]))
         self.opponent = Heuristic(self.style, opponent_rng)
         self.episode_seed = episode_seed
-        self.battle.reset(episode_seed, self.team, self.opponent_teams[self.team_index])
+        self.learner_index = 0
+        if len(self.learner_teams) > 1:
+            learner_rng = np.random.default_rng(np.random.SeedSequence([episode_seed, 23]))
+            self.learner_index = int(learner_rng.integers(len(self.learner_teams)))
+        self.battle.reset(
+            episode_seed,
+            self.learner_teams[self.learner_index],
+            self.opponent_teams[self.team_index],
+        )
         self.decisions, self.finished = 0, False
         obs = observation(self.battle.players["p1"])
         return obs, self._info()
@@ -57,6 +67,7 @@ class BattleEnv(gym.Env):
             "simulator_seed": self.episode_seed,
             "opponent": self.opponent.style,
             "opponent_team_index": self.team_index,
+            "learner_team": str(self.learner_paths[self.learner_index]),
         }
 
     def legal(self):
