@@ -45,15 +45,22 @@ function handle(command) {
     battle.setPlayer('p2', {name: 'Opponent', team: teams[1]});
   } else if (command.op === 'step') {
     if (!battle || battle.ended) throw new Error('No running battle');
-    // Both choices were selected from the previous observations before either is applied.
+    // Check the original simultaneous requests before committing either side's choice.
     for (const side of ['p1', 'p2']) {
-      const choice = command.choices[side];
-      if (requests[side] && !requests[side].wait && !choice) {
+      if (requests[side] && !requests[side].wait && !command.choices[side]) {
         throw new Error(`Missing choice for ${side}`);
       }
-      if (choice) {
-        requests[side] = null;
-        if (!battle.choose(side, choice)) throw new Error(`Rejected ${side}: ${choice}`);
+    }
+    for (const [side, choice] of Object.entries(command.choices)) {
+      requests[side] = null;
+      if (!battle.choose(side, choice)) {
+        // Hidden traps and disables reveal a revised private request to this player.
+        // The other player's submitted choice stays committed to the same turn.
+        const error = errors.at(-1);
+        if (!requests[side]?.update || !error?.startsWith(side + ': |error|[Unavailable choice]')) {
+          throw new Error(error || `Rejected ${side}: ${choice}`);
+        }
+        errors.pop();
       }
     }
   } else {
