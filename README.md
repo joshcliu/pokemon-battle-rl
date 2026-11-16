@@ -69,7 +69,13 @@ ahead of the 50/50 mix at 64.50% and switching-bot training at 58.75%.
 The [experiment plan](docs/experiment-plan.md)
 and [related work](docs/literature.md) describe the research question.
 
-To repeat all twelve policies from scratch on Sketch5:
+The [learner-roster transfer experiment](results/sketch5-roster-transfer/README.md)
+gives each policy Sun and seven previously unpiloted tournament teams. It compares
+Sun training with uniform sampling from 15 other rosters, and scores the untrained
+weights on the same battles. Tournament training won 22.55% on held-out teams
+versus 18.00% for Sun training and 4.95% for the untrained policies.
+
+To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh
 .venv/bin/python scripts/opponent_diversity.py --output runs/diversity-repeat
@@ -103,7 +109,7 @@ Python dependencies are locked in `uv.lock`. Showdown and Node are pinned in `si
 
 ## Scope and limitations
 
-This is a Showdown simulation of a particular Champions ruleset, not integration with the commercial game client. It is currently a closed-sheet, fixed-selection task with one learner roster and two opponent rosters. The encoder omits abilities, items, explicit opponent preview features, and recurrent memory. Fixed slot positions can encourage team-specific shortcuts. Broader teams, open sheets, stronger opponents, and a recurrent policy are later extensions.
+This is a Showdown simulation of a particular Champions ruleset, not integration with the commercial game client. Experiments use closed sheets, fixed team selection, and two opponent rosters. The learner uses Sun by default or samples from an explicit roster pool. The encoder omits abilities, items, explicit opponent preview features, and recurrent memory. Fixed slot positions can encourage team-specific shortcuts. Broader teams, open sheets, stronger opponents, and a recurrent policy are later extensions.
 
 Tests exercise action legality, deterministic seeds, a hidden-information check, terminal/truncated handling, and a short train/save/load/evaluate cycle. They do not certify every Pokémon mechanic or equivalence to the official client. The pinned poke-env action mapper uses an upstream private helper, so upgrades require rerunning integration tests.
 

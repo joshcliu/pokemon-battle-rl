@@ -1,0 +1,28 @@
+{
+  "matrix_win_pct": {
+    "sun": {
+      "sun": 79.5,
+      "held_out": 18.0
+    },
+    "tournament": {
+      "sun": 25.625,
+      "held_out": 22.55357142857143
+    },
+    "untrained": {
+      "sun": 4.0,
+      "held_out": 4.946428571428571
+    }
+  },
+  "evaluation_commit": "6a7b158389bda3f961b173ca9cc2ca8f12b8c44a",
+  "scheduled_games": 19200,
+  "outcomes": {
+    "win": 3421,
+    "loss": 15779
+  },
+  "opponent_teams_per_100": {
+    "sun": 44,
+    "balance": 56
+  },
+  "training_rosters": 15,
+  "held_out_rosters": 7
+}

@@ -103,3 +103,52 @@ def test_opponent_styles_keep_matched_team_and_seed_schedules():
         finally:
             env.close()
     assert schedules[0] == schedules[1] == schedules[2]
+
+
+def test_changing_learner_pool_preserves_opponent_schedule_and_uses_selected_team():
+    pool = ["teams/sun.txt", "teams/balance.txt"]
+    leads = {"teams/sun.txt": "charizard", "teams/balance.txt": "gyarados"}
+    fixed = BattleEnv(opponent="mixture")
+    varied = BattleEnv(opponent="mixture", learner_teams=pool)
+    selected = set()
+    try:
+        for seed in range(12):
+            _, old = fixed.reset(seed=seed)
+            _, new = varied.reset(seed=seed)
+            for field in ("simulator_seed", "opponent", "opponent_team_index"):
+                assert old[field] == new[field]
+            selected.add(new["learner_team"])
+            assert (
+                varied.battle.players["p1"].active_pokemon[0].species == leads[new["learner_team"]]
+            )
+        assert selected == set(pool)
+    finally:
+        fixed.close()
+        varied.close()
+
+
+def test_hidden_shadow_tag_reissues_only_trapped_players_choice():
+    env = BattleEnv(team="teams/reg-mc-regionals/MC407.txt")
+    try:
+        env.reset(seed=175004)
+        battle = env.battle
+        battle.step(
+            {
+                "p1": "move sludgebomb mega 2, move uturn 1",
+                "p2": "switch Tyranitar, move psychic -1",
+            }
+        )
+        battle.step({"p1": "pass, switch MOCHI"})
+        battle.step({"p2": "pass, switch Arcanine"})
+        assert battle.requests["p2"]["active"][1]["maybeTrapped"]
+        turn = battle.turn
+        battle.step(
+            {"p1": "switch FLOW, move throatchop 2", "p2": "move crunch mega -2, switch Gyarados"}
+        )
+        assert battle.turn == turn and not battle.needs_action("p1")
+        assert battle.requests["p2"]["active"][1]["trapped"]
+        battle.step({"p2": "move rockslide mega, move protect"})
+        assert battle.ended or battle.needs_action("p1") or battle.needs_action("p2")
+        assert any(line.startswith("|switch|p1a: FLOW|") for line in battle.log)
+    finally:
+        env.close()
