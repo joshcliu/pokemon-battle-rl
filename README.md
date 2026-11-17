@@ -75,6 +75,11 @@ Sun training with uniform sampling from 15 other rosters, and scores the untrain
 weights on the same battles. Tournament training won 22.55% on held-out teams
 versus 18.00% for Sun training and 4.95% for the untrained policies.
 
+The [Sun fine-tuning study](results/sketch5-roster-finetuning/README.md) compares
+those Sun checkpoints with scratch training after 16,384, 65,536 and 262,144
+additional decisions on the 15 tournament teams. It tracks win rates on the
+practice teams, the seven held-out teams and Sun.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh
@@ -103,7 +108,7 @@ uv run --group analysis python scripts/plot_training.py runs/pilot \
 | `checkpoint.pt` | Policy, optimizer, model configuration, and training step |
 | `replays/*.html`, `*.log`, `*.input.json` | Player-view HTML replay, spectator log, and seeded simulator commands |
 
-Replay HTML uses upstream Showdown web assets and may require internet access to display. Battle execution itself is local and needs no network after setup. Checkpoints support evaluation; continuing interrupted training is not implemented. Only load checkpoints you trust.
+Replay HTML uses upstream Showdown web assets and may require internet access to display. Battle execution itself is local and needs no network after setup. Checkpoints support evaluation. Using `train --init-checkpoint PATH` starts a new run from saved actor and critic weights with a fresh optimizer and step count. Only load checkpoints you trust.
 
 Python dependencies are locked in `uv.lock`. Showdown and Node are pinned in `simulator.lock.json`. Do not update either in the middle of a comparison. Team stat points use the Showdown export field `EVs:` with Champions values (for example, 32/32/2), not standard 252-EV spreads.
 
