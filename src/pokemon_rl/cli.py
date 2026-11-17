@@ -37,6 +37,10 @@ def main():
                 p.add_argument("--deterministic", action="store_true")
         else:
             p.add_argument("--learner-teams", nargs="+", help="Sample a learner roster per battle")
+            p.add_argument(
+                "--init-checkpoint",
+                help="Start PPO from these actor and critic weights with a fresh optimizer",
+            )
             p.add_argument("--save-initial", action="store_true", help="Keep the untrained policy")
             p.add_argument(
                 "--reward-mode",

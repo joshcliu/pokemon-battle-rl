@@ -176,6 +176,13 @@ def train(args):
     try:
         obs, _ = env.reset(seed=args.seed)
         model = Policy(len(obs), args.hidden_size).to(device)
+        if getattr(args, "init_checkpoint", None):
+            source = torch.load(args.init_checkpoint, map_location="cpu", weights_only=True)
+            if (source["format"], source["feature_schema"]) != (args.format, 1):
+                raise ValueError(
+                    "Warm-start checkpoint format or feature schema differs from the environment"
+                )
+            model.load_state_dict(source["policy"])
         if getattr(args, "save_initial", False):
             torch.save(
                 {
