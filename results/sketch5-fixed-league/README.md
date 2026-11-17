@@ -39,6 +39,8 @@ The router scored 1,527/1,536 in validation. We separately locked the highest-sc
 
 The repository contains inference weights for the single Transformer, the router's experts and the four opponent PPO specialists. With the project's locked dependencies and simulator installed, run the following from the repository root. Use a fresh output directory.
 
+We replayed both complete confirmation schedules on Sketch5 using the exported repository weights. The outcomes and finishing turns matched all 4,800 original games for each policy. These replays verify the export and use the same seeds as the confirmation results. [Replay checks and hashes](export-replay-check.json)
+
 ```sh
 study=results/sketch5-fixed-league
 .venv/bin/python scripts/fixed_league.py eval --runs "$study" \

@@ -1,0 +1,25 @@
+{
+  "compared_fields": [
+    "roster",
+    "family",
+    "seed",
+    "side",
+    "visible_leads",
+    "turn",
+    "outcome"
+  ],
+  "policies": {
+    "router": {
+      "battles": 4800,
+      "matching_games": 4800,
+      "wins": 4764,
+      "normalized_sha256": "a35ddf08d48535718a1c8d22756defb7b91ecf41d3bdf54751b20d06ea4fc686"
+    },
+    "single": {
+      "battles": 4800,
+      "matching_games": 4800,
+      "wins": 4756,
+      "normalized_sha256": "d59767d7a0a39e99c47660f51e5385292b694744d264f48a2c9483b2cfe13c78"
+    }
+  }
+}
