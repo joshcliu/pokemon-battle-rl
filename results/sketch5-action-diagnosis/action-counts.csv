@@ -1,0 +1,3 @@
+mode,attack,status,switch,forced_switch,pass,explicit_ally_attacks,target_comparisons,lower_multiplier,executed_moves,protect_uses,protect_fails,fake_out_uses,fake_out_fails
+native,11433,4995,622,3097,4867,227,4579,2054,13987,1871,297,501,2
+small,12467,3423,640,3157,4795,225,5093,2477,13093,1192,78,538,2

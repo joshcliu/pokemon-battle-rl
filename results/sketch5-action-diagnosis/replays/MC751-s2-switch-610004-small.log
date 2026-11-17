@@ -1,0 +1,170 @@
+|t:|1794889035
+|gametype|doubles
+|player|p1|Learner||
+|player|p2|Opponent||
+|gen|9
+|tier|[Gen 9 Champions] VGC 2026 Reg M-C
+|rule|Species Clause: Limit one of each Pokemon
+|rule|Item Clause: Limit 1 of each item
+|clearpoke
+|poke|p1|Sneasler, L50, F|
+|poke|p1|Whimsicott, L50, F|
+|poke|p1|Charizard, L50, F|
+|poke|p1|Kingambit, L50, F|
+|poke|p1|Garchomp, L50, F|
+|poke|p1|Froslass, L50, F|
+|poke|p2|Gyarados, L50, F|
+|poke|p2|Gardevoir, L50, M|
+|poke|p2|Tyranitar, L50, F|
+|poke|p2|Arcanine, L50, F|
+|poke|p2|Venusaur, L50, M|
+|poke|p2|Talonflame, L50, M|
+|teampreview|4
+|
+|t:|1794889035
+|teamsize|p1|4
+|teamsize|p2|4
+|start
+|switch|p1a: Sneasler|Sneasler, L50, F|100/100
+|switch|p1b: Whimsicott|Whimsicott, L50, F|100/100
+|switch|p2a: Gyarados|Gyarados, L50, F|100/100
+|switch|p2b: Gardevoir|Gardevoir, L50, M|100/100
+|-ability|p2a: Gyarados|Intimidate|boost
+|-unboost|p1a: Sneasler|atk|1
+|-unboost|p1b: Whimsicott|atk|1
+|-ability|p2b: Gardevoir|Unburden|Trace|[from] ability: Trace|[of] p1a: Sneasler
+|-enditem|p1a: Sneasler|White Herb
+|-clearnegativeboost|p1a: Sneasler|[silent]
+|turn|1
+|
+|t:|1794889035
+|detailschange|p2b: Gardevoir|Gardevoir-Mega, L50, M
+|-mega|p2b: Gardevoir|Gardevoir|Gardevoirite
+|move|p1b: Whimsicott|Protect|p1b: Whimsicott
+|-singleturn|p1b: Whimsicott|Protect
+|move|p1a: Sneasler|Dire Claw|p2b: Gardevoir
+|-supereffective|p2b: Gardevoir|1
+|-damage|p2b: Gardevoir|0 fnt
+|faint|p2b: Gardevoir
+|move|p2a: Gyarados|Ice Fang|p1b: Whimsicott
+|-activate|p1b: Whimsicott|move: Protect
+|
+|upkeep
+|
+|t:|1794889035
+|switch|p2b: Arcanine|Arcanine, L50, F|100/100
+|-ability|p2b: Arcanine|Intimidate|boost
+|-unboost|p1a: Sneasler|atk|1
+|-unboost|p1b: Whimsicott|atk|1
+|turn|2
+|
+|t:|1794889035
+|switch|p1b: Charizard|Charizard, L50, F|100/100
+|switch|p2b: Tyranitar|Tyranitar, L50, F|100/100
+|-weather|Sandstorm|[from] ability: Sand Stream|[of] p2b: Tyranitar
+|move|p1a: Sneasler|Close Combat|p2b: Tyranitar
+|-supereffective|p2b: Tyranitar|2
+|-damage|p2b: Tyranitar|0 fnt
+|-unboost|p1a: Sneasler|def|1
+|-unboost|p1a: Sneasler|spd|1
+|faint|p2b: Tyranitar
+|move|p2a: Gyarados|Ice Fang|p1a: Sneasler|[miss]
+|-miss|p2a: Gyarados|p1a: Sneasler
+|
+|-weather|Sandstorm|[upkeep]
+|-damage|p1a: Sneasler|94/100|[from] Sandstorm
+|-damage|p2a: Gyarados|94/100|[from] Sandstorm
+|-damage|p1b: Charizard|94/100|[from] Sandstorm
+|upkeep
+|
+|t:|1794889035
+|switch|p2b: Arcanine|Arcanine, L50, F|100/100
+|-ability|p2b: Arcanine|Intimidate|boost
+|-unboost|p1a: Sneasler|atk|1
+|-unboost|p1b: Charizard|atk|1
+|turn|3
+|
+|t:|1794889035
+|move|p1a: Sneasler|Close Combat|p2b: Arcanine
+|-damage|p2b: Arcanine|54/100
+|-unboost|p1a: Sneasler|def|1
+|-unboost|p1a: Sneasler|spd|1
+|move|p2b: Arcanine|Flare Blitz|p1a: Sneasler
+|-crit|p1a: Sneasler
+|-damage|p1a: Sneasler|0 fnt
+|faint|p1a: Sneasler
+|-damage|p2b: Arcanine|22/100|[from] Recoil
+|move|p2a: Gyarados|Waterfall|p1b: Charizard
+|-supereffective|p1b: Charizard|1
+|-damage|p1b: Charizard|10/100
+|move|p1b: Charizard|Weather Ball|p2b: Arcanine
+|-supereffective|p2b: Arcanine|1
+|-damage|p2b: Arcanine|0 fnt
+|faint|p2b: Arcanine
+|
+|-weather|Sandstorm|[upkeep]
+|-damage|p2a: Gyarados|88/100|[from] Sandstorm
+|-damage|p1b: Charizard|5/100|[from] Sandstorm
+|upkeep
+|
+|t:|1794889035
+|switch|p1a: Whimsicott|Whimsicott, L50, F|100/100
+|turn|4
+|
+|t:|1794889035
+|detailschange|p1b: Charizard|Charizard-Mega-Y, L50, F
+|-mega|p1b: Charizard|Charizard|Charizardite Y
+|-weather|SunnyDay|[from] ability: Drought|[of] p1b: Charizard
+|move|p1a: Whimsicott|Encore|p2a: Gyarados
+|-start|p2a: Gyarados|Encore
+|move|p2a: Gyarados|Waterfall|p1b: Charizard
+|-supereffective|p1b: Charizard|1
+|-damage|p1b: Charizard|0 fnt
+|faint|p1b: Charizard
+|
+|-weather|SunnyDay|[upkeep]
+|upkeep
+|
+|t:|1794889036
+|switch|p1b: Kingambit|Kingambit, L50, F|100/100
+|turn|5
+|
+|t:|1794889036
+|move|p1a: Whimsicott|Protect|p1a: Whimsicott
+|-singleturn|p1a: Whimsicott|Protect
+|move|p2a: Gyarados|Waterfall|p1b: Kingambit
+|-damage|p1b: Kingambit|85/100
+|move|p1b: Kingambit|Iron Head|p2a: Gyarados
+|-resisted|p2a: Gyarados|1
+|-crit|p2a: Gyarados
+|-damage|p2a: Gyarados|48/100
+|
+|-weather|SunnyDay|[upkeep]
+|upkeep
+|turn|6
+|
+|t:|1794889036
+|move|p1a: Whimsicott|Encore||[still]
+|-fail|p1a: Whimsicott
+|move|p2a: Gyarados|Waterfall|p1b: Kingambit
+|-damage|p1b: Kingambit|71/100
+|move|p1b: Kingambit|Low Kick|p2a: Gyarados
+|-resisted|p2a: Gyarados|1
+|-damage|p2a: Gyarados|21/100
+|
+|-weather|SunnyDay|[upkeep]
+|-end|p2a: Gyarados|Encore
+|upkeep
+|turn|7
+|
+|t:|1794889036
+|move|p1a: Whimsicott|Protect|p1a: Whimsicott
+|-singleturn|p1a: Whimsicott|Protect
+|move|p2a: Gyarados|Ice Fang|p1a: Whimsicott
+|-activate|p1a: Whimsicott|move: Protect
+|move|p1b: Kingambit|Low Kick|p2a: Gyarados
+|-resisted|p2a: Gyarados|1
+|-damage|p2a: Gyarados|0 fnt
+|faint|p2a: Gyarados
+|
+|win|Learner

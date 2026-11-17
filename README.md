@@ -90,6 +90,11 @@ and how targeting changes when the opposing Pokémon's type advantages switch si
 Its full-battle Transformer uses `--transformer-chunks full`: each of four heads
 can attend to every visible learner decision since the beginning of the current battle.
 
+The [action and replay analysis](results/sketch5-action-diagnosis/README.md)
+follows the full-battle policy through wins and losses, measures transfer at three
+training checkpoints, and tests how targets, move order and available history
+change the outcomes of the same 5,600 held-out games.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh

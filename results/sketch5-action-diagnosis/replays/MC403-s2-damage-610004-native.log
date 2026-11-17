@@ -1,0 +1,141 @@
+|t:|1794888953
+|gametype|doubles
+|player|p1|Learner||
+|player|p2|Opponent||
+|gen|9
+|tier|[Gen 9 Champions] VGC 2026 Reg M-C
+|rule|Species Clause: Limit one of each Pokemon
+|rule|Item Clause: Limit 1 of each item
+|clearpoke
+|poke|p1|Staraptor, L50, F|
+|poke|p1|Raichu, L50, F|
+|poke|p1|Gholdengo, L50|
+|poke|p1|Arcanine-Hisui, L50, F|
+|poke|p1|Sylveon, L50, F, shiny|
+|poke|p1|Rillaboom, L50, F|
+|poke|p2|Gyarados, L50, F|
+|poke|p2|Gardevoir, L50, M|
+|poke|p2|Tyranitar, L50, F|
+|poke|p2|Arcanine, L50, F|
+|poke|p2|Venusaur, L50, M|
+|poke|p2|Talonflame, L50, M|
+|teampreview|4
+|
+|t:|1794888953
+|teamsize|p1|4
+|teamsize|p2|4
+|start
+|switch|p1a: Aang|Staraptor, L50, F|100/100
+|switch|p1b: Ryuji|Raichu, L50, F|100/100
+|switch|p2a: Gyarados|Gyarados, L50, F|100/100
+|switch|p2b: Gardevoir|Gardevoir, L50, M|100/100
+|-ability|p1a: Aang|Intimidate|boost
+|-unboost|p2a: Gyarados|atk|1
+|-unboost|p2b: Gardevoir|atk|1
+|-ability|p2a: Gyarados|Intimidate|boost
+|-unboost|p1a: Aang|atk|1
+|-unboost|p1b: Ryuji|atk|1
+|-ability|p2b: Gardevoir|Intimidate|Trace|[from] ability: Trace|[of] p1a: Aang
+|-ability|p2b: Gardevoir|Intimidate|boost
+|-unboost|p1a: Aang|atk|1
+|-unboost|p1b: Ryuji|atk|1
+|turn|1
+|
+|t:|1794888953
+|detailschange|p1a: Aang|Staraptor-Mega, L50, F
+|-mega|p1a: Aang|Staraptor|Staraptite
+|detailschange|p2b: Gardevoir|Gardevoir-Mega, L50, M
+|-mega|p2b: Gardevoir|Gardevoir|Gardevoirite
+|move|p1a: Aang|Protect|p1a: Aang
+|-singleturn|p1a: Aang|Protect
+|move|p1b: Ryuji|Zap Cannon|p2b: Gardevoir
+|-damage|p2b: Gardevoir|62/100
+|-status|p2b: Gardevoir|par
+|move|p2a: Gyarados|Ice Fang|p1a: Aang
+|-activate|p1a: Aang|move: Protect
+|cant|p2b: Gardevoir|par
+|
+|upkeep
+|turn|2
+|
+|t:|1794888953
+|switch|p1b: Parlayprince|Gholdengo, L50|100/100
+|move|p1a: Aang|Tailwind|p1a: Aang
+|-sidestart|p1: Learner|move: Tailwind
+|move|p2a: Gyarados|Ice Fang|p1a: Aang
+|-supereffective|p1a: Aang|1
+|-damage|p1a: Aang|68/100
+|move|p2b: Gardevoir|Moonblast|p1a: Aang
+|-supereffective|p1a: Aang|1
+|-damage|p1a: Aang|0 fnt
+|faint|p1a: Aang
+|
+|upkeep
+|
+|t:|1794888953
+|switch|p1a: Ryuji|Raichu, L50, F|100/100
+|turn|3
+|
+|t:|1794888953
+|move|p1a: Ryuji|Zap Cannon|p2a: Gyarados
+|-supereffective|p2a: Gyarados|2
+|-damage|p2a: Gyarados|0 fnt
+|faint|p2a: Gyarados
+|move|p1b: Parlayprince|Make It Rain|p2b: Gardevoir
+|-supereffective|p2b: Gardevoir|1
+|-damage|p2b: Gardevoir|0 fnt
+|-unboost|p1b: Parlayprince|spa|2
+|faint|p2b: Gardevoir
+|-damage|p1b: Parlayprince|90/100|[from] item: Life Orb
+|
+|upkeep
+|
+|t:|1794888953
+|switch|p2b: Arcanine|Arcanine, L50, F|100/100
+|switch|p2a: Tyranitar|Tyranitar, L50, F|100/100
+|-ability|p2b: Arcanine|Intimidate|boost
+|-unboost|p1a: Ryuji|atk|1
+|-unboost|p1b: Parlayprince|atk|1
+|-weather|Sandstorm|[from] ability: Sand Stream|[of] p2a: Tyranitar
+|turn|4
+|
+|t:|1794888953
+|move|p1a: Ryuji|Zap Cannon|p2b: Arcanine
+|-damage|p2b: Arcanine|49/100
+|-status|p2b: Arcanine|par
+|move|p1b: Parlayprince|Shadow Ball|p2a: Tyranitar
+|-resisted|p2a: Tyranitar|1
+|-damage|p2a: Tyranitar|92/100
+|-damage|p1b: Parlayprince|81/100|[from] item: Life Orb
+|move|p2a: Tyranitar|Crunch|p1b: Parlayprince
+|-supereffective|p1b: Parlayprince|1
+|-damage|p1b: Parlayprince|0 fnt
+|faint|p1b: Parlayprince
+|move|p2b: Arcanine|Flare Blitz|p1a: Ryuji
+|-damage|p1a: Ryuji|2/100
+|-damage|p2b: Arcanine|16/100 par|[from] Recoil
+|
+|-weather|Sandstorm|[upkeep]
+|-damage|p1a: Ryuji|0 fnt|[from] Sandstorm
+|-damage|p2b: Arcanine|10/100 par|[from] Sandstorm
+|faint|p1a: Ryuji
+|upkeep
+|
+|t:|1794888953
+|switch|p1a: Appa|Arcanine-Hisui, L50, F|100/100
+|turn|5
+|
+|t:|1794888953
+|move|p1a: Appa|Head Smash|p2a: Tyranitar
+|-damage|p2a: Tyranitar|30/100
+|move|p2a: Tyranitar|Rock Slide|p1a: Appa
+|-supereffective|p1a: Appa|1
+|-enditem|p1a: Appa|Focus Sash
+|-damage|p1a: Appa|1/100
+|move|p2b: Arcanine|Flare Blitz|p1a: Appa
+|-resisted|p1a: Appa|2
+|-damage|p1a: Appa|0 fnt
+|faint|p1a: Appa
+|-damage|p2b: Arcanine|10/100 par|[from] Recoil
+|
+|win|Opponent
