@@ -121,45 +121,14 @@ def analyze(root, out):
         if r["model"] == "feedforward"
     } == previous
 
-    def win_pct(model, **condition):
-        return mean(
-            r["win_pct"]
-            for r in scores
-            if r["model"] == model and all(r[k] == v for k, v in condition.items())
-        )
-
-    by_seed = [{"seed": s, **{m: win_pct(m, seed=s) for m in MODELS}} for s in SEEDS]
-    by_roster = [
-        {"roster": Path(t).stem, **{m: win_pct(m, roster=Path(t).stem) for m in MODELS}}
-        for t in teams["test"]
-    ]
-    overall = []
-    for model in MODELS:
-        outcomes = Counter(r["outcome"] for r in games if r["model"] == model)
-        overall.append(
-            {
-                "model": model,
-                "mean_win_pct": win_pct(model),
-                "battles": sum(outcomes.values()),
-                **{o: outcomes[o] for o in OUTCOMES},
-                **{f"{s}_win_pct": win_pct(model, opponent=s) for s in STYLES},
-            }
-        )
-    contrasts = []
-    for left, right in [
+    comparisons = [
         ("chunks-8", "chunks-1"),
         ("chunks-8", "feedforward"),
         ("chunks-1", "feedforward"),
-    ]:
-        diffs = [r[left] - r[right] for r in by_seed]
-        contrasts.append(
-            {
-                "left": left,
-                "right": right,
-                **interval(diffs),
-                **{f"seed_{s}": d for s, d in zip(SEEDS, diffs, strict=True)},
-            }
-        )
+    ]
+    overall, by_seed, by_roster, contrasts = summarize_rosters(
+        scores, games, teams["test"], MODELS, comparisons
+    )
     out.mkdir(parents=True, exist_ok=False)
     for name, rows in [
         ("summary.csv", overall),
@@ -173,6 +142,47 @@ def analyze(root, out):
         write_csv(out / name, rows)
     plot(out, by_seed, by_roster)
     print(json.dumps({"results": overall, "contrasts": contrasts}, indent=2))
+
+
+def summarize_rosters(scores, games, rosters, models, comparisons):
+    """Equal-weight win rates and paired differences for the frozen roster benchmark."""
+
+    def win_pct(model, **condition):
+        return mean(
+            r["win_pct"]
+            for r in scores
+            if r["model"] == model and all(r[k] == v for k, v in condition.items())
+        )
+
+    by_seed = [{"seed": s, **{m: win_pct(m, seed=s) for m in models}} for s in SEEDS]
+    by_roster = [
+        {"roster": Path(t).stem, **{m: win_pct(m, roster=Path(t).stem) for m in models}}
+        for t in rosters
+    ]
+    overall = []
+    for model in models:
+        outcomes = Counter(r["outcome"] for r in games if r["model"] == model)
+        overall.append(
+            {
+                "model": model,
+                "mean_win_pct": win_pct(model),
+                "battles": sum(outcomes.values()),
+                **{o: outcomes[o] for o in OUTCOMES},
+                **{f"{s}_win_pct": win_pct(model, opponent=s) for s in STYLES},
+            }
+        )
+    contrasts = []
+    for left, right in comparisons:
+        diffs = [r[left] - r[right] for r in by_seed]
+        contrasts.append(
+            {
+                "left": left,
+                "right": right,
+                **interval(diffs),
+                **{f"seed_{s}": d for s, d in zip(SEEDS, diffs, strict=True)},
+            }
+        )
+    return overall, by_seed, by_roster, contrasts
 
 
 def plot(out, by_seed, by_roster):

@@ -18,6 +18,8 @@ Codex implemented PPO fine-tuning from saved Sun weights, ran the tournament ada
 
 Codex implemented and tested decision-history Transformer policies, ran the one- and eight-chunk PPO comparison on Sketch5, and prepared the held-out-team analysis against the archived feedforward policies.
 
+Codex configured the wider PPO agents, implemented and tested full-battle attention, ran the matched size and history comparisons on Sketch5, and designed and scored the counterfactual targeting probe for the mechanics analysis.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

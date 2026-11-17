@@ -84,6 +84,12 @@ The [Transformer PPO study](results/sketch5-transformer-rosters/README.md) compa
 one- and eight-decision histories against the 65,536-step feedforward baseline
 on those same seven held-out teams.
 
+The [policy-size experiment](results/sketch5-policy-size/README.md) widens both
+architectures to about 1.74 million parameters and measures held-out battle wins
+and how targeting changes when the opposing Pokémon's type advantages switch sides.
+Its full-battle Transformer uses `--transformer-chunks full`: each of four heads
+can attend to every visible learner decision since the beginning of the current battle.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh

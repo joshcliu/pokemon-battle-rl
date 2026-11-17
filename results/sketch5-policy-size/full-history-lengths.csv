@@ -1,0 +1,9 @@
+seed,phase,battle_prefixes,battles_past_eight,decisions,decisions_past_eight,longest_prefix
+2,train,7898,3000,65536,8189,29
+2,held_out,1400,709,12437,1902,21
+3,train,7745,3176,65536,9424,29
+3,held_out,1400,647,12341,2052,35
+4,train,8483,2490,65536,6288,24
+4,held_out,1400,701,12439,1983,24
+5,train,8237,2772,65536,6755,24
+5,held_out,1400,805,13357,2851,29
