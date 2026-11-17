@@ -1,0 +1,13 @@
+candidate,roster,family,battles,wins,losses,ties,cutoffs,win_pct
+lead-router,MC463,damage,400,379,21,0,0,94.75
+lead-router,MC463,specialist,400,399,1,0,0,99.75
+lead-router,MC463,tactical,400,394,6,0,0,98.5
+lead-router,MC751,damage,400,400,0,0,0,100.0
+lead-router,MC751,specialist,400,400,0,0,0,100.0
+lead-router,MC751,tactical,400,396,4,0,0,99.0
+lead-router,balance,damage,400,400,0,0,0,100.0
+lead-router,balance,specialist,400,400,0,0,0,100.0
+lead-router,balance,tactical,400,400,0,0,0,100.0
+lead-router,sun,damage,400,396,4,0,0,99.0
+lead-router,sun,specialist,400,400,0,0,0,100.0
+lead-router,sun,tactical,400,400,0,0,0,100.0

@@ -1,0 +1,22 @@
+{
+  "teams/balance.txt": [
+    "damage",
+    "tactical",
+    "results/sketch5-fixed-league/weights/rival-balance.pt"
+  ],
+  "teams/sun.txt": [
+    "damage",
+    "tactical",
+    "results/sketch5-fixed-league/weights/rival-sun.pt"
+  ],
+  "teams/reg-mc-regionals/MC463.txt": [
+    "damage",
+    "tactical",
+    "results/sketch5-fixed-league/weights/rival-MC463.pt"
+  ],
+  "teams/reg-mc-regionals/MC751.txt": [
+    "damage",
+    "tactical",
+    "results/sketch5-fixed-league/weights/rival-MC751.pt"
+  ]
+}

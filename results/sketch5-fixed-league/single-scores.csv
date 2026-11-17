@@ -1,0 +1,13 @@
+candidate,roster,family,battles,wins,losses,ties,cutoffs,win_pct
+league-warm-2-65536,MC463,damage,400,397,3,0,0,99.25
+league-warm-2-65536,MC463,specialist,400,398,2,0,0,99.5
+league-warm-2-65536,MC463,tactical,400,382,18,0,0,95.5
+league-warm-2-65536,MC751,damage,400,400,0,0,0,100.0
+league-warm-2-65536,MC751,specialist,400,400,0,0,0,100.0
+league-warm-2-65536,MC751,tactical,400,395,5,0,0,98.75
+league-warm-2-65536,balance,damage,400,400,0,0,0,100.0
+league-warm-2-65536,balance,specialist,400,400,0,0,0,100.0
+league-warm-2-65536,balance,tactical,400,400,0,0,0,100.0
+league-warm-2-65536,sun,damage,400,400,0,0,0,100.0
+league-warm-2-65536,sun,specialist,400,384,16,0,0,96.0
+league-warm-2-65536,sun,tactical,400,400,0,0,0,100.0

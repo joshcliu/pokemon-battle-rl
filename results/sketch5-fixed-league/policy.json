@@ -1,0 +1,9 @@
+{
+  "routes": {
+    "charizard+garchomp": "results/sketch5-fixed-league/weights/expert-1.pt",
+    "gardevoir+gyarados": "results/sketch5-fixed-league/weights/expert-2.pt",
+    "raichu+rillaboom": "results/sketch5-fixed-league/weights/expert-5.pt",
+    "sneasler+whimsicott": "results/sketch5-fixed-league/weights/expert-3.pt"
+  },
+  "default": "results/sketch5-fixed-league/weights/expert-4.pt"
+}

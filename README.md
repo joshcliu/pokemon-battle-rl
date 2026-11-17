@@ -100,6 +100,11 @@ fixed and independently shuffled move slots at 65,536 and 262,144 PPO decisions.
 It reports unaided wins, move-order sensitivity and targeting on all 15 familiar
 and seven held-out learner teams.
 
+In the [fixed-team league experiment](results/sketch5-fixed-league/README.md),
+a full-history PPO Transformer playing MC461 won 99.08% across twelve calibrated
+bot–roster matchups. The report includes both playable policies, opponent weights,
+and all 4,800 fresh-seed results for each policy.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh

@@ -1,0 +1,19 @@
+{
+  "archive-5": "runs/sketch5-move-slots-v1/seed-5/fixed/train/checkpoint-262144.pt",
+  "archive-4": "runs/sketch5-move-slots-v1/seed-4/fixed/train/checkpoint-262144.pt",
+  "archive-3": "runs/sketch5-move-slots-v1/seed-3/fixed/train/checkpoint-262144.pt",
+  "archive-2": "runs/sketch5-move-slots-v1/seed-2/fixed/train/checkpoint-262144.pt",
+  "warmup-warm-2-16384": "runs/sketch5-fixed-league-v1/warmup/warm-2/train/checkpoint-16384.pt",
+  "warmup-warm-2-32768": "runs/sketch5-fixed-league-v1/warmup/warm-2/train/checkpoint-32768.pt",
+  "warmup-mlp-11-65536": "runs/sketch5-fixed-league-v1/warmup/mlp-11/train/checkpoint-65536.pt",
+  "warmup-warm-2-65536": "runs/sketch5-fixed-league-v1/warmup/warm-2/train/checkpoint-65536.pt",
+  "league-warm-2-65536": "runs/sketch5-fixed-league-v1/league/warm-2/train/checkpoint-65536.pt",
+  "league-warm-3-65536": "runs/sketch5-fixed-league-v1/league/warm-3/train/checkpoint-65536.pt",
+  "league-mlp-17-65536": "runs/sketch5-fixed-league-v1/league/mlp-17/train/checkpoint-65536.pt",
+  "league-mlp-11-65536": "runs/sketch5-fixed-league-v1/league/mlp-11/train/checkpoint-65536.pt",
+  "experts-MC463-5-16384": "runs/sketch5-fixed-league-v1/experts/MC463-5/train/checkpoint-16384.pt",
+  "experts-MC751-2-16384": "runs/sketch5-fixed-league-v1/experts/MC751-2/train/checkpoint-16384.pt",
+  "experts-MC751-13-16384": "runs/sketch5-fixed-league-v1/experts/MC751-13/train/checkpoint-16384.pt",
+  "experts-sun-5-32768": "runs/sketch5-fixed-league-v1/experts/sun-5/train/checkpoint-32768.pt",
+  "lead-router": "runs/sketch5-fixed-league-v1/validation-router.json"
+}
