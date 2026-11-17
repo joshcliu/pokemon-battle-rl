@@ -26,28 +26,108 @@ def save(path, value):
 def adapt(root, pool, seed, rate, steps):
     job = root / "adapt" / str(seed)
     job.mkdir(parents=True)
-    launch(job, "train", [
-        "--learner-teams", *TEAMS, "--opponent-teams", *pool,
-        "--opponent-pool", str(root / "adapt-pool.json"), "--opponent", "mixture",
-        "--transformer-chunks", "full", "--hidden-size", "256",
-        "--init-checkpoint", ORIGINAL, "--learning-rate", str(rate),
-        "--seed", str(seed), "--reward-mode", "win-loss", "--steps", str(steps),
-        "--save-initial", "--save-at", "16384", "32768", str(steps),
-        "--run-dir", str(job / "train"),
-    ])
+    launch(
+        job,
+        "train",
+        [
+            "--learner-teams",
+            *TEAMS,
+            "--opponent-teams",
+            *pool,
+            "--opponent-pool",
+            str(root / "adapt-pool.json"),
+            "--opponent",
+            "mixture",
+            "--transformer-chunks",
+            "full",
+            "--hidden-size",
+            "256",
+            "--init-checkpoint",
+            ORIGINAL,
+            "--learning-rate",
+            str(rate),
+            "--seed",
+            str(seed),
+            "--reward-mode",
+            "win-loss",
+            "--steps",
+            str(steps),
+            "--save-initial",
+            "--save-at",
+            "16384",
+            "32768",
+            str(steps),
+            "--run-dir",
+            str(job / "train"),
+        ],
+    )
 
 
 def mirror_jobs(executor, root, team, defender, steps):
     name = Path(team).stem
     pool = root / f"mirror-{name}.json"
     save(pool, {team: [defender]})
-    starts = {331: None, 337: None, 347: ARCHIVE / "seed-2/fixed/train/checkpoint-262144.pt",
-              349: ROOT / defender}
+    starts = {
+        331: None,
+        337: None,
+        347: ARCHIVE / "seed-2/fixed/train/checkpoint-262144.pt",
+        349: ROOT / defender,
+    }
     return [
-        executor.submit(train, root, f"counter/{name}-{seed}", team, [team], seed, steps,
-                        warm, pool, 0.0002 if warm else None)
+        executor.submit(
+            train,
+            root,
+            f"counter/{name}-{seed}",
+            team,
+            [team],
+            seed,
+            steps,
+            warm,
+            pool,
+            0.0002 if warm else None,
+        )
         for seed, warm in starts.items()
     ]
+
+
+def shared(root, pool, seed, warm, steps):
+    job = root / "shared" / str(seed)
+    job.mkdir(parents=True)
+    architecture = (
+        ["--transformer-chunks", "full", "--init-checkpoint", warm, "--learning-rate", "0.0002"]
+        if warm
+        else []
+    )
+    launch(
+        job,
+        "train",
+        [
+            "--learner-teams",
+            *pool,
+            "--opponent-teams",
+            *pool,
+            "--mirror-teams",
+            "--opponent-pool",
+            str(root / "shared-pool.json"),
+            "--opponent",
+            "mixture",
+            "--hidden-size",
+            "256",
+            *architecture,
+            "--seed",
+            str(seed),
+            "--reward-mode",
+            "win-loss",
+            "--steps",
+            str(steps),
+            "--save-at",
+            "16384",
+            "32768",
+            str(steps),
+            "--run-dir",
+            str(job / "train"),
+        ],
+    )
 
 
 if __name__ == "__main__":
@@ -56,7 +136,7 @@ if __name__ == "__main__":
     p.add_argument("--runs", type=Path, required=True)
     p.add_argument("--adapt-steps", type=int, default=65536)
     p.add_argument("--counter-steps", type=int, default=32768)
-    p.add_argument("--jobs", type=int, default=16)
+    p.add_argument("--jobs", type=int, default=24)
     a = p.parse_args()
     root = a.runs.resolve()
     assert hashlib.sha256((ROOT / ORIGINAL).read_bytes()).hexdigest() == (
@@ -77,5 +157,29 @@ if __name__ == "__main__":
             assert hashlib.sha256((ROOT / cp).read_bytes()).hexdigest() == lock["sha256"]
             for team in TEAMS:
                 tasks.extend(mirror_jobs(exe, root, team, cp, a.counter_steps))
+            pool = {t: [cp] for t in TEAMS}
+            pool[TEAM] = [ORIGINAL]
+            save(root / "shared-pool.json", pool)
+            for seed, warm in [(353, None), (359, cp), (367, ORIGINAL)]:
+                tasks.append(exe.submit(shared, root, pool, seed, warm, a.adapt_steps))
+            for seed, warm in [
+                (373, None),
+                (379, ROOT / ORIGINAL),
+                (383, ARCHIVE / "seed-2/fixed/train/checkpoint-262144.pt"),
+            ]:
+                tasks.append(
+                    exe.submit(
+                        train,
+                        root,
+                        f"fixed-counter/{seed}",
+                        TEAM,
+                        list(pool),
+                        seed,
+                        a.adapt_steps,
+                        warm,
+                        root / "shared-pool.json",
+                        0.0002 if warm else None,
+                    )
+                )
         for task in tasks:
             task.result()

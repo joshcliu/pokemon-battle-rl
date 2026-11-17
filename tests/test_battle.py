@@ -127,6 +127,22 @@ def test_changing_learner_pool_preserves_opponent_schedule_and_uses_selected_tea
         varied.close()
 
 
+def test_mirror_env_assigns_the_same_sampled_team_to_each_player():
+    rosters = ["teams/balance.txt", "teams/sun.txt"]
+    env = BattleEnv(learner_teams=rosters, opponent_teams=rosters, mirror_teams=True)
+    try:
+        seen = set()
+        for seed in range(8):
+            _, info = env.reset(seed=seed)
+            assert info["learner_team"] == rosters[info["opponent_team_index"]]
+            p1, p2 = (env.battle.players[s] for s in ("p1", "p2"))
+            assert [p.species for p in p1.team.values()] == [p.species for p in p2.team.values()]
+            seen.add(info["learner_team"])
+        assert seen == set(rosters)
+    finally:
+        env.close()
+
+
 def test_shuffle_only_changes_learner_move_positions_and_preserves_episode_schedule():
     pool = ["teams/balance.txt", "teams/sun.txt"]
     fixed = BattleEnv(learner_teams=pool, opponent="mixture")

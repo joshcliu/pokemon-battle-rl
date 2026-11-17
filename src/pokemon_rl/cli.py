@@ -16,6 +16,12 @@ def main():
         p.add_argument("--team", default="teams/sun.txt")
         if command == "train":
             p.add_argument(
+                "--mirror-teams",
+                action="store_true",
+                default=argparse.SUPPRESS,
+                help="Give the learner the opponent's sampled roster every episode",
+            )
+            p.add_argument(
                 "--opponent-pool",
                 default=argparse.SUPPRESS,
                 help="JSON map from opponent team paths to frozen policy names or checkpoints",

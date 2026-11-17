@@ -32,6 +32,7 @@ def make_env(args, opponent=None, chunks=None):
         shuffle_move_slots=getattr(args, "shuffle_move_slots", False),
         opponent_teams=args.opponent_teams,
         opponent_pool=getattr(args, "opponent_pool", None),
+        mirror_teams=getattr(args, "mirror_teams", False),
         battle_format=args.format,
         max_turns=args.max_turns,
     )

@@ -37,6 +37,7 @@ class BattleEnv(gym.Env):
         learner_teams=None,
         shuffle_move_slots=False,
         opponent_pool=None,
+        mirror_teams=False,
     ):
         super().__init__()
         self.style = opponent
@@ -44,6 +45,11 @@ class BattleEnv(gym.Env):
         self.learner_paths = list(learner_teams or [team])
         self.learner_teams = [(ROOT / p).read_text() for p in self.learner_paths]
         self.opponent_paths = list(opponent_teams or ["teams/balance.txt", "teams/sun.txt"])
+        self.mirror_teams = mirror_teams
+        if mirror_teams and self.learner_paths != self.opponent_paths:
+            raise ValueError(
+                "Mirror training requires the same ordered learner and opponent rosters"
+            )
         self.opponent_teams = [(ROOT / p).read_text() for p in self.opponent_paths]
         self.pool = None
         if opponent_pool:
@@ -72,7 +78,9 @@ class BattleEnv(gym.Env):
         )
         self.episode_seed = episode_seed
         self.learner_index = 0
-        if len(self.learner_teams) > 1:
+        if self.mirror_teams:
+            self.learner_index = self.team_index
+        elif len(self.learner_teams) > 1:
             learner_rng = np.random.default_rng(np.random.SeedSequence([episode_seed, 23]))
             self.learner_index = int(learner_rng.integers(len(self.learner_teams)))
         learner = self.learner_teams[self.learner_index]
