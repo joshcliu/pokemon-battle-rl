@@ -137,7 +137,9 @@ def sampled_diagnostic(public, jobs):
     pool = read(public / "opponents.json")
     for fixed, out in [(False, "sampled-mirrors"), (True, "sampled-fixed")]:
         models = {
-            k: (v, ALL_TEAMS) for k, v in candidates.items() if (k == lock["fixed_team"]) == fixed
+            k: (v, ALL_TEAMS)
+            for k, v in candidates.items()
+            if (k in {lock["fixed_team"], lock["fixed_primary"]}) == fixed
         }
         matchups(
             public / out,
@@ -181,7 +183,20 @@ def screen(root, jobs):
         for seed in (373, 379, 383)
         for steps in (32768, 65536)
     }
+    fixed_shortlist = {k: v[0] for k, v in fixed.items()}
+    for team in ALL_TEAMS:
+        stem = Path(team).stem
+        group = "counter" if team == TEAM else "fixed-experts"
+        seeds = (331, 337, 347, 349) if team == TEAM else (401, 409, 419)
+        for seed in seeds:
+            for steps in (16384, 32768):
+                path = root / f"{group}/{stem}-{seed}/train/checkpoint-{steps}.pt"
+                fixed[f"expert-{stem}-{seed}-{steps}"] = name(path), [team]
     matchups(root / "fixed-selection", fixed, pool, 47000000, 80, jobs, fixed_team=True)
+    fixed_shortlist["fixed-opening-router"] = fit_router(
+        root, ["fixed-selection"], root / "fixed-validation"
+    )
+    save(root / "fixed-shortlist.json", fixed_shortlist)
 
 
 def weights(model):
@@ -227,7 +242,7 @@ def validate(root, jobs):
     assert cp == pool[TEAMS[0]][0] and all(pool[t] == [cp] for t in TEAMS)
     assert pool[TEAM] == [ORIGINAL]
     chosen = {label: models[label] for label in (best, single)}
-    fixed_models = read(root / "fixed-selection/models.json")
+    fixed_models = read(root / "fixed-shortlist.json")
     fixed_scores = matchups(
         root / "fixed-validation",
         {k: (v, ALL_TEAMS) for k, v in fixed_models.items()},
@@ -239,14 +254,17 @@ def validate(root, jobs):
     )
     scores.extend(fixed_scores)
     fixed_best = min(fixed_models, key=rank)
+    fixed_single = min((k for k in fixed_models if fixed_models[k].endswith(".pt")), key=rank)
     chosen[fixed_best] = fixed_models[fixed_best]
+    chosen[fixed_single] = fixed_models[fixed_single]
     files = {cp, ORIGINAL, *ALL_TEAMS, *chosen.values()}
     for model in chosen.values():
         files.update(weights(model))
     lock = {
         "primary": best,
         "single": single,
-        "fixed_team": fixed_best,
+        "fixed_team": fixed_single,
+        "fixed_primary": fixed_best,
         "candidates": chosen,
         "pool": pool,
         "sha256": {p: digest(p) for p in sorted(files)},
@@ -278,8 +296,9 @@ def confirm(root, public, jobs):
                 "routes": {k: name(mapping[v]) for k, v in spec["routes"].items()},
                 "default": name(mapping[spec["default"]]),
             }
-            save(public / "router.json", spec)
-            exported[label] = name(public / "router.json")
+            path = public / (label + ".json")
+            save(path, spec)
+            exported[label] = name(path)
         else:
             exported[label] = name(mapping[model])
     pool = {t: [ORIGINAL if t == TEAM else name(mapping[cp])] for t in ALL_TEAMS}
@@ -288,10 +307,10 @@ def confirm(root, public, jobs):
     save(public / "locked.json", lock)
     dest = public / "confirmation"
     n = lock["games_per_team"]
-    fixed = lock["fixed_team"]
+    fixed = {lock["fixed_team"], lock["fixed_primary"]}
     matchups(
         dest,
-        {k: (model, ALL_TEAMS) for k, model in exported.items() if k != fixed},
+        {k: (model, ALL_TEAMS) for k, model in exported.items() if k not in fixed},
         pool,
         lock["base"],
         n,
@@ -300,7 +319,7 @@ def confirm(root, public, jobs):
     fixed_dest = public / "fixed-confirmation"
     matchups(
         fixed_dest,
-        {fixed: (exported[fixed], ALL_TEAMS)},
+        {k: (exported[k], ALL_TEAMS) for k in sorted(fixed)},
         pool,
         lock["base"] + 50000,
         n,
@@ -310,7 +329,7 @@ def confirm(root, public, jobs):
     all_rows = games(dest) + games(fixed_dest)
     summaries = []
     for label, model in exported.items():
-        base = lock["base"] + (50000 if label == fixed else 0)
+        base = lock["base"] + (50000 if label in fixed else 0)
         expected = {
             (t, base + 10000 * i + j, "p1" if j % 2 == 0 else "p2")
             for i, t in enumerate(ALL_TEAMS)
@@ -320,7 +339,7 @@ def confirm(root, public, jobs):
         assert len(rows) == len(expected)
         assert {(r["opponent_team"], int(r["seed"]), r["side"]) for r in rows} == expected
         assert all(
-            r["team"] == (TEAM if label == fixed else r["opponent_team"])
+            r["team"] == (TEAM if label in fixed else r["opponent_team"])
             and r["opponent"] == pool[r["opponent_team"]][0]
             and r["learner"] == model
             for r in rows

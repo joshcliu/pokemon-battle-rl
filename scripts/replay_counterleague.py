@@ -13,7 +13,7 @@ def replay(public, matchup, team, seed, side, out):
     model = read(public / "candidates.json")[lock[matchup]]
     pool = read(public / "opponents.json")
     opponent_team = next(t for t in pool if Path(t).stem == team)
-    own_team = TEAM if matchup == "fixed_team" else opponent_team
+    own_team = TEAM if matchup in ("fixed_team", "fixed_primary") else opponent_team
     offset = int(side == "p2")
     (row,) = matches(
         {},
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     p.add_argument("--public", type=Path, default=PUBLIC)
     p.add_argument(
         "--matchup",
-        choices=["primary", "single", "fixed_team"],
+        choices=["primary", "single", "fixed_team", "fixed_primary"],
         default="fixed_team",
         help="primary and single play mirrors; fixed_team always pilots MC461",
     )

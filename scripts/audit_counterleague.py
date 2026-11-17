@@ -20,7 +20,7 @@ def audit_training(root, public):
     assert digest(ORIGINAL) == frozen["original_sha256"]
     pool = read(root / "shared-pool.json")
     rows, exposure = [], []
-    for kind in ("adapt", "counter", "shared", "fixed-counter"):
+    for kind in ("adapt", "counter", "shared", "fixed-counter", "fixed-experts"):
         for path in sorted((root / kind).glob("*/train/manifest.json")):
             directory = path.parent
             manifest = read(path)
@@ -50,7 +50,7 @@ def audit_training(root, public):
                     assert any(used == k or used == str(ROOT / k) for k in opponents[other])
                     if kind in ("counter", "shared"):
                         assert own == other
-                    if kind == "fixed-counter":
+                    if kind in ("fixed-counter", "fixed-experts"):
                         assert own == TEAM
                     counts[own, other] += 1
             if kind == "adapt":
@@ -84,6 +84,7 @@ def audit_training(root, public):
         "counter": 20,
         "shared": 3,
         "fixed-counter": 3,
+        "fixed-experts": 12,
     }
     write_csv(public / "training.csv", rows)
     write_csv(public / "exposure.csv", exposure)
@@ -95,7 +96,9 @@ def compare_replay(root, public, jobs):
     results = {}
     for mode, fixed in [("confirmation", False), ("fixed-confirmation", True)]:
         models = {
-            k: (v, ALL_TEAMS) for k, v in catalog.items() if (k == lock["fixed_team"]) == fixed
+            k: (v, ALL_TEAMS)
+            for k, v in catalog.items()
+            if (k in {lock["fixed_team"], lock["fixed_primary"]}) == fixed
         }
         dest = root / f"source-{mode}"
         if not (dest / "games.csv.gz").exists():
@@ -144,6 +147,7 @@ def archive(root, public):
         "counter-validation",
         "fixed-selection",
         "fixed-validation",
+        "retention",
     ):
         shutil.copyfile(root / stage / "scores.csv", public / (stage + "-scores.csv"))
     for file in ("defender.json", "adapt-pool.json"):
