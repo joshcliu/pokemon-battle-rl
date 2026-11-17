@@ -104,6 +104,9 @@ if __name__ == "__main__":
     p.add_argument("--final-base", type=int, default=30000000)
     p.add_argument("--battles", type=int, default=48)
     p.add_argument("--jobs", type=int, default=24)
+    p.add_argument(
+        "--single", action="store_true", help="Confirm the separately locked best single network"
+    )
     a = p.parse_args()
     root = a.runs.resolve()
     pool = json.loads((root / "pool.json").read_text())
@@ -120,7 +123,8 @@ if __name__ == "__main__":
         if router:
             models["lead-router"] = router
     else:
-        frozen = json.loads((root / a.group[0] / "locked.json").read_text())
+        filename = "locked-single.json" if a.single else "locked.json"
+        frozen = json.loads((root / a.group[0] / filename).read_text())
         assert a.base == frozen["confirmation_base"] and frozen["team"] == a.team
         assert frozen == lock(
             root, frozen["model"], frozen["label"], a.team, frozen["validation"], a.base
@@ -131,8 +135,14 @@ if __name__ == "__main__":
     evaluate(a.out, pool, a.team, models, a.base, a.battles, a.jobs)
     (a.out / "models.json").write_text(json.dumps(models, indent=2) + "\n")
     if a.stage == "validate":
-        best = ranking(a.out)[0]
-        (a.out / "locked.json").write_text(
-            json.dumps(lock(root, models[best], best, a.team, str(a.out), a.final_base), indent=2)
-            + "\n"
-        )
+        ranked = ranking(a.out)
+        for file, best in [
+            ("locked.json", ranked[0]),
+            ("locked-single.json", next(k for k in ranked if models[k].endswith(".pt"))),
+        ]:
+            (a.out / file).write_text(
+                json.dumps(
+                    lock(root, models[best], best, a.team, str(a.out), a.final_base), indent=2
+                )
+                + "\n"
+            )
