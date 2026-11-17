@@ -7,10 +7,10 @@ from collections import Counter
 from pathlib import Path
 
 from analyze_long_rewards import write_csv
-from fixed_league import name, run
+from fixed_league import evaluate, name, run
 from report_fixed_league import export_weights, games, interval
 from screen_league import fit_router
-from train_counterleague import ORIGINAL, ROOT, TEAM, TEAMS, save
+from train_counterleague import ORIGINAL, PREVIOUS, ROOT, TEAM, TEAMS, save
 from train_fixed_league import ARCHIVE
 
 ALL_TEAMS = (*TEAMS, TEAM)
@@ -348,6 +348,7 @@ if __name__ == "__main__":
             "validate",
             "confirm",
             "sampled",
+            "retention",
         ],
     )
     p.add_argument("--runs", type=Path, required=True)
@@ -370,6 +371,18 @@ if __name__ == "__main__":
         )
     elif a.stage == "baselines":
         baselines(root, a.jobs)
+    elif a.stage == "retention":
+        previous = read(PREVIOUS / "locked-single.json")
+        assert previous["team"] == TEAM
+        evaluate(
+            root / "retention",
+            read(PREVIOUS / "pool.json"),
+            TEAM,
+            {"adapted": read(root / "defender.json")["model"]},
+            previous["confirmation_base"],
+            previous["games_per_cell"],
+            a.jobs,
+        )
     elif a.stage == "screen":
         screen(root, a.jobs)
     elif a.stage == "validate":
