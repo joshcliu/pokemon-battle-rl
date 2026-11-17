@@ -80,6 +80,10 @@ those Sun checkpoints with scratch training after 16,384, 65,536 and 262,144
 additional decisions on the 15 tournament teams. It tracks win rates on the
 practice teams, the seven held-out teams and Sun.
 
+The [Transformer PPO study](results/sketch5-transformer-rosters/README.md) compares
+one- and eight-decision histories against the 65,536-step feedforward baseline
+on those same seven held-out teams.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh

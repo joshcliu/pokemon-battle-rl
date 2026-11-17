@@ -122,6 +122,15 @@ def training_audit(root, seed, sun):
 
 def score_run(root, seed, mode, step, roster, group, manifest, schedule, sun):
     dest = evaluation(root, seed, mode, step, roster)
+    src = checkpoint(root, seed, mode, step)
+    if previous_policy(mode, step) and group != "practice" and step == 0:
+        src = sun if mode == "warm" else SCRATCH_STUDY / f"seed-{seed}/train/checkpoint-0.pt"
+    condition = {"seed": seed, "mode": mode, "tournament_steps": step, "group": group}
+    return score_checkpoint(dest, src, roster, manifest, schedule, condition)
+
+
+def score_checkpoint(dest, src, roster, manifest, schedule, condition):
+    """Check evaluation provenance and paired battle draws before counting wins."""
     ev = load(dest / "manifest.json")
     same_runtime(ev, manifest)
     a = ev["args"]
@@ -131,9 +140,6 @@ def score_run(root, seed, mode, step, roster, group, manifest, schedule, sun):
         and a["opponents"] == list(STYLES)
     )
     assert (a["battles"], a["seed"], a["deterministic"]) == (BATTLES, EVAL_SEED, False)
-    src = checkpoint(root, seed, mode, step)
-    if previous_policy(mode, step) and group != "practice" and step == 0:
-        src = sun if mode == "warm" else SCRATCH_STUDY / f"seed-{seed}/train/checkpoint-0.pt"
     assert Path(a["checkpoint"]).resolve() == src
     assert not (dest / "errors.jsonl").exists()
     scores, games = [], []
@@ -143,14 +149,7 @@ def score_run(root, seed, mode, step, roster, group, manifest, schedule, sun):
         assert [r["seed"] for r in rows] == list(range(EVAL_SEED, EVAL_SEED + BATTLES))
         counts = Counter(r["outcome"] for r in rows)
         assert counts == Counter(summary[style]["outcomes"]) and set(counts) <= set(OUTCOMES)
-        key = {
-            "seed": seed,
-            "mode": mode,
-            "tournament_steps": step,
-            "group": group,
-            "roster": Path(roster).stem,
-            "opponent": style,
-        }
+        key = condition | {"roster": Path(roster).stem, "opponent": style}
         scores.append(
             key
             | {o: counts[o] for o in OUTCOMES}
