@@ -1,6 +1,7 @@
 """Train roster specialists and fixed-team PPO candidates for a frozen doubles league."""
 
 import argparse
+import json
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -50,14 +51,14 @@ def train(root, label, team, opposition, seed, steps, warm=None, pool=None, rate
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("stage", choices=["rivals", "warmup", "league"])
+    p.add_argument("stage", choices=["rivals", "warmup", "league", "experts"])
     p.add_argument("--runs", type=Path, required=True)
     p.add_argument("--pool", type=Path)
     p.add_argument("--steps", type=int, default=65536)
     p.add_argument("--jobs", type=int, default=8)
     a = p.parse_args()
     root = a.runs.resolve()
-    if a.stage == "league" and not a.pool:
+    if a.stage in ("league", "experts") and not a.pool:
         p.error("League training requires --pool")
     with ThreadPoolExecutor(max_workers=a.jobs) as workers:
         if a.stage == "rivals":
@@ -79,6 +80,33 @@ if __name__ == "__main__":
                 for t in ROSTERS
                 for s in (71, 73)
             ]
+        elif a.stage == "experts":
+            pool = json.loads(a.pool.read_text())
+            tasks = []
+            for t in ROSTERS:
+                stem = Path(t).stem
+                file = root / f"expert-{stem}-pool.json"
+                file.write_text(json.dumps({t: pool[t]}, indent=2) + "\n")
+                for s in (2, 5, 13):
+                    warm = (
+                        ARCHIVE / f"seed-{s}/fixed/train/checkpoint-262144.pt"
+                        if s in (2, 5)
+                        else None
+                    )
+                    tasks.append(
+                        workers.submit(
+                            train,
+                            root,
+                            f"experts/{stem}-{s}",
+                            TEAM,
+                            [t],
+                            s + 200,
+                            a.steps,
+                            warm,
+                            file,
+                            0.00015 if warm else None,
+                        )
+                    )
         else:
             tasks = []
             for s in (2, 3, 4, 5):
