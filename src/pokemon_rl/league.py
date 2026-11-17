@@ -135,9 +135,10 @@ class Tactical:
 
 
 class FrozenActor:
-    def __init__(self, path):
+    def __init__(self, path, *, deterministic=True):
         saved = torch.load(path, map_location="cpu", weights_only=True)
         self.style = str(path)
+        self.deterministic = deterministic
         self.full = saved.get("transformer_chunks")
         if self.full not in (None, "full"):
             raise ValueError("League supports feedforward or full-history policies")
@@ -160,7 +161,9 @@ class FrozenActor:
         mask = torch.zeros((ACTION_SIZE, ACTION_SIZE), dtype=torch.bool)
         pairs = np.asarray(list(legal))
         mask[pairs[:, 0], pairs[:, 1]] = True
-        action = self.model.sample(torch.from_numpy(obs)[None], mask[None], deterministic=True)[0]
+        action = self.model.sample(
+            torch.from_numpy(obs)[None], mask[None], deterministic=self.deterministic
+        )[0]
         self.previous = tuple(action[0].tolist())
         return self.previous
 

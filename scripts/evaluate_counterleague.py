@@ -82,7 +82,7 @@ def choose_defender(root, jobs):
     )
 
 
-def matchups(out, assignments, pool, base, n, jobs, fixed_team=False):
+def matchups(out, assignments, pool, base, n, jobs, fixed_team=False, sample_opponent=False):
     tasks = []
     for label, (cp, teams) in assignments.items():
         for t in teams:
@@ -99,6 +99,8 @@ def matchups(out, assignments, pool, base, n, jobs, fixed_team=False):
                     roster=t,
                 )
             )
+    if sample_opponent:
+        tasks = [(*task, None, True) for task in tasks]
     scores = run(out, jobs, tasks)
     save(out / "models.json", {k: v[0] for k, v in assignments.items()})
     return scores
@@ -127,6 +129,26 @@ def baselines(root, jobs):
         jobs,
         fixed_team=True,
     )
+
+
+def sampled_diagnostic(public, jobs):
+    lock = read(public / "locked.json")
+    candidates = read(public / "candidates.json")
+    pool = read(public / "opponents.json")
+    for fixed, out in [(False, "sampled-mirrors"), (True, "sampled-fixed")]:
+        models = {
+            k: (v, ALL_TEAMS) for k, v in candidates.items() if (k == lock["fixed_team"]) == fixed
+        }
+        matchups(
+            public / out,
+            models,
+            pool,
+            60000000 + 50000 * fixed,
+            240,
+            jobs,
+            fixed_team=fixed,
+            sample_opponent=True,
+        )
 
 
 def screen(root, jobs):
@@ -325,6 +347,7 @@ if __name__ == "__main__":
             "screen",
             "validate",
             "confirm",
+            "sampled",
         ],
     )
     p.add_argument("--runs", type=Path, required=True)
@@ -351,5 +374,7 @@ if __name__ == "__main__":
         screen(root, a.jobs)
     elif a.stage == "validate":
         validate(root, a.jobs)
+    elif a.stage == "sampled":
+        sampled_diagnostic(a.public.resolve(), a.jobs)
     else:
         confirm(root, a.public.resolve(), a.jobs)

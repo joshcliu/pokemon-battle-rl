@@ -32,17 +32,34 @@ def actor(key, rng):
     return Heuristic(key, rng)
 
 
-def matches(condition, learner, team, opponent, other_team, base, start, count, replay_dir=None):
+def matches(
+    condition,
+    learner,
+    team,
+    opponent,
+    other_team,
+    base,
+    start,
+    count,
+    replay_dir=None,
+    sample_opponent=False,
+):
     torch.set_num_threads(1)
     texts = [(ROOT / t).read_text() for t in (team, other_team)]
     actors = [
         actor(k, np.random.default_rng(0)) if k.endswith((".pt", ".json")) else None
         for k in (learner, opponent)
     ]
+    if sample_opponent:
+        if not isinstance(actors[1], FrozenActor):
+            raise ValueError("Action sampling requires a frozen neural opponent")
+        actors[1].deterministic = False
     rows = []
     with LocalBattle() as battle:
         for i in range(start, start + count):
             es = base + i
+            if sample_opponent:
+                torch.manual_seed(es)
             sides = ("p1", "p2") if i % 2 == 0 else ("p2", "p1")
             players = {}
             for pos, (side, key) in enumerate(zip(sides, (learner, opponent), strict=True)):
