@@ -12,6 +12,8 @@ four reused mixture checkpoints, and prepared the per-seed analysis and figure.
 
 Codex sourced, validated and split the published tournament rosters, implemented per-battle learner team sampling, ran the roster-transfer study, and prepared its results. A held-out integration check exposed Shadow Tag’s private re-selection request. Codex updated the simulator bridge and added a regression test for that turn.
 
+Codex reconstructed the opponent study’s early learning curves and paired setup replays on Sketch5, computed win-rate intervals, reviewed divergent games, and tested first-turn action swaps.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

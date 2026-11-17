@@ -1,0 +1,9 @@
+roster,damage_mix_outcomes,battles
+balance,loss/loss,45
+balance,loss/win,35
+balance,win/loss,62
+balance,win/win,82
+sun,loss/loss,9
+sun,loss/win,12
+sun,win/loss,26
+sun,win/win,129

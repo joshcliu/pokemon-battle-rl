@@ -12,6 +12,8 @@ Damage-bot training led the mix by 10.25 percentage points and switching-bot tra
 
 ![Setup-bot win rates for four training seeds](setup-win-rates.png)
 
+The [learning curves, confidence intervals and matched replay analysis](setup-analysis/README.md) trace this gap from 16,384 to 262,144 decisions and examine all 88 battles where the specialist won and the mix lost.
+
 ## Paired differences against setup
 
 | Comparison | Seed 2 | Seed 3 | Seed 4 | Seed 5 | Mean difference |
