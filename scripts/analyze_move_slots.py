@@ -2,6 +2,7 @@
 
 import argparse
 import hashlib
+import os
 from collections import Counter, defaultdict
 from pathlib import Path
 from statistics import mean
@@ -371,6 +372,66 @@ def analyze(root, out, budgets):
             for key, rows in sorted(by_team.items())
         ],
     )
+    if len(budgets) == 2:
+        plot(out, seeded)
+
+
+def plot(out, seeded):
+    os.environ.setdefault("MPLCONFIGDIR", str(out.parent / ".mpl-cache"))
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(1, 3, figsize=(11, 3.8), layout="constrained")
+    panels = (
+        ("train", "win_pct", "15 familiar teams", "Unaided win rate (%)"),
+        ("test", "win_pct", "7 held-out teams", "Unaided win rate (%)"),
+        ("test", "retarget_gain_pp", "7 held-out teams", "Gain from target rule (points)"),
+    )
+    for ax, (scope, metric, title, ylabel) in zip(axes, panels, strict=True):
+        for mode, label, color in (
+            ("fixed", "Fixed", "#17657a"),
+            ("shuffled", "Shuffled", "#ad542c"),
+        ):
+            lines = []
+            for s in SEEDS:
+                rows = sorted(
+                    (
+                        r
+                        for r in seeded
+                        if (r["split"], r["seed"], r["training"]) == (scope, s, mode)
+                    ),
+                    key=lambda r: r["steps"],
+                )
+                y = [r[metric] for r in rows]
+                lines.append(y)
+                ax.plot([0, 1], y, color=color, alpha=0.22, lw=1)
+            ax.plot(
+                [0, 1],
+                [mean(ys) for ys in zip(*lines, strict=True)],
+                color=color,
+                marker="o",
+                lw=2.5,
+                label=label,
+            )
+        ax.set(
+            xticks=[0, 1],
+            xticklabels=["65,536", "262,144"],
+            xlabel="PPO decisions",
+            ylabel=ylabel,
+            title=title,
+            xlim=(-0.12, 1.12),
+        )
+        ax.spines[["top", "right"]].set_visible(False)
+    low = min(ax.get_ylim()[0] for ax in axes[:2])
+    high = max(ax.get_ylim()[1] for ax in axes[:2])
+    for ax in axes[:2]:
+        ax.set_ylim(max(0, low - 1), min(100, high + 1))
+    axes[0].legend(frameon=False)
+    axes[2].axhline(0, color="#888", ls="--", lw=1)
+    fig.savefig(out / "move-slots.png", dpi=180)
+    plt.close(fig)
 
 
 if __name__ == "__main__":
