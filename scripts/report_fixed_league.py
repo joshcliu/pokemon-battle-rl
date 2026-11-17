@@ -14,7 +14,7 @@ import torch
 from analyze_long_rewards import write_csv
 from fixed_league import FAMILIES
 from screen_league import lock
-from train_fixed_league import ROOT, ROSTERS
+from train_fixed_league import ARCHIVE, ROOT, ROSTERS
 
 from pokemon_rl.experiments import wilson
 
@@ -121,7 +121,11 @@ def report(root, valid, final, out, public):
             assert set(expected).isdisjoint(int(r["seed"]) for r in games(directory))
     # Confirm physical simulator seeds were unused by training or any development game.
     actual_seeds = set(expected)
-    for log in root.glob("*/*/train/episodes.jsonl"):
+    logs = [
+        *root.glob("*/*/train/episodes.jsonl"),
+        *ARCHIVE.glob("seed-*/fixed/train/episodes.jsonl"),
+    ]
+    for log in logs:
         with log.open() as f:
             assert actual_seeds.isdisjoint(
                 json.loads(line)["simulator_seed"] for line in f if line.endswith("\n")
@@ -180,7 +184,61 @@ def report(root, valid, final, out, public):
     (out / "pool.json").write_text(json.dumps(league, indent=2) + "\n")
     (out / "candidate.json").write_text(json.dumps({spec["label"]: learner}, indent=2) + "\n")
     write_csv(out / "weights.csv", provenance)
+    plot(out, rows, games(root / "calibration"))
     print(json.dumps(summaries, indent=2))
+
+
+def plot(out, rows, calibration):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(1, 2, figsize=(8.5, 3.6), layout="constrained")
+    teams = [Path(t).stem for t in ROSTERS]
+    for ax, data, win, title in [
+        (axes[0], rows, "win", "Trained policy vs. league"),
+        (
+            axes[1],
+            [r for r in calibration if r["candidate"] == "damage"],
+            "loss",
+            "League vs. damage bot, mirror teams",
+        ),
+    ]:
+        mat = np.array(
+            [
+                [
+                    100
+                    * np.mean(
+                        [
+                            r["outcome"] == win
+                            for r in data
+                            if r["roster"] == team and r["family"] == family
+                        ]
+                    )
+                    for family in FAMILIES
+                ]
+                for team in teams
+            ]
+        )
+        ax.imshow(mat, cmap="Blues", vmin=0, vmax=100, aspect="auto")
+        for (i, j), v in np.ndenumerate(mat):
+            ax.text(
+                j, i, f"{v:.1f}%", ha="center", va="center", color="white" if v > 55 else "#16283b"
+            )
+        ax.set(
+            xticks=range(3),
+            xticklabels=["Damage", "Tactical", "PPO"],
+            yticks=range(4),
+            yticklabels=teams,
+            title=title,
+            xlabel="League opponent family",
+        )
+        ax.tick_params(length=0)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+    fig.savefig(out / "league.png", dpi=180)
+    plt.close(fig)
 
 
 if __name__ == "__main__":
