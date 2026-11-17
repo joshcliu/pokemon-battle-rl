@@ -32,7 +32,7 @@ def actor(key, rng):
     return Heuristic(key, rng)
 
 
-def matches(condition, learner, team, opponent, other_team, base, start, count):
+def matches(condition, learner, team, opponent, other_team, base, start, count, replay_dir=None):
     torch.set_num_threads(1)
     texts = [(ROOT / t).read_text() for t in (team, other_team)]
     actors = [
@@ -66,6 +66,8 @@ def matches(condition, learner, team, opponent, other_team, base, start, count):
                 battle.step(choices)
                 requests += 1
             own = "Learner" if sides[0] == "p1" else "Opponent"
+            if replay_dir is not None:
+                battle.save(replay_dir, f"{es}-{sides[0]}")
             outcome = (
                 "cutoff"
                 if not battle.ended
