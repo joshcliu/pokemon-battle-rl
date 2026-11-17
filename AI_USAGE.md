@@ -22,6 +22,8 @@ Codex configured the wider PPO agents, implemented and tested full-battle attent
 
 Codex reconstructed intermediate full-history checkpoints, replayed the held-out games on Sketch5, tested target, move-order and visible-history changes, and drafted the action analysis with examples from simulator logs.
 
+Codex implemented per-battle move-slot shuffling and its simulator regression test, ran the paired full-history PPO training and evaluations on Sketch5, and prepared the familiar-team, transfer and unaided-targeting analyses.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

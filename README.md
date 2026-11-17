@@ -95,6 +95,11 @@ follows the full-battle policy through wins and losses, measures transfer at thr
 training checkpoints, and tests how targets, move order and available history
 change the outcomes of the same 5,600 held-out games.
 
+The [move-slot training study](results/sketch5-move-slots/README.md) compares
+fixed and independently shuffled move slots at 65,536 and 262,144 PPO decisions.
+It reports unaided wins, move-order sensitivity and targeting on all 15 familiar
+and seven held-out learner teams.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh
