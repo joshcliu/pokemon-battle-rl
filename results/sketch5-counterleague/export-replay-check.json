@@ -1,0 +1,16 @@
+{
+  "matching_games": {
+    "confirmation": 8000,
+    "fixed-confirmation": 8000
+  },
+  "matching_fields": [
+    "candidate",
+    "team",
+    "opponent_team",
+    "seed",
+    "side",
+    "visible_leads",
+    "outcome",
+    "turn"
+  ]
+}

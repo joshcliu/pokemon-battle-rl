@@ -1,0 +1,13 @@
+candidate,roster,family,battles,wins,losses,ties,cutoffs,win_pct
+adapted,MC463,damage,400,297,103,0,0,74.25
+adapted,MC463,specialist,400,335,65,0,0,83.75
+adapted,MC463,tactical,400,212,188,0,0,53.0
+adapted,MC751,damage,400,61,339,0,0,15.25
+adapted,MC751,specialist,400,5,395,0,0,1.25
+adapted,MC751,tactical,400,6,394,0,0,1.5
+adapted,balance,damage,400,400,0,0,0,100.0
+adapted,balance,specialist,400,400,0,0,0,100.0
+adapted,balance,tactical,400,399,1,0,0,99.75
+adapted,sun,damage,400,18,382,0,0,4.5
+adapted,sun,specialist,400,293,107,0,0,73.25
+adapted,sun,tactical,400,23,377,0,0,5.75

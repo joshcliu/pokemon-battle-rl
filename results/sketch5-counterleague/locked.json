@@ -1,0 +1,61 @@
+{
+  "primary": "opening-router",
+  "single": "shared-367-65536",
+  "fixed_team": "fixed-379-65536",
+  "fixed_primary": "fixed-opening-router",
+  "candidates": {
+    "opening-router": "runs/sketch5-counterleague-v1/counter-validation-router.json",
+    "shared-367-65536": "runs/sketch5-counterleague-v1/shared/367/train/checkpoint-65536.pt",
+    "fixed-opening-router": "runs/sketch5-counterleague-v1/fixed-validation-router.json",
+    "fixed-379-65536": "runs/sketch5-counterleague-v1/fixed-counter/379/train/checkpoint-65536.pt"
+  },
+  "pool": {
+    "teams/reg-mc-regionals/MC463.txt": [
+      "runs/sketch5-counterleague-v1/adapt/297/train/checkpoint-65536.pt"
+    ],
+    "teams/reg-mc-regionals/MC646.txt": [
+      "runs/sketch5-counterleague-v1/adapt/297/train/checkpoint-65536.pt"
+    ],
+    "teams/reg-mc-regionals/MC751.txt": [
+      "runs/sketch5-counterleague-v1/adapt/297/train/checkpoint-65536.pt"
+    ],
+    "teams/reg-mc-regionals/MC781.txt": [
+      "runs/sketch5-counterleague-v1/adapt/297/train/checkpoint-65536.pt"
+    ],
+    "teams/reg-mc-regionals/MC461.txt": [
+      "results/sketch5-fixed-league/weights/expert-4.pt"
+    ]
+  },
+  "sha256": {
+    "results/sketch5-fixed-league/weights/expert-4.pt": "6e5a00ba994721c23afcb3100ab2277601dab688d097fbe15ab2874bbbb01bad",
+    "runs/sketch5-counterleague-v1/adapt/297/train/checkpoint-65536.pt": "b89fd99e43dad9906697598e9f275fc68c07a0a2608a8ffc5e634bfb16dc2c57",
+    "runs/sketch5-counterleague-v1/counter-validation-router.json": "e93a361ec808c40c076526795cf9e9b234ac565851d255f9a098a1fa1c8126cf",
+    "runs/sketch5-counterleague-v1/counter/MC461-337/train/checkpoint-16384.pt": "3b03c516c0fd102be1f70101abdff3cfe8bd91f9bff14e005301e92deabf7013",
+    "runs/sketch5-counterleague-v1/counter/MC461-349/train/checkpoint-16384.pt": "6db52d85b93442ac1dbb60cf14deb6166cefd48b28e667afb37dbe8d2a7ec000",
+    "runs/sketch5-counterleague-v1/counter/MC463-331/train/checkpoint-16384.pt": "5d98f1a65ccd40779d16792a57a57c46c8d1da4c7ca969e586ee349d36331d0e",
+    "runs/sketch5-counterleague-v1/counter/MC646-337/train/checkpoint-16384.pt": "d03aedce15dcb068c5efe978060d313056874a58266b853b67bf1615e85daff8",
+    "runs/sketch5-counterleague-v1/counter/MC751-331/train/checkpoint-16384.pt": "312ea3404286ea50ae42509a70f0c5a827687ce1577de999ba97d9c3616466d0",
+    "runs/sketch5-counterleague-v1/counter/MC781-337/train/checkpoint-32768.pt": "77be06221201586f3e766aeee275dcdc415f7323e744cf039759a30620666105",
+    "runs/sketch5-counterleague-v1/fixed-counter/373/train/checkpoint-32768.pt": "bf98f00a24c3b11c454d654c85ae0134b9db44870ceb5eda2bebf40bf77a77af",
+    "runs/sketch5-counterleague-v1/fixed-counter/379/train/checkpoint-65536.pt": "5775d6716c84b9153db668117147f40edf9327a3e5d913bdc7d2cf765a3fa8e8",
+    "runs/sketch5-counterleague-v1/fixed-counter/383/train/checkpoint-32768.pt": "ba4978e2201db6778ff6e90fcb229c5e3a399bbf2f647ec0b7c0888c157d31c7",
+    "runs/sketch5-counterleague-v1/fixed-experts/MC646-409/train/checkpoint-32768.pt": "934aea876f880a4b16edc785ea2ea3acc8b027c74210ed44496965759eac9934",
+    "runs/sketch5-counterleague-v1/fixed-experts/MC781-401/train/checkpoint-16384.pt": "c5ced9937c85e3bbb968fb3bece4dcb6622653d367d23462b0172b35549409a2",
+    "runs/sketch5-counterleague-v1/fixed-validation-router.json": "a8f30944f6f327be0a3ee3db8283c44e3ba3b2b8aee073b12e53215e5febf18e",
+    "runs/sketch5-counterleague-v1/shared/367/train/checkpoint-65536.pt": "a94982126389e950fb9e3dfd00bad5d9c6fc2b5453e099c32f5b2ce48f55df38",
+    "teams/reg-mc-regionals/MC461.txt": "f6ac19ab5c04ad0da9eecdb4d280079da2f70aba62fd6b1c739d93d5faee42d7",
+    "teams/reg-mc-regionals/MC463.txt": "89b023d9f8ef223aea83391e8e2e8202cf7196acf99519c3b02eca8e97d59337",
+    "teams/reg-mc-regionals/MC646.txt": "86e75be51410f58697c27974f1fa5e01f36b4549311a02c4937f3d3346272cc2",
+    "teams/reg-mc-regionals/MC751.txt": "d6fbce13695837381923c02691d5601ebcbeb0b0f9a803ee9b9a2c41f6f3b384",
+    "teams/reg-mc-regionals/MC781.txt": "3f510ba17430a10f5ac5977f55e8bf863fb481440cf23f30c4f660c3e5a7f743"
+  },
+  "games_per_team": 800,
+  "base": 52100000,
+  "team_order": [
+    "teams/reg-mc-regionals/MC463.txt",
+    "teams/reg-mc-regionals/MC646.txt",
+    "teams/reg-mc-regionals/MC751.txt",
+    "teams/reg-mc-regionals/MC781.txt",
+    "teams/reg-mc-regionals/MC461.txt"
+  ]
+}

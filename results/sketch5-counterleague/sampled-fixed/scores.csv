@@ -1,0 +1,11 @@
+candidate,roster,family,battles,wins,losses,ties,cutoffs,win_pct
+fixed-379-65536,MC461,fixed,240,202,38,0,0,84.16666666666667
+fixed-379-65536,MC463,fixed,240,205,35,0,0,85.41666666666667
+fixed-379-65536,MC646,fixed,240,103,137,0,0,42.916666666666664
+fixed-379-65536,MC751,fixed,240,206,34,0,0,85.83333333333333
+fixed-379-65536,MC781,fixed,240,86,154,0,0,35.833333333333336
+fixed-opening-router,MC461,fixed,240,213,27,0,0,88.75
+fixed-opening-router,MC463,fixed,240,230,10,0,0,95.83333333333333
+fixed-opening-router,MC646,fixed,240,124,116,0,0,51.666666666666664
+fixed-opening-router,MC751,fixed,240,238,2,0,0,99.16666666666667
+fixed-opening-router,MC781,fixed,240,231,9,0,0,96.25

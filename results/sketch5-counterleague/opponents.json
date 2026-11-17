@@ -1,0 +1,17 @@
+{
+  "teams/reg-mc-regionals/MC463.txt": [
+    "results/sketch5-counterleague/weights/defender.pt"
+  ],
+  "teams/reg-mc-regionals/MC646.txt": [
+    "results/sketch5-counterleague/weights/defender.pt"
+  ],
+  "teams/reg-mc-regionals/MC751.txt": [
+    "results/sketch5-counterleague/weights/defender.pt"
+  ],
+  "teams/reg-mc-regionals/MC781.txt": [
+    "results/sketch5-counterleague/weights/defender.pt"
+  ],
+  "teams/reg-mc-regionals/MC461.txt": [
+    "results/sketch5-fixed-league/weights/expert-4.pt"
+  ]
+}

@@ -1,0 +1,11 @@
+candidate,roster,family,battles,wins,losses,ties,cutoffs,win_pct
+opening-router,MC461,mirror,800,792,8,0,0,99.0
+opening-router,MC463,mirror,800,800,0,0,0,100.0
+opening-router,MC646,mirror,800,792,8,0,0,99.0
+opening-router,MC751,mirror,800,800,0,0,0,100.0
+opening-router,MC781,mirror,800,797,3,0,0,99.625
+shared-367-65536,MC461,mirror,800,731,69,0,0,91.375
+shared-367-65536,MC463,mirror,800,788,12,0,0,98.5
+shared-367-65536,MC646,mirror,800,701,99,0,0,87.625
+shared-367-65536,MC751,mirror,800,800,0,0,0,100.0
+shared-367-65536,MC781,mirror,800,766,34,0,0,95.75

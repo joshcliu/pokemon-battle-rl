@@ -105,6 +105,11 @@ a full-history PPO Transformer playing MC461 won 99.08% across twelve calibrated
 bot–roster matchups. The report includes both playable policies, opponent weights,
 and all 4,800 fresh-seed results for each policy.
 
+The [counter-training experiment](results/sketch5-counterleague/README.md) fine-tunes that
+Transformer on four new teams and trains PPO opponents against its frozen weights.
+A single challenger won 94.65% in team mirrors. A second single network kept MC461
+against every opponent and won 91.60%. Each result covers 4,000 fresh battles.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh

@@ -1,0 +1,13 @@
+{
+  "label": "adapt-297-65536",
+  "model": "runs/sketch5-counterleague-v1/adapt/297/train/checkpoint-65536.pt",
+  "sha256": "b89fd99e43dad9906697598e9f275fc68c07a0a2608a8ffc5e634bfb16dc2c57",
+  "original": "results/sketch5-fixed-league/weights/expert-4.pt",
+  "original_sha256": "6e5a00ba994721c23afcb3100ab2277601dab688d097fbe15ab2874bbbb01bad",
+  "training_teams": [
+    "teams/reg-mc-regionals/MC463.txt",
+    "teams/reg-mc-regionals/MC646.txt",
+    "teams/reg-mc-regionals/MC751.txt",
+    "teams/reg-mc-regionals/MC781.txt"
+  ]
+}

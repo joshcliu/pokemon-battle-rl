@@ -1,0 +1,10 @@
+{
+  "routes": {
+    "excadrill+tyranitar": "results/sketch5-counterleague/weights/counter-11.pt",
+    "farigiraf+pelipper": "results/sketch5-counterleague/weights/counter-10.pt",
+    "kommoo+meowsticf": "results/sketch5-counterleague/weights/counter-1.pt",
+    "raichu+rillaboom": "results/sketch5-counterleague/weights/counter-9.pt",
+    "sneasler+whimsicott": "results/sketch5-counterleague/weights/counter-7.pt"
+  },
+  "default": "results/sketch5-counterleague/weights/counter-1.pt"
+}
