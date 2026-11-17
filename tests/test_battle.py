@@ -127,6 +127,40 @@ def test_changing_learner_pool_preserves_opponent_schedule_and_uses_selected_tea
         varied.close()
 
 
+def test_shuffle_only_changes_learner_move_positions_and_preserves_episode_schedule():
+    pool = ["teams/balance.txt", "teams/sun.txt"]
+    fixed = BattleEnv(learner_teams=pool, opponent="mixture")
+    shuffled = BattleEnv(learner_teams=pool, opponent="mixture", shuffle_move_slots=True)
+    try:
+        layouts = []
+        for seed in (12, None, None, 12):
+            _, a = fixed.reset(seed=seed)
+            _, b = shuffled.reset(seed=seed)
+            assert a == b
+            assert {o.message for o in fixed.legal().values()} == {
+                o.message for o in shuffled.legal().values()
+            }
+            for side in ("p1", "p2"):
+                before = [
+                    (m.species, list(m.moves)) for m in fixed.battle.players[side].team.values()
+                ]
+                after = [
+                    (m.species, list(m.moves)) for m in shuffled.battle.players[side].team.values()
+                ]
+                if side == "p2":
+                    assert before == after
+                else:
+                    assert before != after
+                    assert [(s, sorted(ms)) for s, ms in before] == [
+                        (s, sorted(ms)) for s, ms in after
+                    ]
+                    layouts.append(after)
+        assert layouts[0] == layouts[-1]
+    finally:
+        fixed.close()
+        shuffled.close()
+
+
 def test_hidden_shadow_tag_reissues_only_trapped_players_choice():
     env = BattleEnv(team="teams/reg-mc-regionals/MC407.txt")
     try:

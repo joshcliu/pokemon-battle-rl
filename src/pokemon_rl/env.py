@@ -2,12 +2,25 @@
 
 from __future__ import annotations
 
+from itertools import groupby
+
 import gymnasium as gym
 import numpy as np
 
 from .battle import ACTION_SIZE, DEFAULT_FORMAT, ROOT, LocalBattle
 from .features import OBSERVATION_SIZE, observation
 from .opponents import Heuristic
+
+
+def shuffled_moves(team: str, episode_seed: int) -> str:
+    rng = np.random.default_rng(np.random.SeedSequence([episode_seed, 31]))
+    lines = []
+    for is_moves, block in groupby(team.splitlines(), key=lambda line: line.startswith("- ")):
+        group = list(block)
+        if is_moves:
+            rng.shuffle(group)
+        lines.extend(group)
+    return "\n".join(lines) + "\n"
 
 
 class BattleEnv(gym.Env):
@@ -22,9 +35,11 @@ class BattleEnv(gym.Env):
         max_turns=200,
         max_decisions=600,
         learner_teams=None,
+        shuffle_move_slots=False,
     ):
         super().__init__()
         self.style = opponent
+        self.shuffle_move_slots = shuffle_move_slots
         self.learner_paths = list(learner_teams or [team])
         self.learner_teams = [(ROOT / p).read_text() for p in self.learner_paths]
         self.opponent_teams = [
@@ -52,11 +67,10 @@ class BattleEnv(gym.Env):
         if len(self.learner_teams) > 1:
             learner_rng = np.random.default_rng(np.random.SeedSequence([episode_seed, 23]))
             self.learner_index = int(learner_rng.integers(len(self.learner_teams)))
-        self.battle.reset(
-            episode_seed,
-            self.learner_teams[self.learner_index],
-            self.opponent_teams[self.team_index],
-        )
+        learner = self.learner_teams[self.learner_index]
+        if self.shuffle_move_slots:
+            learner = shuffled_moves(learner, episode_seed)
+        self.battle.reset(episode_seed, learner, self.opponent_teams[self.team_index])
         self.decisions, self.finished = 0, False
         obs = observation(self.battle.players["p1"])
         return obs, self._info()

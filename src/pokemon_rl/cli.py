@@ -15,6 +15,12 @@ def main():
         )
         p.add_argument("--team", default="teams/sun.txt")
         p.add_argument(
+            "--shuffle-move-slots",
+            action="store_true",
+            default=argparse.SUPPRESS,
+            help="Independently permute each learner Pokémon's moves once per battle",
+        )
+        p.add_argument(
             "--opponent-teams", nargs="+", default=["teams/balance.txt", "teams/sun.txt"]
         )
         p.add_argument("--format", default=DEFAULT_FORMAT)
