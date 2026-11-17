@@ -103,19 +103,31 @@ def report(root, valid, final, out, public):
                     t,
                     spec["pool"][t][fi],
                 )
-    assert len(rows) == len(expected) == len({int(r["seed"]) for r in rows})
-    assert all(
-        expected[int(r["seed"])]
-        == tuple(r[k] for k in ("roster", "family", "side", "opponent_team", "opponent"))
-        for r in rows
+    single = json.loads((valid / "locked-single.json").read_text())
+    assert single == lock(
+        root,
+        single["model"],
+        single["label"],
+        spec["team"],
+        spec["validation"],
+        spec["confirmation_base"],
     )
-    assert all(
-        r["candidate"] == spec["label"]
-        and r["learner"] == spec["model"]
-        and r["team"] == spec["team"]
-        for r in rows
-    )
-    assert all(r["outcome"] in ("win", "loss", "cutoff", "tie") for r in rows)
+    single_dir = final.with_name(final.name + "-single")
+    single_rows = games(single_dir)
+    for matchups, entry in ((rows, spec), (single_rows, single)):
+        assert len(matchups) == len(expected) == len({int(r["seed"]) for r in matchups})
+        assert all(
+            expected[int(r["seed"])]
+            == tuple(r[k] for k in ("roster", "family", "side", "opponent_team", "opponent"))
+            for r in matchups
+        )
+        assert all(
+            r["candidate"] == entry["label"]
+            and r["learner"] == entry["model"]
+            and r["team"] == entry["team"]
+            for r in matchups
+        )
+        assert all(r["outcome"] in ("win", "loss", "cutoff", "tie") for r in matchups)
     for directory in [root / "selection", root / "calibration", valid, *root.glob("screen-*")]:
         if (directory / "games.csv.gz").exists():
             assert set(expected).isdisjoint(int(r["seed"]) for r in games(directory))
@@ -134,12 +146,14 @@ def report(root, valid, final, out, public):
     assets = out / "weights"
     assets.mkdir()
     summaries = [{"group": "all", **interval(rows)}]
+    summaries.append({"group": "single-network", **interval(single_rows)})
     for field in ["family", "roster"]:
         for val in sorted({r[field] for r in rows}):
             summaries.append({"group": val, **interval([r for r in rows if r[field] == val])})
     write_csv(out / "confirmation-summary.csv", summaries)
     for directory, stem in [
         (final, "confirmation"),
+        (single_dir, "single"),
         (valid, "validation"),
         (root / "calibration", "calibration"),
         (root / "selection", "rival-selection"),
@@ -148,6 +162,7 @@ def report(root, valid, final, out, public):
         shutil.copyfile(directory / "scores.csv", out / (stem + "-scores.csv"))
         shutil.copyfile(directory / "games.csv.gz", out / (stem + "-games.csv.gz"))
     shutil.copyfile(valid / "locked.json", out / "locked.json")
+    shutil.copyfile(valid / "locked-single.json", out / "locked-single.json")
     shutil.copyfile(valid / "models.json", out / "validation-models.json")
     all_screen = []
     for directory in sorted(root.glob("screen-*")):
@@ -176,6 +191,12 @@ def report(root, valid, final, out, public):
         learner = str(public / "policy.json")
     else:
         learner = exported[model]
+    if single["model"] not in exported:
+        provenance.append(export_weights(single["model"], assets / "single.pt"))
+        exported[single["model"]] = str(public / "weights/single.pt")
+    (out / "single.json").write_text(
+        json.dumps({single["label"]: exported[single["model"]]}, indent=2) + "\n"
+    )
     league = {}
     for t, entries in spec["pool"].items():
         dest = f"rival-{Path(t).stem}.pt"
