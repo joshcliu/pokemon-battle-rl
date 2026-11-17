@@ -228,7 +228,7 @@ def analyze(root, out, budgets):
                                     steps == BUDGETS[0]
                                     and mode == "fixed"
                                     and scope == "test"
-                                    and test != "native"
+                                    and test in ("rotate", "retarget")
                                 ):
                                     old = prior[seed, Path(roster).stem, *key, test]
                                     assert (r["outcome"], r["turns"]) == (
@@ -278,6 +278,7 @@ def analyze(root, out, budgets):
                             "seed": seed,
                             **base,
                             "rotated_win_pct": rotated,
+                            "random_order_win_pct": score(games["random"])["win_pct"],
                             "rotation_change_pp": rotated - base["win_pct"],
                             "retarget_win_pct": retarget,
                             "retarget_gain_pp": retarget - base["win_pct"],
@@ -294,6 +295,7 @@ def analyze(root, out, budgets):
     metrics = (
         "win_pct",
         "rotated_win_pct",
+        "random_order_win_pct",
         "rotation_change_pp",
         "retarget_win_pct",
         "retarget_gain_pp",

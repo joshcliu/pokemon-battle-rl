@@ -19,7 +19,7 @@ from pokemon_rl.battle import ACTION_SIZE
 from pokemon_rl.env import BattleEnv
 from pokemon_rl.history import FullBattleHistory, make_policy
 
-TESTS = ("native", "rotate", "retarget")
+TESTS = ("native", "rotate", "random", "retarget")
 
 
 def checkpoint(root, seed, mode, steps):
@@ -29,11 +29,12 @@ def checkpoint(root, seed, mode, steps):
 
 
 def eval_path(root, seed, mode, steps, roster, test):
-    return root / "eval" / str(steps) / mode / f"seed-{seed}" / Path(roster).stem / f"{test}.csv"
+    directory = "eval-random" if test == "random" else "eval"
+    return root / directory / str(steps) / mode / f"seed-{seed}" / Path(roster).stem / f"{test}.csv"
 
 
 @torch.inference_mode()
-def evaluate(root, seed, mode, steps, roster, scope):
+def evaluate(root, seed, mode, steps, roster, scope, tests):
     torch.set_num_threads(1)
     saved = torch.load(checkpoint(root, seed, mode, steps), weights_only=True, map_location="cpu")
     assert (saved["steps"], saved["seed"], saved["transformer_chunks"], saved["hidden_size"]) == (
@@ -45,7 +46,7 @@ def evaluate(root, seed, mode, steps, roster, scope):
     model = make_policy(saved["obs_size"], saved["hidden_size"], "full")
     model.load_state_dict(saved["policy"])
     model.eval()
-    for test in TESTS:
+    for test in tests:
         dest = eval_path(root, seed, mode, steps, roster, test)
         if dest.is_file():
             with dest.open() as f:
@@ -54,7 +55,7 @@ def evaluate(root, seed, mode, steps, roster, scope):
         dest.parent.mkdir(parents=True, exist_ok=True)
         rows = []
         for style in STYLES:
-            base = BattleEnv(opponent=style, team=roster)
+            base = BattleEnv(opponent=style, team=roster, shuffle_move_slots=test == "random")
             if test == "rotate":
                 base.learner_teams = [rotate(t) for t in base.learner_teams]
             env = FullBattleHistory(base)
@@ -135,10 +136,13 @@ if __name__ == "__main__":
     p.add_argument("--steps", choices=BUDGETS, type=int, required=True)
     p.add_argument("--modes", choices=MODES, nargs="+", default=MODES)
     p.add_argument("--jobs", type=int, default=24)
+    p.add_argument("--tests", choices=TESTS, nargs="+", default=TESTS)
     args = p.parse_args()
     with ProcessPoolExecutor(max_workers=args.jobs) as pool:
         jobs = [
-            pool.submit(evaluate, args.runs.resolve(), seed, mode, args.steps, roster, scope)
+            pool.submit(
+                evaluate, args.runs.resolve(), seed, mode, args.steps, roster, scope, args.tests
+            )
             for seed in SEEDS
             for mode in args.modes
             for scope, teams in split().items()
