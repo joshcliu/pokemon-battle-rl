@@ -31,6 +31,7 @@ def make_env(args, opponent=None, chunks=None):
         learner_teams=getattr(args, "learner_teams", None),
         shuffle_move_slots=getattr(args, "shuffle_move_slots", False),
         opponent_teams=args.opponent_teams,
+        opponent_pool=getattr(args, "opponent_pool", None),
         battle_format=args.format,
         max_turns=args.max_turns,
     )
@@ -73,6 +74,8 @@ def prepare_run(args):
         },
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    if getattr(args, "opponent_pool", None):
+        (out / "opponent-pool.json").write_bytes(Path(args.opponent_pool).read_bytes())
     return out
 
 

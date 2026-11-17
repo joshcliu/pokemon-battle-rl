@@ -36,16 +36,20 @@ class BattleEnv(gym.Env):
         max_decisions=600,
         learner_teams=None,
         shuffle_move_slots=False,
+        opponent_pool=None,
     ):
         super().__init__()
         self.style = opponent
         self.shuffle_move_slots = shuffle_move_slots
         self.learner_paths = list(learner_teams or [team])
         self.learner_teams = [(ROOT / p).read_text() for p in self.learner_paths]
-        self.opponent_teams = [
-            (ROOT / p).read_text()
-            for p in (opponent_teams or ["teams/balance.txt", "teams/sun.txt"])
-        ]
+        self.opponent_paths = list(opponent_teams or ["teams/balance.txt", "teams/sun.txt"])
+        self.opponent_teams = [(ROOT / p).read_text() for p in self.opponent_paths]
+        self.pool = None
+        if opponent_pool:
+            from .league import OpponentPool
+
+            self.pool = OpponentPool(opponent_pool, self.opponent_paths)
         self.battle = LocalBattle(battle_format)
         self.max_turns, self.max_decisions = max_turns, max_decisions
         self.action_space = gym.spaces.MultiDiscrete([ACTION_SIZE, ACTION_SIZE])
@@ -61,7 +65,11 @@ class BattleEnv(gym.Env):
         self.team_index = int(self.np_random.integers(len(self.opponent_teams)))
         # Opponent decisions must not change the next episode's team/seed schedule.
         opponent_rng = np.random.default_rng(np.random.SeedSequence([episode_seed, 19]))
-        self.opponent = Heuristic(self.style, opponent_rng)
+        self.opponent = (
+            self.pool.draw(self.opponent_paths[self.team_index], opponent_rng)
+            if self.pool
+            else Heuristic(self.style, opponent_rng)
+        )
         self.episode_seed = episode_seed
         self.learner_index = 0
         if len(self.learner_teams) > 1:

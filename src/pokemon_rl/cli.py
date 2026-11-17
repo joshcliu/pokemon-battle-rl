@@ -14,6 +14,12 @@ def main():
             "--run-dir", required=True, help="New directory; existing runs are never overwritten"
         )
         p.add_argument("--team", default="teams/sun.txt")
+        if command == "train":
+            p.add_argument(
+                "--opponent-pool",
+                default=argparse.SUPPRESS,
+                help="JSON map from opponent team paths to frozen policy names or checkpoints",
+            )
         p.add_argument(
             "--shuffle-move-slots",
             action="store_true",
