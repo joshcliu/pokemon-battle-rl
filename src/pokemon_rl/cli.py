@@ -60,6 +60,11 @@ def main():
             p.add_argument("--batch-size", type=int, default=64)
             p.add_argument("--epochs", type=int, default=4)
             p.add_argument("--hidden-size", type=int, default=128)
+            p.add_argument(
+                "--transformer-chunks",
+                type=int,
+                help="Use a causal Transformer over this many same-battle learner decisions",
+            )
             p.add_argument("--learning-rate", type=float, default=3e-4)
             p.add_argument("--gamma", type=float, default=0.99)
             p.add_argument("--gae-lambda", type=float, default=0.95)
@@ -68,6 +73,10 @@ def main():
             p.add_argument("--value-coef", type=float, default=0.5)
             p.add_argument("--device", default="cpu", choices=["cpu", "cuda", "mps"])
     args = parser.parse_args()
+    if getattr(args, "transformer_chunks", None) is not None and (
+        args.transformer_chunks < 1 or args.hidden_size < 4 or args.hidden_size % 4
+    ):
+        parser.error("Transformer policies need positive chunks and a width divisible by four")
     for name in (
         "steps",
         "battles",

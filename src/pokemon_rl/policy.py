@@ -8,13 +8,17 @@ from .battle import ACTION_SIZE
 
 
 class Policy(nn.Module):
-    def __init__(self, obs_size, hidden_size=128):
+    def __init__(self, obs_size, hidden_size=128, *, encoder=None):
         super().__init__()
-        self.encoder = nn.Sequential(
-            nn.Linear(obs_size, hidden_size),
-            nn.Tanh(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.Tanh(),
+        self.encoder = (
+            encoder
+            if encoder is not None
+            else nn.Sequential(
+                nn.Linear(obs_size, hidden_size),
+                nn.Tanh(),
+                nn.Linear(hidden_size, hidden_size),
+                nn.Tanh(),
+            )
         )
         self.first = nn.Linear(hidden_size, ACTION_SIZE)
         self.first_embedding = nn.Embedding(ACTION_SIZE, 32)

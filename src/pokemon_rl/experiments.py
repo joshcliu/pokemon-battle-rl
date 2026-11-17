@@ -18,12 +18,13 @@ import torch
 
 from .battle import ROOT
 from .env import BattleEnv
+from .history import DecisionWindow, make_policy
 from .opponents import Heuristic
-from .policy import Policy, advantages
+from .policy import advantages
 from .rewards import RewardEnv
 
 
-def make_env(args, opponent=None):
+def make_env(args, opponent=None, chunks=None):
     options = dict(
         opponent=opponent or args.opponent,
         team=args.team,
@@ -33,8 +34,10 @@ def make_env(args, opponent=None):
         max_turns=args.max_turns,
     )
     if args.command == "train" and getattr(args, "reward_mode", "win-loss") != "win-loss":
-        return RewardEnv(mode=args.reward_mode, gamma=args.gamma, **options)
-    return BattleEnv(**options)
+        env = RewardEnv(mode=args.reward_mode, gamma=args.gamma, **options)
+    else:
+        env = BattleEnv(**options)
+    return DecisionWindow(env, chunks) if chunks else env
 
 
 def prepare_run(args):
@@ -109,11 +112,13 @@ def run_battles(args):
     torch.manual_seed(args.seed)
     out = prepare_run(args)
     model = None
+    chunks = None
     if args.command == "evaluate":
         saved = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
         if saved["format"] != args.format:
             raise ValueError("Evaluation format differs from checkpoint; use the training format")
-        model = Policy(saved["obs_size"], saved["hidden_size"])
+        chunks = saved.get("transformer_chunks")
+        model = make_policy(saved["obs_size"], saved["hidden_size"], chunks)
         model.load_state_dict(saved["policy"])
         model.eval()
     opponents = args.opponents if args.command == "evaluate" else [args.opponent]
@@ -121,7 +126,7 @@ def run_battles(args):
     for opponent in opponents:
         records = []
         start = time.perf_counter()
-        env = make_env(args, opponent)
+        env = make_env(args, opponent, chunks)
         try:
             for i in range(args.battles):
                 # Evaluation ordering must not change a policy's random action stream.
@@ -138,7 +143,7 @@ def run_battles(args):
                         with torch.no_grad():
                             action = model.sample(
                                 torch.from_numpy(obs).unsqueeze(0),
-                                torch.from_numpy(env.joint_mask()).unsqueeze(0),
+                                torch.from_numpy(env.unwrapped.joint_mask()).unsqueeze(0),
                                 deterministic=args.deterministic,
                             )[0][0].numpy()
                     obs, reward, terminated, truncated, info = env.step(action)
@@ -147,13 +152,13 @@ def run_battles(args):
                         records.append(record)
                         append_json(out / f"{opponent}.jsonl", record)
                         if i < args.replays:
-                            env.battle.save(out / "replays", f"{opponent}-{i:04}")
+                            env.unwrapped.battle.save(out / "replays", f"{opponent}-{i:04}")
                         break
                 if (i + 1) % 100 == 0:
                     print(f"{opponent}: {i + 1}/{args.battles} battles", flush=True)
         except Exception as error:
             append_json(out / "errors.jsonl", {"opponent": opponent, "error": str(error)})
-            env.battle.save(out / "failure", opponent)
+            env.unwrapped.battle.save(out / "failure", opponent)
             raise
         finally:
             env.close()
@@ -168,16 +173,20 @@ def train(args):
     np.random.seed(args.seed)
     device = torch.device(args.device)
     out = prepare_run(args)
-    env = make_env(args)
+    chunks = getattr(args, "transformer_chunks", None)
+    env = make_env(args, chunks=chunks)
     start = time.perf_counter()
     episodes = 0
     outcomes = Counter()
     total = 0
     try:
         obs, _ = env.reset(seed=args.seed)
-        model = Policy(len(obs), args.hidden_size).to(device)
+        obs_size = env.unwrapped.observation_space.shape[0]
+        model = make_policy(obs_size, args.hidden_size, chunks).to(device)
         if getattr(args, "init_checkpoint", None):
             source = torch.load(args.init_checkpoint, map_location="cpu", weights_only=True)
+            if source.get("transformer_chunks") != chunks:
+                raise ValueError("Warm-start checkpoint uses a different decision history")
             if (source["format"], source["feature_schema"]) != (args.format, 1):
                 raise ValueError(
                     "Warm-start checkpoint format or feature schema differs from the environment"
@@ -187,7 +196,8 @@ def train(args):
             torch.save(
                 {
                     "policy": model.state_dict(),
-                    "obs_size": len(obs),
+                    "obs_size": obs_size,
+                    "transformer_chunks": chunks,
                     "hidden_size": args.hidden_size,
                     "steps": 0,
                     "seed": args.seed,
@@ -204,7 +214,8 @@ def train(args):
                 tensor = torch.as_tensor(obs, device=device).unsqueeze(0)
                 with torch.no_grad():
                     action, logp, value, masks = model.sample(
-                        tensor, torch.as_tensor(env.joint_mask(), device=device).unsqueeze(0)
+                        tensor,
+                        torch.as_tensor(env.unwrapped.joint_mask(), device=device).unsqueeze(0),
                     )
                 next_obs, reward, terminated, truncated, info = env.step(action[0].cpu().numpy())
                 with torch.no_grad():
@@ -231,7 +242,7 @@ def train(args):
                         {"episode": episodes, "step": total, "reward": reward, **info},
                     )
                     if episodes < args.replays:
-                        env.battle.save(out / "replays", f"train-{episodes:04}")
+                        env.unwrapped.battle.save(out / "replays", f"train-{episodes:04}")
                     episodes += 1
                     obs, _ = env.reset()
             states = torch.as_tensor(np.stack([b[0] for b in buffer]), device=device)
@@ -285,7 +296,8 @@ def train(args):
             checkpoint = {
                 "policy": model.state_dict(),
                 "optimizer": optimizer.state_dict(),
-                "obs_size": len(obs),
+                "obs_size": obs_size,
+                "transformer_chunks": chunks,
                 "hidden_size": args.hidden_size,
                 "steps": total,
                 "seed": args.seed,
