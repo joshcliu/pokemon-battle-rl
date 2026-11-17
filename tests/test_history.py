@@ -3,7 +3,7 @@ import numpy as np
 import torch
 
 from pokemon_rl.battle import ACTION_SIZE
-from pokemon_rl.history import DecisionWindow, make_policy
+from pokemon_rl.history import DecisionWindow, FullBattleHistory, make_policy
 
 
 class Board(gym.Env):
@@ -27,6 +27,34 @@ def test_window_order_reset_and_rollover():
     assert second.tolist() == [[1, 1, 1, 4, 5], [2, 2, 2, 6, 7]]
     assert np.array_equal(env.reset()[0], start)
     assert start[1, -2:].tolist() == [-1, -1]
+
+
+def test_whole_battle_prefix_and_padded_ppo_replay():
+    env = FullBattleHistory(Board())
+    start, _ = env.reset()
+    prefixes = [start]
+    for i in range(12):
+        state, _, _, _, info = env.step((i, 3))
+        assert info["learner_decisions"] == i + 1
+        prefixes.append(state)
+    assert state[:, 0].tolist() == list(range(13))
+    assert np.array_equal(state[:1], start)
+    assert np.array_equal(env.reset()[0], start)
+    torch.manual_seed(42)
+    model = make_policy(3, 16, "full")
+    tensors = [torch.from_numpy(prefixes[i]) for i in (12, 0, 8, 3)]
+    mask = torch.ones((1, ACTION_SIZE, ACTION_SIZE), dtype=torch.bool)
+    with torch.no_grad():
+        roll = [model.sample(p[None], mask) for p in tensors]
+        changed = tensors[0].clone()
+        changed[0, 0] += 20
+        assert not torch.allclose(model.encoder(changed[None]), model.encoder(tensors[0][None]))
+    batch = torch.nn.utils.rnn.pad_sequence(tensors, batch_first=True, padding_value=-1)
+    actions, logp, values, masks = [torch.cat(items) for items in zip(*roll, strict=True)]
+    replay, _, estimates = model.evaluate(batch, actions, masks)
+    torch.testing.assert_close(replay, logp)
+    torch.testing.assert_close(estimates, values)
+    (replay + estimates).sum().backward()
 
 
 def test_context_control_padding_and_ppo_replay():

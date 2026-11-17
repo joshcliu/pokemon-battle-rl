@@ -11,6 +11,32 @@ from .battle import ACTION_SIZE
 from .policy import Policy
 
 
+class FullBattleHistory(gym.Wrapper):
+    """Return the entire player-visible decision prefix, including the current board."""
+
+    def __init__(self, env):
+        super().__init__(env)
+        width = env.observation_space.shape[0] + 2
+        token = gym.spaces.Box(-np.inf, np.inf, (width,), np.float32)
+        self.observation_space = gym.spaces.Sequence(token, stack=True)
+        self.tokens = []
+
+    def append(self, obs, previous_action):
+        token = np.concatenate((obs, np.asarray(previous_action, dtype=np.float32)))
+        self.tokens.append(token)
+        return np.stack(self.tokens)
+
+    def reset(self, **kwargs):
+        obs, info = self.env.reset(**kwargs)
+        self.tokens.clear()
+        return self.append(obs, (ACTION_SIZE, ACTION_SIZE)), info
+
+    def step(self, action):
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        prefix = self.append(obs, action)
+        return prefix, reward, terminated, truncated, info | {"learner_decisions": len(prefix) - 1}
+
+
 class DecisionWindow(gym.Wrapper):
     """Keep visible boards and the learner action immediately preceding each board."""
 
@@ -62,9 +88,14 @@ class TurnEncoder(nn.Module):
             for _ in range(2)
         )
         self.norm = nn.LayerNorm(width)
-        positions = torch.arange(chunks)
         frequencies = torch.exp(torch.arange(0, width, 2) * (-math.log(10000) / width))
-        angles = positions[:, None] * frequencies
+        self.register_buffer("frequencies", frequencies, persistent=False)
+        self.set_positions(1 if chunks == "full" else chunks)
+
+    @torch.inference_mode(False)
+    def set_positions(self, length):
+        positions = torch.arange(length, device=self.frequencies.device)
+        angles = positions[:, None] * self.frequencies
         self.register_buffer("positions", positions, persistent=False)
         self.register_buffer(
             "age_encoding",
@@ -74,10 +105,14 @@ class TurnEncoder(nn.Module):
         self.register_buffer("future", positions[:, None] < positions[None, :], persistent=False)
 
     def forward(self, window):
+        length = window.shape[1]
+        if length > len(self.positions):
+            self.set_positions(length)
+        positions = self.positions[:length]
         actions = window[:, :, -2:].long()
         last = (actions[:, :, 0] >= 0).sum(1) - 1
         first, second = actions.clamp_min(0).unbind(-1)
-        age = (last[:, None] - self.positions).clamp_min(0)
+        age = (last[:, None] - positions).clamp_min(0)
         tokens = (
             self.board(window[:, :, :-2])
             + self.previous_first(first)
@@ -86,7 +121,7 @@ class TurnEncoder(nn.Module):
         )
         # Right padding is always in the future of every valid token.
         for block in self.blocks:
-            tokens = block(tokens, src_mask=self.future)
+            tokens = block(tokens, src_mask=self.future[:length, :length])
         return self.norm(tokens[torch.arange(len(window), device=window.device), last])
 
 

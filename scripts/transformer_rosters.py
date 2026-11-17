@@ -10,7 +10,12 @@ from roster_transfer import evaluate_one, split
 CHUNKS = (1, 8)
 WIDTH = 64
 STEPS = 65_536
-LARGE = {"wide-feedforward": (528, None), "wide-transformer": (256, 1)}
+LARGE = {
+    "wide-feedforward": (528, None),
+    "wide-transformer": (256, 1),
+    "wide-transformer-8": (256, 8),
+    "wide-transformer-full": (256, "full"),
+}
 
 
 def train(root, seed, name, width, chunks):

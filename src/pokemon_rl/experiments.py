@@ -18,7 +18,7 @@ import torch
 
 from .battle import ROOT
 from .env import BattleEnv
-from .history import DecisionWindow, make_policy
+from .history import DecisionWindow, FullBattleHistory, make_policy
 from .opponents import Heuristic
 from .policy import advantages
 from .rewards import RewardEnv
@@ -37,6 +37,8 @@ def make_env(args, opponent=None, chunks=None):
         env = RewardEnv(mode=args.reward_mode, gamma=args.gamma, **options)
     else:
         env = BattleEnv(**options)
+    if chunks == "full":
+        return FullBattleHistory(env)
     return DecisionWindow(env, chunks) if chunks else env
 
 
@@ -245,7 +247,10 @@ def train(args):
                         env.unwrapped.battle.save(out / "replays", f"train-{episodes:04}")
                     episodes += 1
                     obs, _ = env.reset()
-            states = torch.as_tensor(np.stack([b[0] for b in buffer]), device=device)
+            if chunks == "full":
+                prefixes = [torch.as_tensor(b[0], device=device) for b in buffer]
+            else:
+                states = torch.as_tensor(np.stack([b[0] for b in buffer]), device=device)
             actions, old_logp, values, masks = [
                 torch.stack([b[i] for b in buffer]) for i in range(1, 5)
             ]
@@ -262,8 +267,16 @@ def train(args):
             for _ in range(args.epochs):
                 permutation = torch.randperm(len(buffer), device=device)
                 for indices in permutation.split(args.batch_size):
+                    if chunks == "full":
+                        batch_states = torch.nn.utils.rnn.pad_sequence(
+                            [prefixes[i] for i in indices.tolist()],
+                            batch_first=True,
+                            padding_value=-1.0,
+                        )
+                    else:
+                        batch_states = states[indices]
                     logp, entropy, prediction = model.evaluate(
-                        states[indices], actions[indices], masks[indices]
+                        batch_states, actions[indices], masks[indices]
                     )
                     ratio = (logp - old_logp[indices]).exp()
                     policy_loss = torch.maximum(
