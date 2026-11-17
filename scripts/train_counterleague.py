@@ -132,7 +132,7 @@ def shared(root, pool, seed, warm, steps):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("stage", choices=["start", "counter"])
+    p.add_argument("stage", choices=["start", "counter", "fixed-experts"])
     p.add_argument("--runs", type=Path, required=True)
     p.add_argument("--adapt-steps", type=int, default=65536)
     p.add_argument("--counter-steps", type=int, default=32768)
@@ -151,6 +151,31 @@ if __name__ == "__main__":
             for seed, rate in [(291, 0.0001), (293, 0.0001), (295, 0.0003), (297, 0.0003)]:
                 tasks.append(exe.submit(adapt, root, pool, seed, rate, a.adapt_steps))
             tasks.extend(mirror_jobs(exe, root, TEAM, ORIGINAL, a.counter_steps))
+        elif a.stage == "fixed-experts":
+            pool = json.loads((root / "shared-pool.json").read_text())
+            for t in TEAMS:
+                stem = Path(t).stem
+                file = root / f"mirror-{stem}.json"
+                assert json.loads(file.read_text()) == {t: pool[t]}
+                for seed, warm in [
+                    (401, None),
+                    (409, ROOT / ORIGINAL),
+                    (419, ARCHIVE / "seed-5/fixed/train/checkpoint-262144.pt"),
+                ]:
+                    tasks.append(
+                        exe.submit(
+                            train,
+                            root,
+                            f"fixed-experts/{stem}-{seed}",
+                            TEAM,
+                            [t],
+                            seed,
+                            a.counter_steps,
+                            warm,
+                            file,
+                            0.0002 if warm else None,
+                        )
+                    )
         else:
             lock = json.loads((root / "defender.json").read_text())
             cp = lock["model"]
