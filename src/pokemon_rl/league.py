@@ -165,6 +165,32 @@ class FrozenActor:
         return self.previous
 
 
+def visible_leads(player):
+    return "+".join(sorted(m.species for m in player.opponent_active_pokemon if m is not None))
+
+
+class LeadRouter:
+    """Select one frozen PPO expert from the opening pair visible to this player."""
+
+    def __init__(self, path):
+        spec = json.loads(Path(path).read_text())
+        self.routes, self.default = spec["routes"], spec["default"]
+        self.models = {}
+        self.reset()
+
+    def reset(self):
+        self.current = None
+
+    def choose(self, player, legal):
+        if self.current is None:
+            key = self.routes.get(visible_leads(player), self.default)
+            if key not in self.models:
+                self.models[key] = FrozenActor(ROOT / key)
+            self.current = self.models[key]
+            self.current.reset()
+        return self.current.choose(player, legal)
+
+
 class OpponentPool:
     def __init__(self, path, teams):
         self.spec = json.loads(Path(path).read_text())

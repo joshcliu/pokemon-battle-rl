@@ -12,7 +12,7 @@ from analyze_long_rewards import write_csv
 from train_fixed_league import ARCHIVE, ROOT, ROSTERS, TEAM
 
 from pokemon_rl.battle import LocalBattle
-from pokemon_rl.league import FrozenActor, Tactical
+from pokemon_rl.league import FrozenActor, LeadRouter, Tactical, visible_leads
 from pokemon_rl.opponents import Heuristic
 
 FAMILIES = ("damage", "tactical", "specialist")
@@ -23,6 +23,8 @@ def name(path):
 
 
 def actor(key, rng):
+    if key.endswith(".json"):
+        return LeadRouter(ROOT / key)
     if key.endswith(".pt"):
         return FrozenActor(ROOT / key)
     if key == "tactical":
@@ -34,7 +36,7 @@ def matches(condition, learner, team, opponent, other_team, base, start, count):
     torch.set_num_threads(1)
     texts = [(ROOT / t).read_text() for t in (team, other_team)]
     actors = [
-        actor(k, np.random.default_rng(0)) if k.endswith(".pt") else None
+        actor(k, np.random.default_rng(0)) if k.endswith((".pt", ".json")) else None
         for k in (learner, opponent)
     ]
     rows = []
@@ -52,6 +54,7 @@ def matches(condition, learner, team, opponent, other_team, base, start, count):
                         key, np.random.default_rng(np.random.SeedSequence([es, 51 + pos]))
                     )
             battle.reset(es, *(texts if i % 2 == 0 else reversed(texts)))
+            leads = visible_leads(battle.players[sides[0]])
             requests = 0
             while not battle.ended and battle.turn < 200 and requests < 600:
                 choices = {}
@@ -79,6 +82,7 @@ def matches(condition, learner, team, opponent, other_team, base, start, count):
                     "team": team,
                     "opponent": opponent,
                     "opponent_team": other_team,
+                    "visible_leads": leads,
                     "seed": es,
                     "side": sides[0],
                     "outcome": outcome,

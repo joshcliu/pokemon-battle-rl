@@ -2,9 +2,10 @@
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from fixed_league import evaluate, name
@@ -39,6 +40,9 @@ def candidates(root, stage):
 def lock(root, model, label, team, validation, final_seed):
     pool = json.loads((root / "pool.json").read_text())
     weights = [model, *[k for keys in pool.values() for k in keys if k.endswith(".pt")]]
+    if model.endswith(".json"):
+        router = json.loads((ROOT / model).read_text())
+        weights.extend([router["default"], *router["routes"].values()])
     hashes = {k: hashlib.sha256((ROOT / k).read_bytes()).hexdigest() for k in weights}
     data = {
         "label": label,
@@ -53,6 +57,37 @@ def lock(root, model, label, team, validation, final_seed):
         "games_per_cell": 400,
     }
     return data
+
+
+def fit_router(root, groups, out):
+    records = defaultdict(Counter)
+    for group in groups:
+        src = root / group
+        catalog = json.loads((src / "models.json").read_text())
+        with gzip.open(src / "games.csv.gz", "rt") as f:
+            for r in csv.DictReader(f):
+                cp = catalog[r["candidate"]]
+                if not cp.endswith(".pt") or not r.get("visible_leads"):
+                    continue
+                for key in (r["visible_leads"], "all"):
+                    total = records[key, cp]
+                    total["games"] += 1
+                    total["wins"] += r["outcome"] == "win"
+    keys = {key for key, cp in records}
+    if "all" not in keys:
+        return None
+
+    def best(k):
+        return max(
+            sorted(cp for key, cp in records if key == k),
+            key=lambda cp: records[k, cp]["wins"] / records[k, cp]["games"],
+        )
+
+    spec = {"routes": {k: best(k) for k in sorted(keys - {"all"})}, "default": best("all")}
+    path = out.parent / (out.name + "-router.json")
+    with path.open("x") as f:
+        json.dump(spec, f, indent=2)
+    return name(path.resolve())
 
 
 if __name__ == "__main__":
@@ -78,6 +113,9 @@ if __name__ == "__main__":
             catalog = json.loads((src / "models.json").read_text())
             best = [label for label in ranking(src) if catalog[label].endswith(".pt")][:4]
             models.update({label: catalog[label] for label in best})
+        router = fit_router(root, a.group, a.out)
+        if router:
+            models["lead-router"] = router
     else:
         frozen = json.loads((root / a.group[0] / "locked.json").read_text())
         assert a.base == frozen["confirmation_base"] and frozen["team"] == a.team
