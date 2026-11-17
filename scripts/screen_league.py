@@ -49,6 +49,9 @@ def lock(root, model, label, team, validation, final_seed):
         "model": model,
         "team": team,
         "team_sha256": hashlib.sha256((ROOT / team).read_bytes()).hexdigest(),
+        "opponent_team_sha256": {
+            t: hashlib.sha256((ROOT / t).read_bytes()).hexdigest() for t in pool
+        },
         "models_sha256": hashes,
         "pool": pool,
         "pool_sha256": hashlib.sha256((root / "pool.json").read_bytes()).hexdigest(),
