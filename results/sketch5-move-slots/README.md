@@ -21,6 +21,8 @@ On the familiar rosters in published order, fixed training gained 11.00 points b
 
 The preselected team was Eden Batchelor's **MC460**, with Dragonite and Floette leading and Sneasler and Rillaboom in back. The 262k policies had each played this roster in **2,056–2,247 completed training battles**. At 65k, fixed training won 286/800 games (35.75%) and shuffled training won 128/800 (16.00%). At 262k, fixed training won **551/800 (68.88%)** and shuffled training won **252/800 (31.50%)**. All four scores use the published move order. [Team export](../../teams/reg-mc-regionals/MC460.txt) · [Exposure by seed](training-exposure.csv)
 
+We replayed the MC460 comparison on Sketch5 with 100 fresh battle seeds (8,642,000–8,642,099) per opponent and training seed. At 65k, fixed won 274/800 (34.25%) and shuffled won 125/800 (15.63%). At 262k, fixed won 533/800 (66.63%) and shuffled won 240/800 (30.00%). These games used the published move order and the same frozen checkpoints. [Fresh scores by training seed and opponent](mc460-fresh-seeds.csv)
+
 Across all 15 familiar teams the 262k fixed policies won a majority of games on **10 teams**. Their win rates ranged from 3.38% on MC697 to 90.25% on MC461. The shuffled policies exceeded 50% on three familiar teams. A single-team performance claim therefore depends heavily on which roster the bot pilots, even after extensive training on all of them. [All 22 teams by checkpoint](per-team.csv)
 
 ## Did shuffling improve unaided targeting?
