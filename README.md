@@ -115,6 +115,11 @@ those policies against the previous bots on the original seven test teams.
 On the five teams absent from counter-training, the mirror challenger won 29.58%,
 its parent 17.76%, and the earlier feedforward PPO 40.72%.
 
+The [MC461 comparison](results/sketch5-mc461-vs-seven/README.md) instead keeps every
+learner on MC461 and gives the seven test rosters to the previous bots. Across
+75,600 matched games, the original Transformer scored 82.42%, the mirror challenger
+80.07%, and the MC461-trained challenger 80.96%.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh

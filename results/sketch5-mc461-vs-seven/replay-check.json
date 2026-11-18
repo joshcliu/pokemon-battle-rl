@@ -1,0 +1,65 @@
+{
+  "identical_games": 12,
+  "checks": [
+    {
+      "candidate": "parent",
+      "opponent_team": "MC646",
+      "bot": "damage",
+      "games": 2,
+      "sides": [
+        "p1",
+        "p2"
+      ]
+    },
+    {
+      "candidate": "parent",
+      "opponent_team": "MC751",
+      "bot": "ppo-balance",
+      "games": 2,
+      "sides": [
+        "p1",
+        "p2"
+      ]
+    },
+    {
+      "candidate": "challenger-mirror",
+      "opponent_team": "MC646",
+      "bot": "damage",
+      "games": 2,
+      "sides": [
+        "p1",
+        "p2"
+      ]
+    },
+    {
+      "candidate": "challenger-mirror",
+      "opponent_team": "MC751",
+      "bot": "ppo-balance",
+      "games": 2,
+      "sides": [
+        "p1",
+        "p2"
+      ]
+    },
+    {
+      "candidate": "challenger-fixed",
+      "opponent_team": "MC646",
+      "bot": "damage",
+      "games": 2,
+      "sides": [
+        "p1",
+        "p2"
+      ]
+    },
+    {
+      "candidate": "challenger-fixed",
+      "opponent_team": "MC751",
+      "bot": "ppo-balance",
+      "games": 2,
+      "sides": [
+        "p1",
+        "p2"
+      ]
+    }
+  ]
+}
