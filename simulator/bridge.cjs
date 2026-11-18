@@ -43,6 +43,12 @@ function handle(command) {
     battle = new Battle({formatid: command.format, seed: command.seed, send: receive});
     battle.setPlayer('p1', {name: 'Learner', team: teams[0]});
     battle.setPlayer('p2', {name: 'Opponent', team: teams[1]});
+    if (command.openTeamSheets) {
+      if (!battle.ruleTable.has('openteamsheets') && !battle.ruleTable.has('forceopenteamsheets')) {
+        throw new Error('Format does not allow open team sheets');
+      }
+      if (!battle.ruleTable.has('forceopenteamsheets')) battle.showOpenTeamSheets();
+    }
   } else if (command.op === 'step') {
     if (!battle || battle.ended) throw new Error('No running battle');
     // Check the original simultaneous requests before committing either side's choice.

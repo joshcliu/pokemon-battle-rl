@@ -34,6 +34,7 @@ def make_env(args, opponent=None, chunks=None):
         opponent_pool=getattr(args, "opponent_pool", None),
         mirror_teams=getattr(args, "mirror_teams", False),
         battle_format=args.format,
+        open_team_sheets=getattr(args, "open_team_sheets", False),
         max_turns=args.max_turns,
     )
     if args.command == "train" and getattr(args, "reward_mode", "win-loss") != "win-loss":
@@ -194,7 +195,13 @@ def train(args):
             source = torch.load(args.init_checkpoint, map_location="cpu", weights_only=True)
             if source.get("transformer_chunks") != chunks:
                 raise ValueError("Warm-start checkpoint uses a different decision history")
-            if (source["format"], source["feature_schema"]) != (args.format, 1):
+            transferable = getattr(args, "transfer_champions_regulation", False) and {
+                source["format"],
+                args.format,
+            } == {"gen9championsvgc2026regmc", "gen9championsvgc2026regmb"}
+            if source["feature_schema"] != 1 or (
+                source["format"] != args.format and not transferable
+            ):
                 raise ValueError(
                     "Warm-start checkpoint format or feature schema differs from the environment"
                 )

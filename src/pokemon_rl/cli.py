@@ -36,6 +36,7 @@ def main():
             "--opponent-teams", nargs="+", default=["teams/balance.txt", "teams/sun.txt"]
         )
         p.add_argument("--format", default=DEFAULT_FORMAT)
+        p.add_argument("--open-team-sheets", action="store_true", default=argparse.SUPPRESS)
         p.add_argument("--max-turns", type=int, default=200)
         p.add_argument("--replays", type=int, default=3)
         p.add_argument("--threads", type=int, default=1)
@@ -58,6 +59,12 @@ def main():
             p.add_argument(
                 "--init-checkpoint",
                 help="Start PPO from these actor and critic weights with a fresh optimizer",
+            )
+            p.add_argument(
+                "--transfer-champions-regulation",
+                action="store_true",
+                default=argparse.SUPPRESS,
+                help="Allow weight transfer between Champions M-B and M-C",
             )
             p.add_argument("--save-initial", action="store_true", help="Keep the untrained policy")
             p.add_argument(

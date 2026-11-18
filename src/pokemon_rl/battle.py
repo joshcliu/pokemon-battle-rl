@@ -14,6 +14,7 @@ from poke_env.battle import DoubleBattle
 from poke_env.environment import DoublesEnv
 from poke_env.player import Player
 from poke_env.player.battle_order import DoubleBattleOrder
+from poke_env.teambuilder import Teambuilder
 
 ROOT = Path(__file__).resolve().parents[2]
 ACTION_SIZE = 107
@@ -26,7 +27,10 @@ def node_binary() -> str:
 
 
 class LocalBattle:
-    def __init__(self, battle_format: str = DEFAULT_FORMAT, timeout: float = 20):
+    def __init__(
+        self, battle_format: str = DEFAULT_FORMAT, timeout: float = 20, *, open_team_sheets=False
+    ):
+        self.open_team_sheets = open_team_sheets
         simulator = ROOT / ".cache/pokemon-showdown"
         if not (simulator / "dist/sim/index.js").exists():
             raise RuntimeError("Simulator missing; run python scripts/setup_simulator.py")
@@ -79,6 +83,7 @@ class LocalBattle:
                 "format": self.format,
                 "seed": [int(x % 65536) for x in words],
                 "teams": [team1, team2],
+                **({"openTeamSheets": True} if self.open_team_sheets else {}),
             }
         )
         self._consume(result)
@@ -118,11 +123,14 @@ class LocalBattle:
         self.log.extend(result["spectator"])
         self.ended, self.winner, self.turn = result["ended"], result["winner"], result["turn"]
         for side, player in self.players.items():
+            sheets = []
             for line in result["views"][side]:
                 parts = line.split("|")
                 if len(parts) < 2 or parts[1] in {"", "init", "title"} | Player.MESSAGES_TO_IGNORE:
                     continue
-                if parts[1] == "win":
+                if parts[1] == "showteam":
+                    sheets.append((parts[2], "|".join(parts[3:])))
+                elif parts[1] == "win":
                     player.won_by(parts[2])
                 elif parts[1] == "tie":
                     player.tied()
@@ -131,6 +139,16 @@ class LocalBattle:
             req = self.requests[side]
             if req and "side" in req:
                 player.parse_request(req)
+            for role, packed in sheets:
+                if role == side:
+                    continue  # Own sets already come from the private Showdown request.
+                sets = Teambuilder.parse_packed_team(packed)
+                for preview in player.teampreview_opponent_team:
+                    (entry,) = [s for s in sets if s.nickname and preview.identifies_as(s.nickname)]
+                    mon = player.get_pokemon(
+                        f"{role}: {entry.nickname}", details=preview._last_details
+                    )
+                    mon._update_from_teambuilder(entry)
 
     def needs_action(self, side: str) -> bool:
         req = self.requests[side]

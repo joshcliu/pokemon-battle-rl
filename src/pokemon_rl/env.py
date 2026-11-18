@@ -38,6 +38,7 @@ class BattleEnv(gym.Env):
         shuffle_move_slots=False,
         opponent_pool=None,
         mirror_teams=False,
+        open_team_sheets=False,
     ):
         super().__init__()
         self.style = opponent
@@ -56,7 +57,7 @@ class BattleEnv(gym.Env):
             from .league import OpponentPool
 
             self.pool = OpponentPool(opponent_pool, self.opponent_paths)
-        self.battle = LocalBattle(battle_format)
+        self.battle = LocalBattle(battle_format, open_team_sheets=open_team_sheets)
         self.max_turns, self.max_decisions = max_turns, max_decisions
         self.action_space = gym.spaces.MultiDiscrete([ACTION_SIZE, ACTION_SIZE])
         self.observation_space = gym.spaces.Box(
