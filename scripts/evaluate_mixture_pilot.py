@@ -10,7 +10,7 @@ from pathlib import Path
 
 from analyze_challenger_transfer import paired, score
 from analyze_long_rewards import write_csv
-from evaluate_challenger_transfer import digest, read
+from evaluate_challenger_transfer import FRESH, digest, read
 from evaluate_mc461_transfer import cell_path, evaluate_cell
 from pilot_opponent_mixture import BUDGET, SEEDS
 from train_fixed_league import ROOT
@@ -22,7 +22,11 @@ HISTORY = {
     "mirror": "runs/sketch5-counterleague-v1/shared/367/train",
     "fixed": "runs/sketch5-counterleague-v1/fixed-counter/379/train",
 }
-ARCHIVED = {"original-65536": "parent", "mirror-65536": "challenger-mirror", "fixed-65536": "challenger-fixed"}
+ARCHIVED = {
+    "original-65536": "parent",
+    "mirror-65536": "challenger-mirror",
+    "fixed-65536": "challenger-fixed",
+}
 
 
 def checkpoints(ref):
@@ -30,10 +34,16 @@ def checkpoints(ref):
     for name, train in HISTORY.items():
         for step in (16384, 32768, 65536):
             label = f"{name}-{step}"
-            models[label] = ref["candidates"][ARCHIVED[label]] if label in ARCHIVED else f"{train}/checkpoint-{step}.pt"
+            models[label] = (
+                ref["candidates"][ARCHIVED[label]]
+                if label in ARCHIVED
+                else f"{train}/checkpoint-{step}.pt"
+            )
     for arm in ("defender", "mixed"):
         for seed in SEEDS:
-            models[f"{arm}-{seed}"] = str(PILOT / arm / str(seed) / "train" / f"checkpoint-{BUDGET}.pt")
+            models[f"{arm}-{seed}"] = str(
+                PILOT / arm / str(seed) / "train" / f"checkpoint-{BUDGET}.pt"
+            )
     return models
 
 
@@ -45,8 +55,13 @@ def schedules(ref, models):
         for j in range(len(ref["opponents"])):
             yield "previous", broad, i, j
     for i, team in enumerate(locked["team_order"]):
-        spec = dict(broad, opponent_teams=[team], opponents={"defender": defenders[team][0]},
-                    base=locked["base"] + 50000 + i * 10000, battles_per_cell=200)
+        spec = dict(
+            broad,
+            opponent_teams=[team],
+            opponents={"defender": defenders[team][0]},
+            base=locked["base"] + 50000 + i * 10000,
+            battles_per_cell=200,
+        )
         yield "defenders", spec, 0, 0
 
 
@@ -60,20 +75,95 @@ def archived_rows(ref):
 
 def training(out):
     runs = {label: ROOT / path for label, path in HISTORY.items()}
-    runs.update({f"{arm}-{seed}": ROOT / PILOT / arm / str(seed) / "train"
-                 for arm in ("defender", "mixed") for seed in SEEDS})
-    curves, used = [], set()
+    runs.update(
+        {
+            f"{arm}-{seed}": ROOT / PILOT / arm / str(seed) / "train"
+            for arm in ("defender", "mixed")
+            for seed in SEEDS
+        }
+    )
+    curves, exposures, used = [], [], set()
     for name, path in runs.items():
         bins = defaultdict(list)
+        opponents = defaultdict(list)
         with (path / "episodes.jsonl").open() as stream:
             for line in stream:
                 ep = json.loads(line)
+                if ep["outcome"] == "truncated":
+                    ep["outcome"] = "cutoff"
                 bins[(ep["step"] - 1) // BUDGET].append(ep)
                 used.add(ep["simulator_seed"])
+                if name not in HISTORY:
+                    bot = Path(ep["opponent"]).stem
+                    group = (
+                        "defenders"
+                        if bot in {"defender", "expert-4"}
+                        else "previous-ppo"
+                        if bot.startswith("rival-")
+                        else "previous-heuristics"
+                    )
+                    opponents[group].append(ep)
         for index, episodes in sorted(bins.items()):
             curves.append(dict(model=name, end_step=(index + 1) * BUDGET, **score(episodes)))
+        for group, episodes in sorted(opponents.items()):
+            exposures.append(dict(model=name, opponents=group, **score(episodes)))
     write_csv(out / "training-curves.csv", curves)
+    write_csv(out / "pilot-exposure.csv", exposures)
     return used
+
+
+def plot(out, summary):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import PercentFormatter
+
+    with (out / "training-curves.csv").open() as stream:
+        curves = list(csv.DictReader(stream))
+    scores = {r["model"]: r for r in summary if r["field"] == "previous"}
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.3), layout="constrained")
+    names = {
+        "original": "Original Transformer",
+        "mirror": "Mirror challenger",
+        "fixed": "MC461 challenger",
+    }
+    colors = {"original": "#286476", "mirror": "#c36223", "fixed": "#79549c"}
+    for name, label in names.items():
+        color = colors[name]
+        series = [r for r in curves if r["model"] == name]
+        axes[0].plot(
+            [int(r["end_step"]) / 1024 for r in series],
+            [float(r["win_pct"]) for r in series],
+            marker="o",
+            ms=4,
+            color=color,
+            label=label,
+        )
+        initial = "initializer" if name == "original" else "original-65536"
+        steps = [0, 16384, 32768, 65536]
+        rows = [scores[initial], *(scores[f"{name}-{s}"] for s in steps[1:])]
+        ys = [r["win_pct"] for r in rows]
+        errors = [
+            [r["win_pct"] - r["low95_pct"] for r in rows],
+            [r["high95_pct"] - r["win_pct"] for r in rows],
+        ]
+        axes[1].errorbar(
+            [s / 1024 for s in steps], ys, yerr=errors, color=color, marker="o", ms=4, capsize=3
+        )
+    axes[0].set_title("During training", loc="left")
+    axes[1].set_title("Against the nine earlier bots", loc="left")
+    for ax in axes:
+        ax.set(xlabel="Additional PPO decisions (×1,024)", xticks=[0, 16, 32, 48, 64])
+        ax.yaxis.set_major_formatter(PercentFormatter(xmax=100, decimals=0))
+        ax.grid(axis="y", alpha=0.22)
+        ax.spines[["top", "right"]].set_visible(False)
+    axes[0].set_ylabel("Battles won")
+    fig.legend(
+        *axes[0].get_legend_handles_labels(), loc="outside upper center", ncol=3, frameon=False
+    )
+    fig.savefig(out / "learning-curves.png", dpi=170)
+    plt.close(fig)
 
 
 def evaluate(root, out, workers):
@@ -83,20 +173,31 @@ def evaluate(root, out, workers):
     training_seeds = training(out)
     cells = list(schedules(ref, models))
     files = set(ref["sha256"]) | set(models.values())
-    files.update(bot for _, spec, _, _ in cells for bot in spec["opponents"].values() if bot.endswith(".pt"))
+    files.update(
+        bot for _, spec, _, _ in cells for bot in spec["opponents"].values() if bot.endswith(".pt")
+    )
     hashes = {f: digest(f) for f in sorted(files)}
     assert all(hashes[f] == h for f, h in ref["sha256"].items())
     spec_path = root / "evaluation-manifest.json"
-    manifest = dict(models=models, sha256=hashes, previous_base=ref["base"], previous_count=80,
-                    defender_count=200, simulator=read(ROOT / "simulator.lock.json"))
+    manifest = dict(
+        models=models,
+        sha256=hashes,
+        previous_base=ref["base"],
+        previous_count=80,
+        defender_count=200,
+        simulator=read(ROOT / "simulator.lock.json"),
+    )
     if spec_path.exists():
         assert read(spec_path) == manifest
     root.mkdir(parents=True, exist_ok=True)
     spec_path.write_text(json.dumps(manifest, indent=2) + "\n")
     with ProcessPoolExecutor(max_workers=workers) as pool:
-        jobs = [pool.submit(evaluate_cell, root / field, spec, name, i, j)
-                for name in models for field, spec, i, j in cells
-                if field != "previous" or name not in ARCHIVED]
+        jobs = [
+            pool.submit(evaluate_cell, root / field, spec, name, i, j)
+            for name in models
+            for field, spec, i, j in cells
+            if field != "previous" or name not in ARCHIVED
+        ]
         for k, job in enumerate(as_completed(jobs), 1):
             job.result()
             if k % 100 == 0 or k == len(jobs):
@@ -110,7 +211,11 @@ def evaluate(root, out, workers):
             family, bot = list(spec["opponents"].items())[j]
             path = cell_path(root / field, name, team, family)
             if field == "previous" and name in ARCHIVED:
-                rows = [r for r in groups[field, name] if r["opponent_team"] == team and r["family"] == family]
+                rows = [
+                    r
+                    for r in groups[field, name]
+                    if r["opponent_team"] == team and r["family"] == family
+                ]
             else:
                 with path.open() as stream:
                     rows = list(csv.DictReader(stream))
@@ -118,10 +223,17 @@ def evaluate(root, out, workers):
             base = spec["base"] + (i * len(spec["opponents"]) + j) * 1000
             n = spec["battles_per_cell"]
             assert len(rows) == n and {(int(r["seed"]), r["side"]) for r in rows} == {
-                (base + k, "p1" if k % 2 == 0 else "p2") for k in range(n)}
-            assert all(r["team"] == ref["learner_team"] and r["opponent_team"] == team
-                       and r["opponent"] == bot and r["learner"] == models[name]
-                       and r["candidate"] == name and r["family"] == family for r in rows)
+                (base + k, "p1" if k % 2 == 0 else "p2") for k in range(n)
+            }
+            assert all(
+                r["team"] == ref["learner_team"]
+                and r["opponent_team"] == team
+                and r["opponent"] == bot
+                and r["learner"] == models[name]
+                and r["candidate"] == name
+                and r["family"] == family
+                for r in rows
+            )
             assert not any(int(r["seed"]) in training_seeds for r in rows)
     comparisons = [(name, "original-65536") for name in models if name != "original-65536"]
     comparisons += [(f"mixed-{s}", f"defender-{s}") for s in SEEDS]
@@ -131,15 +243,22 @@ def evaluate(root, out, workers):
             rows = groups[field, name]
             summary.append(dict(field=field, model=name, **score(rows)))
             if field == "previous":
+                unseen = [r for r in rows if r["roster"] in FRESH]
+                summary.append(dict(field="previous-unseen-five", model=name, **score(unseen)))
                 for tag, learned in (("previous-ppo", True), ("previous-heuristics", False)):
                     sub = [r for r in rows if r["family"].startswith("ppo-") == learned]
                     summary.append(dict(field=tag, model=name, **score(sub)))
         for a, b in comparisons:
-            effects.append(dict(field=field, model=a, baseline=b, **paired(groups[field, a], groups[field, b])))
+            effects.append(
+                dict(field=field, model=a, baseline=b, **paired(groups[field, a], groups[field, b]))
+            )
     write_csv(out / "scores.csv", summary)
     write_csv(out / "paired.csv", effects)
-    write_csv(out / "games.csv.gz", [dict(field=f, **r) for (f, _), rows in groups.items() for r in rows])
+    write_csv(
+        out / "games.csv.gz", [dict(field=f, **r) for (f, _), rows in groups.items() for r in rows]
+    )
     (out / "manifest.json").write_text(spec_path.read_text())
+    plot(out, summary)
 
 
 if __name__ == "__main__":
