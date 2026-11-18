@@ -77,6 +77,28 @@ def test_invalid_action_does_not_advance_simulator():
         env.close()
 
 
+def test_preview_picks_both_sides_before_leads_are_revealed():
+    team = (ROOT / "teams/reg-mc-regionals/MC461.txt").read_text()
+    views = []
+
+    def pick(visible):
+        views.append(visible)
+        return (5, 6, 1, 3)
+
+    with LocalBattle() as battle:
+        battle.reset(77, team, team, preview_pickers={"p1": pick, "p2": pick})
+        assert len(views) == 2 and views[0] == views[1] == tuple(sorted(views[0]))
+        assert len(views[0]) == 6 and "Kingambit" in views[0]
+        assert battle.input_log[1]["choices"] == {"p1": "team 5613", "p2": "team 5613"}
+        for side in ("p1", "p2"):
+            leads = [m.species for m in battle.players[side].active_pokemon]
+            assert leads[0] == "kingambit" and leads[1].startswith("charizard")
+            chosen = [m["ident"].split(": ")[1] for m in battle.requests[side]["side"]["pokemon"]]
+            assert len(chosen) == 4 and chosen[-2:] == ["Meowstic-F", "Indeedee"]
+        with pytest.raises(ValueError, match="Invalid team preview order"):
+            battle.reset(77, team, team, preview_pickers={"p1": lambda _: (1, 1, 2, 3)})
+
+
 def test_time_limit_is_truncation_without_declared_result():
     env = BattleEnv(max_turns=1)
     try:

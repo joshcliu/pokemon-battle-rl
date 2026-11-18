@@ -66,36 +66,52 @@ class LocalBattle:
         self.input_log.append(command)
         return result
 
-    def reset(self, seed: int, team1: str, team2: str):
+    def reset(self, seed: int, team1: str, team2: str, *, preview_pickers=None):
         self.log, self.input_log = [], []
         self.players = {
             side: DoubleBattle("battle-local-1", name, logging.getLogger(side), gen=9)
             for side, name in (("p1", "Learner"), ("p2", "Opponent"))
         }
         words = np.random.SeedSequence(seed).generate_state(4).astype(np.uint32)
-        self._consume(
-            self._call(
-                {
-                    "op": "reset",
-                    "format": self.format,
-                    "seed": [int(x % 65536) for x in words],
-                    "teams": [team1, team2],
-                }
-            )
+        result = self._call(
+            {
+                "op": "reset",
+                "format": self.format,
+                "seed": [int(x % 65536) for x in words],
+                "teams": [team1, team2],
+            }
         )
-        # Fixed input order determines leads. Team selection is outside the pilot scope.
+        self._consume(result)
         if any(req and req.get("teamPreview") for req in self.requests.values()):
-            self.step(
-                {
-                    side: "team "
-                    + "".join(
-                        str(i + 1)
-                        for i in range(min(req.get("maxTeamSize", 6), len(req["side"]["pokemon"])))
+            choices = {}
+            for side, req in self.requests.items():
+                if not req or not req.get("teamPreview"):
+                    continue
+                size = len(req["side"]["pokemon"])
+                bring = min(req.get("maxTeamSize", 6), size)
+                order = tuple(range(1, bring + 1))
+                if preview_pickers and side in preview_pickers:
+                    foe = "p2" if side == "p1" else "p1"
+                    # Only the unordered species shown to this player before either choice.
+                    prefix = f"|poke|{foe}|"
+                    visible = tuple(
+                        sorted(
+                            line[len(prefix) :].split("|")[0].split(",")[0]
+                            for line in result["views"][side]
+                            if line.startswith(prefix)
+                        )
                     )
-                    for side, req in self.requests.items()
-                    if req and req.get("teamPreview")
-                }
-            )
+                    if not visible:
+                        raise ValueError("Missing public preview in player view")
+                    order = tuple(preview_pickers[side](visible))
+                    if (
+                        len(order) != bring
+                        or len(set(order)) != bring
+                        or any(type(slot) is not int or not 1 <= slot <= size for slot in order)
+                    ):
+                        raise ValueError(f"Invalid team preview order {order} for {side}")
+                choices[side] = "team " + "".join(map(str, order))
+            self.step(choices)
 
     def _consume(self, result: dict):
         self.requests = result["requests"]

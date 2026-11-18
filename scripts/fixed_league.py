@@ -4,6 +4,8 @@ import argparse
 import json
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
+from contextlib import nullcontext
+from functools import partial
 from pathlib import Path
 
 import numpy as np
@@ -44,13 +46,20 @@ def matches(
     replay_dir=None,
     sample_opponent=False,
     sample_learner=False,
+    learner_preview=None,
+    resources=None,
 ):
     torch.set_num_threads(1)
     texts = [(ROOT / t).read_text() for t in (team, other_team)]
-    actors = [
-        actor(k, np.random.default_rng(0)) if k.endswith((".pt", ".json")) else None
-        for k in (learner, opponent)
-    ]
+    models = {} if resources is None else resources[1]
+    actors = []
+    for seat, k in enumerate((learner, opponent)):
+        if k.endswith((".pt", ".json")) and (seat, k) not in models:
+            models[seat, k] = actor(k, np.random.default_rng(0))
+        actors.append(models.get((seat, k)))
+    for player in actors:
+        if isinstance(player, FrozenActor):
+            player.deterministic = True
     if sample_opponent:
         if not isinstance(actors[1], FrozenActor):
             raise ValueError("Action sampling requires a frozen neural opponent")
@@ -60,7 +69,7 @@ def matches(
             raise ValueError("Action sampling requires a frozen neural learner")
         actors[0].deterministic = False
     rows = []
-    with LocalBattle() as battle:
+    with LocalBattle() if resources is None else nullcontext(resources[0]) as battle:
         for i in range(start, start + count):
             es = base + i
             if sample_opponent or sample_learner:
@@ -75,7 +84,8 @@ def matches(
                     players[side] = actor(
                         key, np.random.default_rng(np.random.SeedSequence([es, 51 + pos]))
                     )
-            battle.reset(es, *(texts if i % 2 == 0 else reversed(texts)))
+            pickers = {sides[0]: partial(learner_preview, es)} if learner_preview else None
+            battle.reset(es, *(texts if i % 2 == 0 else reversed(texts)), preview_pickers=pickers)
             leads = visible_leads(battle.players[sides[0]])
             requests = 0
             while not battle.ended and battle.turn < 200 and requests < 600:
