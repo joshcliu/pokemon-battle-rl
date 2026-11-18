@@ -1,0 +1,296 @@
+{
+  "models": {
+    "tournament-mlp": {
+      "path": "runs/sketch5-finetune-v1/seed-2/scratch/train/checkpoint.pt",
+      "sha256": "a87da3cbe2db2f04f50197fd798536309424a234c6d6fa337814c668828fe187",
+      "steps_in_this_stage": 65536,
+      "seed": 2,
+      "history": null,
+      "width": 128,
+      "training_manifest": "runs/sketch5-finetune-v1/seed-2/scratch/train/manifest.json",
+      "learner_teams": [
+        "teams/reg-mc-regionals/MC650.txt",
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC648.txt",
+        "teams/reg-mc-regionals/MC460.txt",
+        "teams/reg-mc-regionals/MC649.txt",
+        "teams/reg-mc-regionals/MC461.txt",
+        "teams/reg-mc-regionals/MC408.txt",
+        "teams/reg-mc-regionals/MC779.txt",
+        "teams/reg-mc-regionals/MC442.txt",
+        "teams/reg-mc-regionals/MC554.txt",
+        "teams/reg-mc-regionals/MC781.txt",
+        "teams/reg-mc-regionals/MC780.txt",
+        "teams/reg-mc-regionals/MC697.txt",
+        "teams/reg-mc-regionals/MC647.txt",
+        "teams/reg-mc-regionals/MC439.txt"
+      ],
+      "opponent_teams": [
+        "teams/balance.txt",
+        "teams/sun.txt"
+      ],
+      "init_checkpoint": null
+    },
+    "tournament-full65": {
+      "path": "runs/sketch5-policy-size-v1/seed-2/wide-transformer-full/train/checkpoint.pt",
+      "sha256": "b85cb107c5a0a21a3ce9b368bd75f3233ff66750e0d39bd66bde3a170e492464",
+      "steps_in_this_stage": 65536,
+      "seed": 2,
+      "history": "full",
+      "width": 256,
+      "training_manifest": "runs/sketch5-policy-size-v1/seed-2/wide-transformer-full/train/manifest.json",
+      "learner_teams": [
+        "teams/reg-mc-regionals/MC650.txt",
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC648.txt",
+        "teams/reg-mc-regionals/MC460.txt",
+        "teams/reg-mc-regionals/MC649.txt",
+        "teams/reg-mc-regionals/MC461.txt",
+        "teams/reg-mc-regionals/MC408.txt",
+        "teams/reg-mc-regionals/MC779.txt",
+        "teams/reg-mc-regionals/MC442.txt",
+        "teams/reg-mc-regionals/MC554.txt",
+        "teams/reg-mc-regionals/MC781.txt",
+        "teams/reg-mc-regionals/MC780.txt",
+        "teams/reg-mc-regionals/MC697.txt",
+        "teams/reg-mc-regionals/MC647.txt",
+        "teams/reg-mc-regionals/MC439.txt"
+      ],
+      "opponent_teams": [
+        "teams/balance.txt",
+        "teams/sun.txt"
+      ],
+      "init_checkpoint": null
+    },
+    "tournament-full262": {
+      "path": "runs/sketch5-move-slots-v1/seed-2/fixed/train/checkpoint-262144.pt",
+      "sha256": "5908052492a27bc0bb2178ba9b49429a3d49b65588d9ebe9384c9d5ba9c1543b",
+      "steps_in_this_stage": 262144,
+      "seed": 2,
+      "history": "full",
+      "width": 256,
+      "training_manifest": "runs/sketch5-move-slots-v1/seed-2/fixed/train/manifest.json",
+      "learner_teams": [
+        "teams/reg-mc-regionals/MC650.txt",
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC648.txt",
+        "teams/reg-mc-regionals/MC460.txt",
+        "teams/reg-mc-regionals/MC649.txt",
+        "teams/reg-mc-regionals/MC461.txt",
+        "teams/reg-mc-regionals/MC408.txt",
+        "teams/reg-mc-regionals/MC779.txt",
+        "teams/reg-mc-regionals/MC442.txt",
+        "teams/reg-mc-regionals/MC554.txt",
+        "teams/reg-mc-regionals/MC781.txt",
+        "teams/reg-mc-regionals/MC780.txt",
+        "teams/reg-mc-regionals/MC697.txt",
+        "teams/reg-mc-regionals/MC647.txt",
+        "teams/reg-mc-regionals/MC439.txt"
+      ],
+      "opponent_teams": [
+        "teams/balance.txt",
+        "teams/sun.txt"
+      ],
+      "init_checkpoint": null
+    },
+    "parent": {
+      "path": "results/sketch5-fixed-league/weights/expert-4.pt",
+      "sha256": "6e5a00ba994721c23afcb3100ab2277601dab688d097fbe15ab2874bbbb01bad",
+      "steps_in_this_stage": 65536,
+      "seed": 112,
+      "history": "full",
+      "width": 256,
+      "training_manifest": "runs/sketch5-fixed-league-v1/league/warm-2/train/manifest.json",
+      "learner_teams": [
+        "teams/reg-mc-regionals/MC461.txt"
+      ],
+      "opponent_teams": [
+        "teams/balance.txt",
+        "teams/sun.txt",
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC751.txt"
+      ],
+      "init_checkpoint": "/mnt/md0/jcliu/pokemon-battle-rl/project/runs/sketch5-move-slots-v1/seed-2/fixed/train/checkpoint-262144.pt"
+    },
+    "adapted": {
+      "path": "results/sketch5-counterleague/weights/defender.pt",
+      "sha256": "f21880879acbb9c13e0692dcac3651ce4fa95d41d584cb2aea55969177a0e531",
+      "steps_in_this_stage": 65536,
+      "seed": 297,
+      "history": "full",
+      "width": 256,
+      "training_manifest": "runs/sketch5-counterleague-v1/adapt/297/train/manifest.json",
+      "learner_teams": [
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC646.txt",
+        "teams/reg-mc-regionals/MC751.txt",
+        "teams/reg-mc-regionals/MC781.txt"
+      ],
+      "opponent_teams": [
+        "teams/balance.txt",
+        "teams/sun.txt",
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC751.txt",
+        "teams/reg-mc-regionals/MC461.txt"
+      ],
+      "init_checkpoint": "results/sketch5-fixed-league/weights/expert-4.pt"
+    },
+    "challenger-mirror": {
+      "path": "results/sketch5-counterleague/weights/counter-12.pt",
+      "sha256": "e580d7b09a1a19008ccb0624b03b52325712211cc27c6b2b71ee14d39bf44147",
+      "steps_in_this_stage": 65536,
+      "seed": 367,
+      "history": "full",
+      "width": 256,
+      "training_manifest": "runs/sketch5-counterleague-v1/shared/367/train/manifest.json",
+      "learner_teams": [
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC646.txt",
+        "teams/reg-mc-regionals/MC751.txt",
+        "teams/reg-mc-regionals/MC781.txt",
+        "teams/reg-mc-regionals/MC461.txt"
+      ],
+      "opponent_teams": [
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC646.txt",
+        "teams/reg-mc-regionals/MC751.txt",
+        "teams/reg-mc-regionals/MC781.txt",
+        "teams/reg-mc-regionals/MC461.txt"
+      ],
+      "init_checkpoint": "results/sketch5-fixed-league/weights/expert-4.pt"
+    },
+    "challenger-fixed": {
+      "path": "results/sketch5-counterleague/weights/counter-8.pt",
+      "sha256": "b5b8f9504e5fb14d2c838545ef7e90313a3b7f4cd78d4c28476bcb27762e12ab",
+      "steps_in_this_stage": 65536,
+      "seed": 379,
+      "history": "full",
+      "width": 256,
+      "training_manifest": "runs/sketch5-counterleague-v1/fixed-counter/379/train/manifest.json",
+      "learner_teams": [
+        "teams/reg-mc-regionals/MC461.txt"
+      ],
+      "opponent_teams": [
+        "teams/reg-mc-regionals/MC463.txt",
+        "teams/reg-mc-regionals/MC646.txt",
+        "teams/reg-mc-regionals/MC751.txt",
+        "teams/reg-mc-regionals/MC781.txt",
+        "teams/reg-mc-regionals/MC461.txt"
+      ],
+      "init_checkpoint": "/mnt/md0/jcliu/pokemon-battle-rl/project/results/sketch5-fixed-league/weights/expert-4.pt"
+    }
+  },
+  "teams": [
+    "teams/reg-mc-regionals/MC751.txt",
+    "teams/reg-mc-regionals/MC407.txt",
+    "teams/reg-mc-regionals/MC778.txt",
+    "teams/reg-mc-regionals/MC462.txt",
+    "teams/reg-mc-regionals/MC403.txt",
+    "teams/reg-mc-regionals/MC646.txt",
+    "teams/reg-mc-regionals/MC405.txt"
+  ],
+  "opponents": [
+    [
+      "damage",
+      "teams/balance.txt",
+      "damage"
+    ],
+    [
+      "damage",
+      "teams/sun.txt",
+      "damage"
+    ],
+    [
+      "switch",
+      "teams/balance.txt",
+      "switch"
+    ],
+    [
+      "switch",
+      "teams/sun.txt",
+      "switch"
+    ],
+    [
+      "setup",
+      "teams/balance.txt",
+      "setup"
+    ],
+    [
+      "setup",
+      "teams/sun.txt",
+      "setup"
+    ],
+    [
+      "random",
+      "teams/balance.txt",
+      "random"
+    ],
+    [
+      "random",
+      "teams/sun.txt",
+      "random"
+    ],
+    [
+      "tactical",
+      "teams/balance.txt",
+      "tactical"
+    ],
+    [
+      "tactical",
+      "teams/sun.txt",
+      "tactical"
+    ],
+    [
+      "ppo",
+      "teams/balance.txt",
+      "results/sketch5-fixed-league/weights/rival-balance.pt"
+    ],
+    [
+      "ppo",
+      "teams/sun.txt",
+      "results/sketch5-fixed-league/weights/rival-sun.pt"
+    ],
+    [
+      "ppo",
+      "teams/reg-mc-regionals/MC463.txt",
+      "results/sketch5-fixed-league/weights/rival-MC463.pt"
+    ],
+    [
+      "ppo",
+      "teams/reg-mc-regionals/MC751.txt",
+      "results/sketch5-fixed-league/weights/rival-MC751.pt"
+    ]
+  ],
+  "sha256": {
+    "results/sketch5-fixed-league/weights/rival-MC463.pt": "3ab4d231a7906aa9ec872b7e61a106953152415237eef8b1dbe86a83f45a3bcc",
+    "results/sketch5-fixed-league/weights/rival-MC751.pt": "184ed84a024ed9de0a3a18df75f9c489196579680f31e7bca35fa5a735fa0ce1",
+    "results/sketch5-fixed-league/weights/rival-balance.pt": "da6bb895afb41540fe3ac55c2f257f3757c69fd0561ff537d07b636d210732d3",
+    "results/sketch5-fixed-league/weights/rival-sun.pt": "2c62eb7156c5c61981681ce38e76d4a1948cbe76fe0b4a19f06e67d0c95b5d24",
+    "teams/balance.txt": "d1cc0efc48fd422572de26bf599afa3a744f1f3c9fbc85536a202c94f6dfa497",
+    "teams/reg-mc-regionals/MC403.txt": "7f89b0638a5ade7cc8d5c1e97b70cabbea15a97f652f165165a6934af9b12875",
+    "teams/reg-mc-regionals/MC405.txt": "c3bf031751e3ef213b13d18719202c26c9b102574ea3bd4197f562c88a779ec8",
+    "teams/reg-mc-regionals/MC407.txt": "dc0bff48bdfd5c2c65ee3a8cf2b96155a3e80f9f4ce0f5a93ddaa52f6d072d6e",
+    "teams/reg-mc-regionals/MC462.txt": "63b4c644b4e22ac2f170975deb28b664bc2898d73cc94b52af0c276a307b5b06",
+    "teams/reg-mc-regionals/MC463.txt": "89b023d9f8ef223aea83391e8e2e8202cf7196acf99519c3b02eca8e97d59337",
+    "teams/reg-mc-regionals/MC646.txt": "86e75be51410f58697c27974f1fa5e01f36b4549311a02c4937f3d3346272cc2",
+    "teams/reg-mc-regionals/MC751.txt": "d6fbce13695837381923c02691d5601ebcbeb0b0f9a803ee9b9a2c41f6f3b384",
+    "teams/reg-mc-regionals/MC778.txt": "e1cf5fe6d7b998423417d4c1b72af5dad98b8f9672fe174107b821b39c1555a7",
+    "teams/sun.txt": "2da20701dc8bd65ad39f779201bb1aea8f313e20ad4c0b7ac7d1393adcc463a3"
+  },
+  "fresh_five": [
+    "MC403",
+    "MC405",
+    "MC407",
+    "MC462",
+    "MC778"
+  ],
+  "base": 163000000,
+  "greedy_games_per_cell": 200,
+  "sampled_games_per_cell": 100,
+  "git_commit": "de54659df021da81bc6d418e59248c3ce8e68a37",
+  "simulator": {
+    "repository": "https://github.com/smogon/pokemon-showdown.git",
+    "commit": "965a535ef892d13cd68cf75c076db26f9f32842a",
+    "node": "22.22.0"
+  }
+}

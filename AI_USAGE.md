@@ -28,6 +28,8 @@ Codex built and calibrated the fixed-team opponent league, trained and selected 
 
 Codex fine-tuned the Transformer on four additional teams, trained the mirror and fixed-lineup PPO challengers on Sketch5, ran the reserved-seed and sampled-action evaluations, and wrote the counter-training report. Codex verified the exported policies against the training checkpoints by replaying all 16,000 confirmation games.
 
+Codex evaluated the frozen challengers and prior policies on the original seven test teams against the earlier bots, identified the two rosters reused during counter-training, and reported transfer on the five remaining unseen teams. The 156,800-game study ran on Sketch5, with matched seeds, both action-selection modes, paired confidence intervals and reproducible evaluation scripts.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

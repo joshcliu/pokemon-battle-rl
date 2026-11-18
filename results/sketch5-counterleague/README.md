@@ -1,5 +1,7 @@
 # Training a counter to the multi-team Transformer
 
+The subsequent test against the previous bots found partial transfer. On five teams absent from the challenger's training ancestry, the single mirror challenger won 29.58%, up from its parent's 17.76%. The earlier feedforward PPO won 40.72% on those same games. [Seven-team transfer evaluation](../sketch5-challenger-transfer/README.md)
+
 **A single full-history PPO Transformer won 3,786/4,000 games (94.65%) when given the defender's team.** It won 3,055/3,200 against the adapted Transformer on four tournament teams (95.47%) and 731/800 against the original champion on MC461 (91.38%). Its weakest mirror was MC646 at 701/800 (87.63%, Wilson 95% interval 85.16–89.73%). One network played every matchup. [Game-level results](confirmation/games.csv.gz) · [Weights](weights/counter-12.pt)
 
 A second single network used MC461 in every game, including when the defender changed teams. It won 3,664/4,000 (91.60%). Its weakest matchup was MC646 at 613/800 (76.63%, 95% interval 73.57–79.43%). Allowing a fixed-lineup bot to select a trained expert from the visible opposing leads raised its score to 3,929/4,000 (98.23%). [Fixed-lineup games](fixed-confirmation/games.csv.gz) · [Single-network weights](weights/counter-8.pt)

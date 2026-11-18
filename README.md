@@ -110,6 +110,11 @@ Transformer on four new teams and trains PPO opponents against its frozen weight
 A single challenger won 94.65% in team mirrors. A second single network kept MC461
 against every opponent and won 91.60%. Each result covers 4,000 fresh battles.
 
+The [challenger transfer test](results/sketch5-challenger-transfer/README.md) evaluates
+those policies against the previous bots on the original seven test teams.
+On the five teams absent from counter-training, the mirror challenger won 29.58%,
+its parent 17.76%, and the earlier feedforward PPO 40.72%.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh
