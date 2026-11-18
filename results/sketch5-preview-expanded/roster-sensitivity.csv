@@ -1,0 +1,7 @@
+policy,baseline,positive,equal,negative,roster_low95_pp,roster_high95_pp
+expanded-head,original-four,2,0,5,-24.559771825396826,1.5066964285714286
+expanded-head,previous-head,2,0,5,-27.17013888888889,21.316964285714285
+expanded-fallback,original-four,1,5,1,-18.973214285714285,6.2127976190476195
+expanded-fallback,previous-head,2,2,3,-21.83779761904762,27.734375000000007
+expanded-fallback,expanded-head,4,2,1,1.023065476190476,13.73387896825397
+previous-head,original-four,2,3,2,-31.082589285714285,17.12549603174603

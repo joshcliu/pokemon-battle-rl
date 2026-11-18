@@ -36,6 +36,8 @@ Codex audited three training trajectories and ran a two-seed PPO opponent-mixtur
 
 Codex implemented simultaneous closed-sheet lineup selection and its simulator check, ran the 90-lineup sweeps with the MC461 Transformer frozen, fit the preview head from training-roster outcomes, and compared locked choices on Sketch5. It compiled the matchup guide, paired game outcomes and uncertainty estimates.
 
+Codex sourced and validated 45 additional tournament rosters, ran their lineup sweeps on Sketch5, corrected the setup pilot’s handling of a forced recharge, refit the preview head, and compared its held-out picks with the previous head and original four. It generated the paired results, validation analysis, figure and report.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

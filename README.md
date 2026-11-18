@@ -130,6 +130,11 @@ Transformer and tries all 90 lead-pair and reserve-pair combinations against eac
 22 opposing rosters. A separate preview head learns from the 15 training rosters and
 faces the best training-selected fixed lineup on seven held-out rosters.
 
+The [expanded preview experiment](results/sketch5-preview-expanded/README.md) adds 45
+regional rosters with the same frozen MC461 battle policy. The new head recovered
+64.84 percentage points against MC405. Across the seven held-out rosters it won
+71.43%, behind the original four at 82.18%.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh
