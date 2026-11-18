@@ -187,6 +187,9 @@ def report():
     write_csv(OUT / "mean-changes.csv", average)
     plot_crossplay(scores, average)
     training = []
+    training_windows = []
+    simulator_seeds = {int(r["seed"]) for r in all_games}
+    overlaps = {}
     exports = []
     (OUT / "weights").mkdir(exist_ok=True)
     for seed in SEEDS:
@@ -221,6 +224,25 @@ def report():
         assert all(
             torch.equal(value, initial["policy"][key]) for key, value in source["policy"].items()
         )
+        with (root / "episodes.jsonl").open() as stream:
+            episodes = [json.loads(line) for line in stream]
+        assert len(episodes) > 1024
+        for window, group in (("first-512", episodes[:512]), ("last-512", episodes[-512:])):
+            wins = sum(r["outcome"] == "win" for r in group)
+            training_windows.append(
+                dict(
+                    seed=seed,
+                    window=window,
+                    episodes=len(group),
+                    wins=wins,
+                    win_pct=100 * wins / len(group),
+                )
+            )
+        parent_log = Path(args["init_checkpoint"]).parent / "episodes.jsonl"
+        with parent_log.open() as stream:
+            parent_seeds = {json.loads(line)["simulator_seed"] for line in stream}
+        seen = parent_seeds | {r["simulator_seed"] for r in episodes}
+        overlaps[str(seed)] = sorted(seen & simulator_seeds)
         with (root / "metrics.jsonl").open() as stream:
             for line in stream:
                 metric = json.loads(line)
@@ -235,12 +257,14 @@ def report():
                 )
     write_csv(OUT / "training-curves.csv", training)
     write_csv(OUT / "weights.csv", exports)
+    write_csv(OUT / "training-windows.csv", training_windows)
     audit = dict(
         games=len(all_games),
         outcomes=Counter(r["outcome"] for r in all_games),
         native_defaults=sum(int(r["opponent_defaults"]) for r in all_games),
         replicated_games=3 * 8,
         matched_opponent_previews=True,
+        evaluation_seed_coincidences_with_training=overlaps,
     )
     (OUT / "audit.json").write_text(json.dumps(audit, indent=2) + "\n")
     print(json.dumps(audit))
