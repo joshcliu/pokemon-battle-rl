@@ -224,3 +224,27 @@ def test_hidden_shadow_tag_reissues_only_trapped_players_choice():
         assert any(line.startswith("|switch|p1a: FLOW|") for line in battle.log)
     finally:
         env.close()
+
+
+def test_reg_mb_open_sheets_show_moves_before_either_team_picks():
+    own = (ROOT / "teams/reg-mb-variant/MC461-MB.txt").read_text()
+    other = (ROOT / "teams/balance.txt").read_text()
+    with LocalBattle("gen9championsvgc2026regmb", open_team_sheets=True) as battle:
+
+        def preview(side, public):
+            view = battle.players[side]
+            assert view.teampreview and len(public) == len(view.opponent_team) == 6
+            assert all(len(mon.moves) == 4 for mon in view.opponent_team.values())
+            return (1, 2, 3, 4)
+
+        battle.reset(
+            97,
+            own,
+            other,
+            preview_pickers={
+                "p1": lambda species: preview("p1", species),
+                "p2": lambda species: preview("p2", species),
+            },
+        )
+        assert "waterfall" in battle.players["p1"].opponent_active_pokemon[0].moves
+        assert battle.players["p2"].opponent_active_pokemon[0].item == "meowsticite"

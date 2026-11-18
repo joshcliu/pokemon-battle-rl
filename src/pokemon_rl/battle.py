@@ -28,10 +28,15 @@ def node_binary() -> str:
 
 class LocalBattle:
     def __init__(
-        self, battle_format: str = DEFAULT_FORMAT, timeout: float = 20, *, open_team_sheets=False
+        self,
+        battle_format: str = DEFAULT_FORMAT,
+        timeout: float = 20,
+        *,
+        open_team_sheets=False,
+        simulator=None,
     ):
         self.open_team_sheets = open_team_sheets
-        simulator = ROOT / ".cache/pokemon-showdown"
+        simulator = Path(simulator) if simulator is not None else ROOT / ".cache/pokemon-showdown"
         if not (simulator / "dist/sim/index.js").exists():
             raise RuntimeError("Simulator missing; run python scripts/setup_simulator.py")
         self.format = battle_format

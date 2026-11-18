@@ -92,17 +92,22 @@ def specification(count):
     )
 
 
-@lru_cache(maxsize=1)
-def resources(learner):
+@lru_cache(maxsize=2)
+def simulator(fmt, sheets, directory):
     torch.set_num_threads(1)
-    battle = LocalBattle(timeout=60)
+    battle = LocalBattle(fmt, timeout=60, open_team_sheets=sheets, simulator=directory)
     atexit.register(battle.close)
-    return battle, FrozenActor(ROOT / learner)
+    return battle
+
+
+@lru_cache(maxsize=6)
+def frozen_actor(learner):
+    return FrozenActor(ROOT / learner)
 
 
 @lru_cache(maxsize=5)
-def rival(name):
-    kwargs = dict(battle_format=DEFAULT_FORMAT, start_listening=False)
+def rival(name, fmt):
+    kwargs = dict(battle_format=fmt, start_listening=False)
     if name in CLASSES:
         return CLASSES[name](**kwargs)
     with chdir(CACHE / "source"):
@@ -137,9 +142,10 @@ def seed_actions(seed):
 
 
 def game(spec, team, family, label, seed, side):
-    battle, actor = resources(spec["learner"])
+    battle = simulator(spec["format"], spec["open_team_sheets"], spec.get("simulator_path"))
+    actor = frozen_actor(spec["learner"])
     actor.reset()
-    other = rival(family)
+    other = rival(family, spec["format"])
     foe = "p2" if side == "p1" else "p1"
     picks = {}
 
@@ -151,7 +157,10 @@ def game(spec, team, family, label, seed, side):
     def opponent_preview(_):
         view = battle.players[foe]
         assert view.teampreview and len(view.team) == len(view.opponent_team) == 6
-        assert view.format == DEFAULT_FORMAT
+        assert view.format == spec["format"]
+        if spec["open_team_sheets"]:
+            assert all(len(mon.moves) == 4 for mon in view.opponent_team.values())
+            assert all(len(mon.moves) == 4 for mon in battle.players[side].opponent_team.values())
         # On this Showdown revision the preview request marks the first two slots
         # active. All six are legal draft choices; the upstream converter also
         # checks available_switches when decoding its two masked preview actions.
