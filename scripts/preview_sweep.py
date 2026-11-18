@@ -56,13 +56,15 @@ def load_head(root):
     return load_model(root / "preview-head.pt")
 
 
-def play(stage, team, i, label, family, opponent, j, spec, root):
+def play(stage, team, i, label, family, opponent, j, spec, root, selector=None):
     base = spec["base"][stage] + (i * len(spec["opponents"]) + j) * 1000
     selections = []
 
     def choose(seed, visible):
         assert len(visible) == 6 and visible == tuple(sorted(visible))
-        if label == "learned":
+        if selector is not None:
+            order = selector(visible)
+        elif label == "learned":
             order = load_head(root).choose(visible)
         elif label == "random":
             rng = np.random.default_rng(np.random.SeedSequence([seed, 7329]))
