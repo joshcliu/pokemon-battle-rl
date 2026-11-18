@@ -1,0 +1,452 @@
+[
+  {
+    "team_id": "MC455",
+    "date": "2026-09-27",
+    "event": "Frankfurt Regional 2027",
+    "placement": "9th",
+    "player": "Koen van Cann",
+    "pokepaste": "https://pokepast.es/7e97a19e8093f20b",
+    "base_species_six": "Arcanine|Kingambit|Raichu|Rillaboom|Salamence|Sneasler",
+    "playable_four": "Kingambit|Raichu|Salamence|Sneasler"
+  },
+  {
+    "team_id": "MC643",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "9th",
+    "player": "Paul Chua",
+    "pokepaste": "https://pokepast.es/cc67c2218bc1b2fa",
+    "base_species_six": "Charizard|Garchomp|Incineroar|Sylveon|Toxapex|Venusaur",
+    "playable_four": "Charizard|Garchomp|Incineroar|Venusaur"
+  },
+  {
+    "team_id": "MC453",
+    "date": "2026-09-27",
+    "event": "Frankfurt Regional 2027",
+    "placement": "11th",
+    "player": "FWIEFISCH",
+    "pokepaste": "https://pokepast.es/3fb800fbaa57c1b5",
+    "base_species_six": "Archaludon|Farigiraf|Golisopod|Kingambit|Pelipper|Raichu",
+    "playable_four": "Farigiraf|Golisopod|Kingambit|Raichu"
+  },
+  {
+    "team_id": "MC398",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "12th",
+    "player": "Justin Tang",
+    "pokepaste": "https://pokepast.es/753cf48da749168a",
+    "base_species_six": "Delphox|Floette|Incineroar|Kingambit|Sinistcha|Sneasler",
+    "playable_four": "Delphox|Incineroar|Kingambit|Sinistcha"
+  },
+  {
+    "team_id": "MC397",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "13th",
+    "player": "Andres Wilkerson",
+    "pokepaste": "https://pokepast.es/e97cb94d7e8d7678",
+    "base_species_six": "Ceruledge|Dragonite|Gardevoir|Indeedee|Lopunny|Sneasler",
+    "playable_four": "Ceruledge|Indeedee|Lopunny|Sneasler"
+  },
+  {
+    "team_id": "MC547",
+    "date": "2026-10-04",
+    "event": "Recife Regional 2027",
+    "placement": "15th",
+    "player": "Yan Fernandes",
+    "pokepaste": "https://pokepast.es/9e70befc49a72bfc",
+    "base_species_six": "Arcanine|Gholdengo|Primarina|Raichu|Rillaboom|Staraptor",
+    "playable_four": "Arcanine|Primarina|Rillaboom|Staraptor"
+  },
+  {
+    "team_id": "MC688",
+    "date": "2026-10-19",
+    "event": "Nice Regional 2027",
+    "placement": "15th",
+    "player": "IdkVgc19",
+    "pokepaste": "https://pokepast.es/9b8519ea8b7fc5a9",
+    "base_species_six": "Excadrill|Gengar|Hippowdon|Incineroar|Kommo-o|Rillaboom",
+    "playable_four": "Gengar|Incineroar|Kommo-o|Rillaboom"
+  },
+  {
+    "team_id": "MC396",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "16th",
+    "player": "dylanis_chilln",
+    "pokepaste": "https://pokepast.es/1a24e07035a9036e",
+    "base_species_six": "Altaria|Arcanine|Dragapult|Indeedee|Metagross|Milotic",
+    "playable_four": "Dragapult|Indeedee|Metagross|Milotic"
+  },
+  {
+    "team_id": "MC636",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "16th",
+    "player": "gossamerguns",
+    "pokepaste": "https://pokepast.es/c17953781c23d7fb",
+    "base_species_six": "Alcremie|Farigiraf|Garchomp|Kingambit|Torkoal|Venusaur",
+    "playable_four": "Farigiraf|Garchomp|Torkoal|Venusaur"
+  },
+  {
+    "team_id": "MC395",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "17th",
+    "player": "brenburkhardt",
+    "pokepaste": "https://pokepast.es/7964df3689592688",
+    "base_species_six": "Excadrill|Gholdengo|Primarina|Salamence|Sinistcha|Tyranitar",
+    "playable_four": "Excadrill|Salamence|Sinistcha|Tyranitar"
+  },
+  {
+    "team_id": "MC767",
+    "date": "2026-11-03",
+    "event": "Gdańsk Regional 2027",
+    "placement": "17th",
+    "player": "Leonardo Bonanomi",
+    "pokepaste": "https://pokepast.es/26cb3dfe88d8c344",
+    "base_species_six": "Garchomp|Glimmora|Kingambit|Rillaboom|Salamence|Volcarona",
+    "playable_four": "Glimmora|Kingambit|Rillaboom|Salamence"
+  },
+  {
+    "team_id": "MC394",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "18th",
+    "player": "Mason Cutler",
+    "pokepaste": "https://pokepast.es/f0c719a12f5ca9c7",
+    "base_species_six": "Basculegion|Gardevoir|Indeedee|Kommo-o|Pyroar|Whimsicott",
+    "playable_four": "Gardevoir|Indeedee|Kommo-o|Whimsicott"
+  },
+  {
+    "team_id": "MC766",
+    "date": "2026-11-01",
+    "event": "Gdańsk Regional 2027",
+    "placement": "19th",
+    "player": "jonen00",
+    "pokepaste": "https://pokepast.es/d7003f722cc59699",
+    "base_species_six": "Armarouge|Froslass|Glimmora|Kingambit|Staraptor|Whimsicott",
+    "playable_four": "Froslass|Glimmora|Kingambit|Whimsicott"
+  },
+  {
+    "team_id": "MC632",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "20th",
+    "player": "ethanrauchs",
+    "pokepaste": "https://pokepast.es/16c4b2b94d5965cf",
+    "base_species_six": "Armarouge|Froslass|Indeedee|Milotic|Raichu|Sneasler",
+    "playable_four": "Froslass|Indeedee|Milotic|Raichu"
+  },
+  {
+    "team_id": "MC739",
+    "date": "2026-10-26",
+    "event": "Puebla Regional 2027",
+    "placement": "20th",
+    "player": "fireb7799",
+    "pokepaste": "https://pokepast.es/c6b6fd3ce9a82cea",
+    "base_species_six": "Archaludon|Basculegion|Garchomp|Golisopod|Meowstic|Pelipper",
+    "playable_four": "Archaludon|Basculegion|Golisopod|Meowstic"
+  },
+  {
+    "team_id": "MC392",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "21st",
+    "player": "doughboyvgc",
+    "pokepaste": "https://pokepast.es/9498e26ea89bd49c",
+    "base_species_six": "Archaludon|Basculegion|Golisopod|Pelipper|Rillaboom|Salamence",
+    "playable_four": "Archaludon|Basculegion|Pelipper|Salamence"
+  },
+  {
+    "team_id": "MC434",
+    "date": "2026-09-27",
+    "event": "Brisbane Regional 2027",
+    "placement": "21st",
+    "player": "BlazeG1798",
+    "pokepaste": "https://pokepast.es/856c378ecfafa498",
+    "base_species_six": "Baxcalibur|Ceruledge|Kingambit|Rillaboom|Sneasler|Volcarona",
+    "playable_four": "Baxcalibur|Ceruledge|Rillaboom|Sneasler"
+  },
+  {
+    "team_id": "MC433",
+    "date": "2026-09-27",
+    "event": "Brisbane Regional 2027",
+    "placement": "22nd",
+    "player": "clearmomdotcom",
+    "pokepaste": "https://pokepast.es/121bf6e0adae5935",
+    "base_species_six": "Archaludon|Gengar|Indeedee|Pelipper|Sneasler|Starmie",
+    "playable_four": "Archaludon|Gengar|Indeedee|Starmie"
+  },
+  {
+    "team_id": "MC631",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "24th",
+    "player": "ImageTT7",
+    "pokepaste": "https://pokepast.es/e630a0e39102a749",
+    "base_species_six": "Aerodactyl|Charizard|Farigiraf|Garchomp|Kingambit|Sylveon",
+    "playable_four": "Farigiraf|Garchomp|Kingambit|Sylveon"
+  },
+  {
+    "team_id": "MC765",
+    "date": "2026-11-02",
+    "event": "Gdańsk Regional 2027",
+    "placement": "26th",
+    "player": "Nikolaj Høj Nielsen",
+    "pokepaste": "https://pokepast.es/31d51c2d516fe5bc",
+    "base_species_six": "Annihilape|Charizard|Farigiraf|Garchomp|Incineroar|Sylveon",
+    "playable_four": "Charizard|Farigiraf|Incineroar|Sylveon"
+  },
+  {
+    "team_id": "MC391",
+    "date": "2026-09-22",
+    "event": "Baltimore Regional 2027",
+    "placement": "28th",
+    "player": "willbrown_vgc",
+    "pokepaste": "https://pokepast.es/3ab405a83e618503",
+    "base_species_six": "Basculegion|Garchomp|Incineroar|Lucario|Rillaboom|Sneasler",
+    "playable_four": "Garchomp|Incineroar|Lucario|Rillaboom"
+  },
+  {
+    "team_id": "MC684",
+    "date": "2026-10-18",
+    "event": "Nice Regional 2027",
+    "placement": "29th",
+    "player": "_tototh",
+    "pokepaste": "https://pokepast.es/4cd94433c3405b8a",
+    "base_species_six": "Charizard|Garchomp|Incineroar|Indeedee|Metagross|Whimsicott",
+    "playable_four": "Garchomp|Indeedee|Metagross|Whimsicott"
+  },
+  {
+    "team_id": "MC390",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "32nd",
+    "player": "Kshaunish Shaik",
+    "pokepaste": "https://pokepast.es/d41341435d22d77b",
+    "base_species_six": "Garchomp|Gholdengo|Incineroar|Raichu|Rillaboom|Sneasler",
+    "playable_four": "Garchomp|Raichu|Rillaboom|Sneasler"
+  },
+  {
+    "team_id": "MC432",
+    "date": "2026-09-30",
+    "event": "Brisbane Regional 2027",
+    "placement": "35th",
+    "player": "Balyn Wales-Lewis",
+    "pokepaste": "https://pokepast.es/506d7e1dfaf5889b",
+    "base_species_six": "Arcanine|Gholdengo|Milotic|Raichu|Rillaboom|Salamence",
+    "playable_four": "Arcanine|Raichu|Rillaboom|Salamence"
+  },
+  {
+    "team_id": "MC389",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "37th",
+    "player": "spacesnak3",
+    "pokepaste": "https://pokepast.es/7daa12192d6b54cf",
+    "base_species_six": "Charizard|Garchomp|Gholdengo|Incineroar|Noivern|Venusaur",
+    "playable_four": "Charizard|Incineroar|Noivern|Venusaur"
+  },
+  {
+    "team_id": "MC628",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "37th",
+    "player": "euphitc",
+    "pokepaste": "https://pokepast.es/8189ec99620cb9a9",
+    "base_species_six": "Archaludon|Basculegion|Golisopod|Pelipper|Raichu|Sneasler",
+    "playable_four": "Archaludon|Basculegion|Golisopod|Pelipper"
+  },
+  {
+    "team_id": "MC627",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "38th",
+    "player": "Elijah Peeples",
+    "pokepaste": "https://pokepast.es/b1b1e3624efe03bc",
+    "base_species_six": "Charizard|Farigiraf|Garchomp|Gholdengo|Venusaur|Watchog",
+    "playable_four": "Charizard|Garchomp|Gholdengo|Watchog"
+  },
+  {
+    "team_id": "MC626",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "39th",
+    "player": "DitzyDoes",
+    "pokepaste": "https://pokepast.es/30f50cc33cd65b2a",
+    "base_species_six": "Archaludon|Basculegion|Floette|Golisopod|Pelipper|Sneasler",
+    "playable_four": "Archaludon|Floette|Golisopod|Pelipper"
+  },
+  {
+    "team_id": "MC388",
+    "date": "2026-09-22",
+    "event": "Baltimore Regional 2027",
+    "placement": "41st",
+    "player": "zoryavgc",
+    "pokepaste": "https://pokepast.es/0bd9b6346f3630a1",
+    "base_species_six": "Arcanine|Froslass|Kingambit|Raichu|Rillaboom|Sneasler",
+    "playable_four": "Froslass|Kingambit|Raichu|Rillaboom"
+  },
+  {
+    "team_id": "MC625",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "41st",
+    "player": "luckysharmsvgc",
+    "pokepaste": "https://pokepast.es/15c2c4030c5e1747",
+    "base_species_six": "Archaludon|Farigiraf|Garchomp|Golisopod|Politoed|Sneasler",
+    "playable_four": "Farigiraf|Garchomp|Golisopod|Politoed"
+  },
+  {
+    "team_id": "MC738",
+    "date": "2026-10-30",
+    "event": "Puebla Regional 2027",
+    "placement": "41st",
+    "player": "Christian Ramírez",
+    "pokepaste": "https://pokepast.es/4ee5d23f26213d8e",
+    "base_species_six": "Archaludon|Basculegion|Gardevoir|Golisopod|Indeedee|Pelipper",
+    "playable_four": "Archaludon|Golisopod|Indeedee|Pelipper"
+  },
+  {
+    "team_id": "MC387",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "43rd",
+    "player": "canadia_tuxedo",
+    "pokepaste": "https://pokepast.es/8733c956c7c15dc6",
+    "base_species_six": "Archaludon|Golisopod|Incineroar|Pelipper|Sinistcha|Swampert",
+    "playable_four": "Archaludon|Incineroar|Pelipper|Swampert"
+  },
+  {
+    "team_id": "MC624",
+    "date": "2026-10-13",
+    "event": "Louisville Regional 2027",
+    "placement": "43rd",
+    "player": "Ryne Conley",
+    "pokepaste": "https://pokepast.es/729260de4ced310c",
+    "base_species_six": "Floette|Garchomp|Gholdengo|Rillaboom|Sneasler|Volcarona",
+    "playable_four": "Floette|Garchomp|Rillaboom|Sneasler"
+  },
+  {
+    "team_id": "MC623",
+    "date": "2026-10-13",
+    "event": "Louisville Regional 2027",
+    "placement": "44th",
+    "player": "RetkingVGC",
+    "pokepaste": "https://pokepast.es/a38c26cd96ddaace",
+    "base_species_six": "Basculegion|Floette|Incineroar|Raichu|Rillaboom|Volcarona",
+    "playable_four": "Basculegion|Incineroar|Raichu|Rillaboom"
+  },
+  {
+    "team_id": "MC622",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "49th",
+    "player": "konnichiwonnor",
+    "pokepaste": "https://pokepast.es/15f03afadfbc82d8",
+    "base_species_six": "Dragonite|Gholdengo|Incineroar|Primarina|Raichu|Rillaboom",
+    "playable_four": "Dragonite|Gholdengo|Incineroar|Rillaboom"
+  },
+  {
+    "team_id": "MC621",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "51st",
+    "player": "Santino Tarquinio",
+    "pokepaste": "https://pokepast.es/04156fe4dc3d402f",
+    "base_species_six": "Annihilape|Gengar|Incineroar|Kommo-o|Politoed|Rillaboom",
+    "playable_four": "Incineroar|Kommo-o|Politoed|Rillaboom"
+  },
+  {
+    "team_id": "MC386",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "52nd",
+    "player": "joej_live",
+    "pokepaste": "https://pokepast.es/dce537b603b784c6",
+    "base_species_six": "Charizard|Floette|Garchomp|Gholdengo|Incineroar|Rillaboom",
+    "playable_four": "Charizard|Floette|Gholdengo|Rillaboom"
+  },
+  {
+    "team_id": "MC619",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "54th",
+    "player": "subxforce",
+    "pokepaste": "https://pokepast.es/869d9c45f2e3ceb2",
+    "base_species_six": "Arcanine|Froslass|Kingambit|Kommo-o|Raichu|Rillaboom",
+    "playable_four": "Arcanine|Kommo-o|Raichu|Rillaboom"
+  },
+  {
+    "team_id": "MC618",
+    "date": "2026-10-12",
+    "event": "Louisville Regional 2027",
+    "placement": "57th",
+    "player": "Jimmy Friedle",
+    "pokepaste": "https://pokepast.es/f54d8751aaa23c04",
+    "base_species_six": "Basculegion|Camerupt|Farigiraf|Gardevoir|Indeedee|Sneasler",
+    "playable_four": "Basculegion|Camerupt|Gardevoir|Sneasler"
+  },
+  {
+    "team_id": "MC682",
+    "date": "2026-10-18",
+    "event": "Nice Regional 2027",
+    "placement": "57th",
+    "player": "LuixenS",
+    "pokepaste": "https://pokepast.es/330cd499eeadd12f",
+    "base_species_six": "Ceruledge|Garchomp|Primarina|Raichu|Rillaboom|Staraptor",
+    "playable_four": "Ceruledge|Primarina|Raichu|Rillaboom"
+  },
+  {
+    "team_id": "MC761",
+    "date": "2026-11-02",
+    "event": "Gdańsk Regional 2027",
+    "placement": "58th",
+    "player": "ildrarvgc",
+    "pokepaste": "https://pokepast.es/69cab68cd7298757",
+    "base_species_six": "Basculegion|Blaziken|Froslass|Kingambit|Rillaboom|Sneasler",
+    "playable_four": "Basculegion|Blaziken|Rillaboom|Sneasler"
+  },
+  {
+    "team_id": "MC384",
+    "date": "2026-09-21",
+    "event": "Baltimore Regional 2027",
+    "placement": "60th",
+    "player": "Brian Youm",
+    "pokepaste": "https://pokepast.es/e4aa1030c5e684b4",
+    "base_species_six": "Gholdengo|Incineroar|Raichu|Rillaboom|Salamence|Sneasler",
+    "playable_four": "Raichu|Rillaboom|Salamence|Sneasler"
+  },
+  {
+    "team_id": "MC681",
+    "date": "2026-10-18",
+    "event": "Nice Regional 2027",
+    "placement": "61st",
+    "player": "Lorenzo Colombo",
+    "pokepaste": "https://pokepast.es/190a39deafaa1b4b",
+    "base_species_six": "Froslass|Kingambit|Milotic|Raichu|Sneasler|Volcarona",
+    "playable_four": "Froslass|Kingambit|Milotic|Raichu"
+  },
+  {
+    "team_id": "MC450",
+    "date": "2026-09-27",
+    "event": "Frankfurt Regional 2027",
+    "placement": "62nd",
+    "player": "MiloNickVGC",
+    "pokepaste": "https://pokepast.es/d2496dbf4be552a1",
+    "base_species_six": "Archaludon|Farigiraf|Grapploct|Kangaskhan|Mawile|Pelipper",
+    "playable_four": "Archaludon|Farigiraf|Mawile|Pelipper"
+  },
+  {
+    "team_id": "MC760",
+    "date": "2026-11-03",
+    "event": "Gdańsk Regional 2027",
+    "placement": "63rd",
+    "player": "krlos_cb",
+    "pokepaste": "https://pokepast.es/acf64d94c9e32396",
+    "base_species_six": "Archaludon|Delphox|Incineroar|Pelipper|Raichu|Sinistcha",
+    "playable_four": "Archaludon|Delphox|Incineroar|Pelipper"
+  }
+]

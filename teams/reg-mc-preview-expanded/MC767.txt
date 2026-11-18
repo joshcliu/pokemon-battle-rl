@@ -1,0 +1,53 @@
+Glimmora @ Glimmoranite
+Ability: Toxic Debris
+EVs: 31 HP / 20 SpA / 1 SpD / 14 Spe
+Modest Nature
+- Sludge Bomb
+- Power Gem
+- Earth Power
+- Spiky Shield
+
+Kingambit @ Life Orb
+Ability: Defiant
+EVs: 32 HP / 32 Atk / 1 SpD / 1 Spe
+Adamant Nature
+- Kowtow Cleave
+- Sucker Punch
+- Swords Dance
+- Protect
+
+Salamence @ Salamencite
+Ability: Intimidate
+EVs: 1 HP / 32 SpA / 1 SpD / 32 Spe
+Timid Nature
+- Hyper Voice
+- Draco Meteor
+- Tailwind
+- Protect
+
+Rillaboom @ Miracle Seed
+Ability: Grassy Surge
+EVs: 30 HP / 25 Atk / 11 Spe
+Adamant Nature
+- Fake Out
+- Wood Hammer
+- Grassy Glide
+- Superpower
+
+Volcarona @ Charti Berry
+Ability: Flame Body
+EVs: 22 HP / 21 Def / 23 Spe
+Timid Nature
+- Overheat
+- Struggle Bug
+- Rage Powder
+- Protect
+
+Garchomp @ Choice Scarf
+Ability: Rough Skin
+EVs: 2 HP / 32 Atk / 32 Spe
+Adamant Nature
+- Stomping Tantrum
+- Earthquake
+- Dragon Claw
+- Rock Slide

@@ -1,0 +1,54 @@
+Sinon (Raichu) @ Raichunite Y
+Ability: Lightning Rod
+EVs: 24 HP / 16 Def / 26 Spe
+Timid Nature
+- Zap Cannon
+- Focus Blast
+- Fake Out
+- Protect
+
+Agil (Rillaboom) @ Miracle Seed
+Ability: Grassy Surge
+Shiny: Yes
+EVs: 18 HP / 25 Atk / 3 Def / 20 Spe
+Adamant Nature
+- Fake Out
+- Wood Hammer
+- Grassy Glide
+- High Horsepower
+
+Leafa (Primarina) @ Leftovers
+Ability: Liquid Voice
+EVs: 22 HP / 24 Def / 4 SpA / 16 Spe
+Modest Nature
+- Hyper Voice
+- Moonblast
+- Calm Mind
+- Protect
+
+Kirito (Ceruledge) @ Grassy Seed
+Ability: Flash Fire
+EVs: 27 HP / 15 Atk / 4 Def / 3 SpD / 17 Spe
+Adamant Nature
+- Shadow Sneak
+- Bitter Blade
+- Swords Dance
+- Protect
+
+Heathcliff (Garchomp) @ Choice Scarf
+Ability: Rough Skin
+EVs: 14 HP / 20 Atk / 32 Spe
+Adamant Nature
+- Earthquake
+- Stomping Tantrum
+- Dragon Claw
+- Rock Slide
+
+Asuna (Staraptor) @ Staraptite
+Ability: Intimidate
+EVs: 25 HP / 7 Atk / 2 SpD / 32 Spe
+Jolly Nature
+- Close Combat
+- Brave Bird
+- Tailwind
+- Protect

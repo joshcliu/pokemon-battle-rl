@@ -11,7 +11,7 @@ from analyze_long_rewards import write_csv
 from evaluate_challenger_transfer import digest, read
 from poke_env.data import GenData
 from poke_env.data.normalize import to_id_str
-from preview_sweep import BASE, COUNT, LINEUPS, RUN, read_games, save
+from preview_sweep import COUNT, LINEUPS, RUN, read_games, save
 from torch import nn
 
 EPOCHS = (30, 90, 180)
@@ -34,11 +34,11 @@ def audit_sweep(root, stage):
             expected = {
                 (
                     family,
-                    BASE[stage] + (i * len(spec["opponents"]) + j) * 1000 + k,
+                    spec["base"][stage] + (i * len(spec["opponents"]) + j) * 1000 + k,
                     "p1" if k % 2 == 0 else "p2",
                 )
                 for j, family in enumerate(spec["opponents"])
-                for k in range(COUNT[stage])
+                for k in range(spec["counts"][stage])
             }
             assert len(games) == len(expected)
             assert {(r["family"], int(r["seed"]), r["side"]) for r in games} == expected

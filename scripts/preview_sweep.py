@@ -57,7 +57,7 @@ def load_head(root):
 
 
 def play(stage, team, i, label, family, opponent, j, spec, root):
-    base = BASE[stage] + (i * len(spec["opponents"]) + j) * 1000
+    base = spec["base"][stage] + (i * len(spec["opponents"]) + j) * 1000
     selections = []
 
     def choose(seed, visible):
@@ -87,7 +87,7 @@ def play(stage, team, i, label, family, opponent, j, spec, root):
         team,
         base,
         0,
-        COUNT[stage],
+        spec["counts"][stage],
         learner_preview=choose,
         resources=resources(),
     )
