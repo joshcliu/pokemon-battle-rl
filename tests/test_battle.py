@@ -93,7 +93,7 @@ def test_preview_picks_both_sides_before_leads_are_revealed():
         for side in ("p1", "p2"):
             leads = [m.species for m in battle.players[side].active_pokemon]
             assert leads[0] == "kingambit" and leads[1].startswith("charizard")
-            chosen = [m["ident"].split(": ")[1] for m in battle.requests[side]["side"]["pokemon"]]
+            chosen = [m["details"].split(",")[0] for m in battle.requests[side]["side"]["pokemon"]]
             assert len(chosen) == 4 and chosen[-2:] == ["Meowstic-F", "Indeedee"]
         with pytest.raises(ValueError, match="Invalid team preview order"):
             battle.reset(77, team, team, preview_pickers={"p1": lambda _: (1, 1, 2, 3)})
