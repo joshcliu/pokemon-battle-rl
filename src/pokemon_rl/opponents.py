@@ -2,6 +2,7 @@
 
 import numpy as np
 from poke_env.battle import Move, Pokemon
+from poke_env.battle.target import Target
 
 STYLES = ("random", "damage", "switch", "setup", "mixture")
 
@@ -22,7 +23,7 @@ def damage_score(order, player, pos):
     effectiveness = sum(p.damage_multiplier(move) for p in targets if p is not None)
     stab = 1.5 if move.type in mon.types else 1.0
     score = move.base_power * float(move.accuracy) * stab * effectiveness
-    if move.target.name == "ALL_ADJACENT":
+    if move.target == Target.ALL_ADJACENT:
         ally = player.active_pokemon[1 - pos]
         if ally is not None:
             score -= move.base_power * ally.damage_multiplier(move)
@@ -60,7 +61,7 @@ class Heuristic:
                 mon, move = player.active_pokemon[pos], order.order
                 if self.style == "setup" and isinstance(move, Move) and mon is not None:
                     boosts = move.boosts or {}
-                    if move.target.name == "SELF" and any(
+                    if move.target == Target.SELF and any(
                         change > 0 and mon.boosts.get(stat, 0) < 2
                         for stat, change in boosts.items()
                     ):

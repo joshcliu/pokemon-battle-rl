@@ -1,10 +1,22 @@
 import json
 from types import SimpleNamespace
 
+import numpy as np
 import torch
+from poke_env.battle import Move
 
 from pokemon_rl.history import make_policy
 from pokemon_rl.league import FrozenActor, LeadRouter
+from pokemon_rl.opponents import Heuristic
+
+
+def test_setup_bot_accepts_forced_recharge_with_no_target():
+    recharge = Move("recharge", gen=9)
+    assert recharge.target is None
+    order = SimpleNamespace(order=recharge, message="move recharge")
+    player = SimpleNamespace(active_pokemon=[object(), object()])
+    legal = {(7, 7): SimpleNamespace(first_order=order, second_order=order)}
+    assert Heuristic("setup", np.random.default_rng(1)).choose(player, legal) == (7, 7)
 
 
 def test_loading_frozen_opponent_preserves_training_rng(tmp_path):
