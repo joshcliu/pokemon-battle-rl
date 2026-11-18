@@ -1,0 +1,30 @@
+{
+  "train_teams": [
+    "teams/reg-mc-regionals/MC650.txt",
+    "teams/reg-mc-regionals/MC463.txt",
+    "teams/reg-mc-regionals/MC648.txt",
+    "teams/reg-mc-regionals/MC460.txt",
+    "teams/reg-mc-regionals/MC649.txt",
+    "teams/reg-mc-regionals/MC461.txt",
+    "teams/reg-mc-regionals/MC408.txt",
+    "teams/reg-mc-regionals/MC779.txt",
+    "teams/reg-mc-regionals/MC442.txt",
+    "teams/reg-mc-regionals/MC554.txt",
+    "teams/reg-mc-regionals/MC781.txt",
+    "teams/reg-mc-regionals/MC780.txt",
+    "teams/reg-mc-regionals/MC697.txt",
+    "teams/reg-mc-regionals/MC647.txt",
+    "teams/reg-mc-regionals/MC439.txt"
+  ],
+  "epoch": 180,
+  "fit_seed": 829,
+  "candidate_epochs": [
+    30,
+    90,
+    180
+  ],
+  "fixed": "3456",
+  "head_sha256": "3228b70c9aed4a316f41b10b8c80a7250d896e257f7e3c47b4002dd19a53586e",
+  "training_table_sha256": "20be8e48f6f404cd0b61f44ea7ce8d75efbf66ea3bd446a97f540caf13438b24",
+  "tie_break": "first canonical lineup or earliest epoch"
+}

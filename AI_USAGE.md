@@ -34,6 +34,8 @@ Codex then evaluated the original Transformer and both single-network challenger
 
 Codex audited three training trajectories and ran a two-seed PPO opponent-mixture pilot on Sketch5. It evaluated intermediate checkpoints, compared sampled and greedy actions on matched games, plotted the results, and drafted the interpretation and proposed follow-up experiment.
 
+Codex implemented simultaneous closed-sheet lineup selection and its simulator check, ran the 90-lineup sweeps with the MC461 Transformer frozen, fit the preview head from training-roster outcomes, and compared locked choices on Sketch5. It compiled the matchup guide, paired game outcomes and uncertainty estimates.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

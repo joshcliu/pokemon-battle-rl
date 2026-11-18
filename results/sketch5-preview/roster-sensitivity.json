@@ -1,0 +1,12 @@
+{
+  "teams": 7,
+  "mean_delta_pp": 24.355158730158728,
+  "bootstrap95_pp": [
+    8.530815972222225,
+    36.73115079365079
+  ],
+  "positive": 6,
+  "negative": 1,
+  "equal": 0,
+  "bootstrap_seed": 49033
+}

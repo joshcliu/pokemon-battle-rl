@@ -1,0 +1,10 @@
+{
+  "simulator_party_checks": 180,
+  "archived_games_replayed": 18,
+  "verified_fields": [
+    "outcome",
+    "turn",
+    "side"
+  ],
+  "original_lineup": "1234"
+}

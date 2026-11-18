@@ -125,6 +125,11 @@ measures when those gains appeared and tests four new 8,192-step PPO continuatio
 Mixing in earlier opponents improved broad performance on one training seed and
 lowered it on the other. The weaker seed's regression persisted under sampled moves.
 
+The [team-preview experiment](results/sketch5-preview/README.md) freezes the MC461 battle
+Transformer and tries all 90 lead-pair and reserve-pair combinations against each of
+22 opposing rosters. A separate preview head learns from the 15 training rosters and
+faces the best training-selected fixed lineup on seven held-out rosters.
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh
