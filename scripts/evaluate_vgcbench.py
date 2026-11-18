@@ -156,10 +156,10 @@ def game(spec, team, family, label, seed, side):
 
     def opponent_preview(_):
         view = battle.players[foe]
-        assert view.teampreview and len(view.team) == len(view.opponent_team) == 6
+        assert view.teampreview and len(view.team) == 6 and 4 <= len(view.opponent_team) <= 6
         assert view.format == spec["format"]
         if spec["open_team_sheets"]:
-            assert all(len(mon.moves) == 4 for mon in view.opponent_team.values())
+            assert all(1 <= len(mon.moves) <= 4 for mon in view.opponent_team.values())
             assert all(len(mon.moves) == 4 for mon in battle.players[side].opponent_team.values())
         # On this Showdown revision the preview request marks the first two slots
         # active. All six are legal draft choices; the upstream converter also

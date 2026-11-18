@@ -85,6 +85,60 @@ def averaged_effect(pairs):
     )
 
 
+def plot_crossplay(scores, average):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    lookup = {(r["candidate"], r["family"]): r for r in scores if r["subset"] == "external-12"}
+    fig, (left, right) = plt.subplots(
+        1, 2, figsize=(10.4, 4.5), layout="constrained", gridspec_kw={"width_ratios": [1, 1.15]}
+    )
+    colors = ["#156a9c", "#bd5d29", "#278061", "#7a5791"]
+    for seed, color in zip(SEEDS, colors, strict=True):
+        values = [lookup[f"seed-{seed}-step-{step}", "bc-learned"]["win_pct"] for step in STAGES]
+        left.plot(STAGES, values, color=color, marker="o", label=f"Seed {seed}", linewidth=1.8)
+    left.axhline(
+        lookup[CHAMPION, "bc-learned"]["win_pct"],
+        color="#687078",
+        linestyle=":",
+        label="M-C champion on variant",
+    )
+    left.set(
+        title="Against VGC-Bench behavior cloning",
+        ylabel="Wins (%)",
+        xlabel="M-B fine-tuning decisions",
+        xticks=STAGES,
+        xticklabels=["0", "16,384", "65,536"],
+        ylim=(0, 100),
+    )
+    left.grid(axis="y", alpha=0.18)
+    left.legend(fontsize=8, loc="best")
+    matchups = sorted(
+        (
+            r
+            for r in average
+            if r["family"] == "bc-learned" and r["step"] == 65536 and r["subset"] != "external-12"
+        ),
+        key=lambda r: r["delta_pp"],
+    )
+    for pos, r in enumerate(matchups):
+        right.plot([r["low95_pp"], r["high95_pp"]], [pos, pos], color="#6b8998", linewidth=1.5)
+        right.plot(r["delta_pp"], pos, "o", color="#15536f", markersize=4)
+    right.axvline(0, color="#687078", linestyle=":", linewidth=1)
+    right.set(
+        yticks=range(len(matchups)),
+        yticklabels=[r["subset"] for r in matchups],
+        xlabel="Win-rate change (percentage points)",
+        title="Paired change from 0 to 65,536 decisions",
+    )
+    for panel in (left, right):
+        panel.spines[["top", "right"]].set_visible(False)
+    fig.savefig(OUT / "external-crossplay.png", dpi=175)
+    plt.close(fig)
+
+
 def report():
     spec = read(RUN / "protocol.json")
     assert all(digest(p) == h for p, h in spec["sha256"].items())
@@ -131,6 +185,7 @@ def report():
     write_csv(OUT / "win-rates.csv", scores)
     write_csv(OUT / "paired-changes.csv", changes)
     write_csv(OUT / "mean-changes.csv", average)
+    plot_crossplay(scores, average)
     training = []
     exports = []
     (OUT / "weights").mkdir(exist_ok=True)
