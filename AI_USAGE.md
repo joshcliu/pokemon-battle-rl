@@ -32,6 +32,8 @@ Codex evaluated the frozen challengers and prior policies on the original seven 
 
 Codex then evaluated the original Transformer and both single-network challengers while holding their own lineup fixed to MC461 and assigning the seven test rosters to the previous bots. All 75,600 games ran on Sketch5. Codex audited the schedule and team assignments, replayed twelve games, and prepared the paired confidence intervals and report.
 
+Codex audited three training trajectories and ran a two-seed PPO opponent-mixture pilot on Sketch5. It evaluated intermediate checkpoints, compared sampled and greedy actions on matched games, plotted the results, and drafted the interpretation and proposed follow-up experiment.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.
