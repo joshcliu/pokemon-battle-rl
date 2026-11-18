@@ -68,7 +68,7 @@ def make_manifest():
             "sha256": digest(checkpoint),
             "steps_in_this_stage": saved["steps"],
             "seed": saved["seed"],
-            "history": saved["transformer_chunks"],
+            "history": saved.get("transformer_chunks"),
             "width": saved["hidden_size"],
             "training_manifest": SOURCE_RUNS[label] + "/manifest.json",
             "learner_teams": args.get("learner_teams") or [args["team"]],
