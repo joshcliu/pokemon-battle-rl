@@ -1,6 +1,7 @@
 """Audit lineup selection on both sides and compare matched held-out outcomes."""
 
 import argparse
+import csv
 import shutil
 from collections import defaultdict
 from pathlib import Path
@@ -13,6 +14,37 @@ from expand_preview import OUT, PREVIOUS, RUN
 from fit_expanded_preview import POLICIES, models, pick, prediction
 from preview_sweep import read_games, save
 from report_preview_sweep import archive, pair_name
+
+
+def new_roster_validation(root, out):
+    """Compare the old head to out-of-fold expanded predictions on the 45 additions."""
+    spec, lock = read(root / "manifest.json"), read(root / "selection-lock.json")
+    _, old = models(root)
+    with (root / "training-sweep.csv").open() as f:
+        wins = {(r["team"], r["lineup"]): int(r["wins"]) for r in csv.DictReader(f)}
+    with (root / "training-previews.csv").open() as f:
+        visible = {r["team"]: tuple(r["public_six"].split("|")) for r in csv.DictReader(f)}
+    rows = []
+    with (root / "cv.csv").open() as f:
+        for r in csv.DictReader(f):
+            team = r["team"]
+            if int(r["epoch"]) != lock["epoch"] or team not in spec["teams"]["train"]:
+                continue
+            roster = Path(team).stem
+            old_pick = old.choose(visible[team])
+            rows.append(
+                dict(
+                    team=roster,
+                    fold_expanded=r["lineup"],
+                    previous=old_pick,
+                    fold_expanded_wins=int(r["picked_wins"]),
+                    previous_wins=wins[roster, old_pick],
+                    original_wins=int(r["default_wins"]),
+                    battles=int(r["battles"]),
+                )
+            )
+    assert len(rows) == len(spec["teams"]["train"])
+    write_csv(out / "new-roster-validation.csv", rows)
 
 
 def plot(scores, rosters, out):
@@ -181,6 +213,7 @@ def report(root, out):
     write_csv(out / "paired.csv", effects)
     write_csv(out / "roster-sensitivity.csv", sensitivity)
     plot(scores, rosters, out)
+    new_roster_validation(root, out)
     save(
         out / "audit.json",
         dict(

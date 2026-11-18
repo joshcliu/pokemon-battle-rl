@@ -1,5 +1,5 @@
 # Additional MC461 preview training rosters
 
-These 45 Regulation M-C teams extend the original 15 training rosters with published top-64 teams from the same eight 2027-season regional events. The 45 span ninth through 64th place. The source manifest credits each player, event, placement and Poképaste. [Source manifest](source.json)
+These 45 Regulation M-C teams extend the original 15 training rosters with published top-64 teams from the same eight 2027-season regional events. The 45 span ninth through 63rd place. The source manifest credits each player, event, placement and Poképaste. [Source manifest](source.json)
 
 The importer reads the frozen MunchStats archive used for the original split, verifies its two Git blob hashes and validates all sets with the project's pinned Showdown format. It considers records marked as having EV spreads, excludes Junior and Senior entries, then deduplicates unordered base-species sixes and unordered first-four combinations against all 22 original rosters, Sun, Balance, and previously accepted additions. Earlier placements have priority, with team ID breaking ties. Opponent bots field the published first four. [Pinned archive](https://github.com/PizzaTimeJoshua/munchstats/tree/12315f299202f168f5bd123454c1959a3a7f7fc9/site) · [Importer](../../scripts/expand_preview_rosters.cjs)
