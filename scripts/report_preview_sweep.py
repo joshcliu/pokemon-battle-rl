@@ -41,27 +41,35 @@ def plot(path, effects):
 
     values = [r for r in effects if r["split"] == "test" and r["baseline"] == "fixed"]
     fig, ax = plt.subplots(figsize=(8, 4.6), layout="constrained")
-    for i, r in enumerate(values):
-        delta = r["delta_pp"]
-        ax.errorbar(
-            delta,
-            i,
-            xerr=[[delta - r["low95_pp"]], [r["high95_pp"] - delta]],
-            fmt="o",
-            capsize=3,
-            color="#165b6c" if delta >= 0 else "#9c4828",
-            ms=8 if r["team"] == "overall" else 6,
-        )
+    for label, offset, color, marker, legend in (
+        ("fixed", -0.13, "#165b6c", "o", "vs. training-selected fixed lineup"),
+        ("default", 0.13, "#9c4828", "s", "vs. original first four"),
+    ):
+        for i, r in enumerate(
+            r for r in effects if r["split"] == "test" and r["baseline"] == label
+        ):
+            delta = r["delta_pp"]
+            ax.errorbar(
+                delta,
+                i + offset,
+                xerr=[[delta - r["low95_pp"]], [r["high95_pp"] - delta]],
+                fmt=marker,
+                capsize=3,
+                color=color,
+                ms=7 if r["team"] == "overall" else 5,
+                label=legend if i == 0 else None,
+            )
     ax.set(
         yticks=range(len(values)),
         yticklabels=[r["team"] if r["team"] != "overall" else "Seven-team average" for r in values],
-        xlabel="Preview head minus best fixed lineup (percentage points)",
+        xlabel="Preview head advantage (percentage points, paired 95% interval)",
         title="MC461 on the seven held-out opposing rosters",
     )
     ax.axvline(0, color="gray", lw=1)
     ax.grid(axis="x", alpha=0.2)
     ax.spines[["top", "right", "left"]].set_visible(False)
     ax.invert_yaxis()
+    fig.legend(*ax.get_legend_handles_labels(), loc="outside lower center", ncol=2, frameon=False)
     fig.savefig(path, dpi=165)
     plt.close(fig)
 
@@ -197,6 +205,29 @@ def report(root, out):
             bootstrap_seed=49033,
         ),
     )
+    fixed_ranks = []
+    for stage in ("train", "test"):
+        totals = defaultdict(lambda: [0, 0])
+        for r in tables:
+            if r["split"] == stage:
+                totals[r["lineup"]][0] += int(r["wins"])
+                totals[r["lineup"]][1] += int(r["battles"])
+        for idx, (a, (w, n)) in enumerate(
+            sorted(totals.items(), key=lambda item: (-item[1][0], item[0])), 1
+        ):
+            fixed_ranks.append(
+                dict(
+                    split=stage,
+                    rank=idx,
+                    lineup=a,
+                    leads=pair_name(a[:2]),
+                    back=pair_name(a[2:]),
+                    wins=w,
+                    battles=n,
+                    win_pct=100 * w / n,
+                )
+            )
+    write_csv(out / "fixed-lineup-rankings.csv", fixed_ranks)
     write_csv(out / "lineup-rankings.csv", tables)
     write_csv(out / "best-back-by-lead.csv", leads)
     write_csv(out / "matchup-guide.csv", team_results)
