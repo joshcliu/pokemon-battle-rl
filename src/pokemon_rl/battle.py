@@ -88,7 +88,7 @@ class LocalBattle:
                 if not req or not req.get("teamPreview"):
                     continue
                 size = len(req["side"]["pokemon"])
-                bring = min(req.get("maxTeamSize", 6), size)
+                bring = min(req.get("maxChosenTeamSize", req.get("maxTeamSize", size)), size)
                 order = tuple(range(1, bring + 1))
                 if preview_pickers and side in preview_pickers:
                     foe = "p2" if side == "p1" else "p1"
