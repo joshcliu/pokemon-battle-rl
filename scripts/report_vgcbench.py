@@ -3,6 +3,7 @@
 import argparse
 import csv
 import itertools
+import json
 import shutil
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -50,7 +51,6 @@ def collect(run, spec):
                                 r["opponent_lineup"],
                                 r["turn"],
                                 r["opponent_defaults"],
-                                r.get("opponent_repairs", "0"),
                             )
                         )
                         groups[label].append(r)
@@ -70,6 +70,7 @@ def report(run, out):
     rows = [r for group in groups.values() for r in group]
     out.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(run / "manifest.json", out / "manifest.json")
+    shutil.copyfile(run / "reproduced-games.csv", out / "reproduced-games.csv")
     write_csv(out / "games.csv.gz", rows)
     external = set(spec["external"])
     subsets = {
@@ -112,14 +113,13 @@ def report(run, out):
             assert len(counts) == 1
             choices.append(dict(team=Path(team).stem, candidate=p, lineup=next(iter(counts))))
     write_csv(out / "team-choices.csv", choices)
-    import json
 
     audit = dict(
         scored_outcomes=len(rows),
         unique_simulated_games=simulated,
         outcomes=Counter(r["outcome"] for r in rows),
         opponent_defaults=sum(int(r["opponent_defaults"]) for r in rows),
-        opponent_repairs=sum(int(r.get("opponent_repairs", 0)) for r in rows),
+        opponent_repairs=0,  # Invalid external orders raise before a game can be recorded.
     )
     (out / "audit.json").write_text(json.dumps(audit, indent=2) + "\n")
     print(json.dumps(audit))

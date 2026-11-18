@@ -1,0 +1,11 @@
+candidate,roster,opponent_team,family,seed,side,lineup,opponent_lineup,outcome,turn,opponent_defaults
+original-four,MC751,teams/reg-mc-regionals/MC751.txt,random,941000000,p1,1234,5163,win,4,0
+previous-head,MB381,teams/vgcbench-mb-transfer/MB381.txt,random,941028001,p2,1325,6542,win,22,0
+previous-head,MC407,teams/reg-mc-regionals/MC407.txt,max-base-power,941005000,p1,2645,5134,win,6,0
+expanded-head,MB383,teams/vgcbench-mb-transfer/MB383.txt,max-base-power,941033001,p2,2645,1564,win,6,0
+expanded-head,MC778,teams/reg-mc-regionals/MC778.txt,simple-heuristics,941010000,p1,1324,3145,win,3,0
+expanded-fallback,MB392,teams/vgcbench-mb-transfer/MB392.txt,simple-heuristics,941038001,p2,1234,5431,win,3,0
+expanded-fallback,MC462,teams/reg-mc-regionals/MC462.txt,bc-learned,941015000,p1,1234,1256,win,7,0
+original-four,MB103,teams/vgcbench-mb-transfer/MB103.txt,bc-learned,941043001,p2,1234,4312,win,5,0
+original-four,MC403,teams/reg-mc-regionals/MC403.txt,bc-first-four,941019000,p1,1234,1234,win,5,0
+previous-head,MB361,teams/vgcbench-mb-transfer/MB361.txt,bc-first-four,941047001,p2,1234,1234,win,7,0

@@ -135,6 +135,12 @@ regional rosters with the same frozen MC461 battle policy. The new head recovere
 64.84 percentage points against MC405. Across the seven held-out rosters it won
 71.43%, behind the original four at 82.18%.
 
+External cross-play uses the authors' published behavior-cloned VGC-Bench policy and
+three benchmark heuristics. The [MC461 transfer test](results/sketch5-vgcbench/README.md)
+covers 12 external rosters and seven previous rosters. The [M-B training study](results/sketch5-vgcbench-mb/README.md)
+evaluates a legal MC461 variant with open sheets on the benchmark simulator.
+[Run both evaluations](docs/vgcbench.md).
+
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 
 ```sh

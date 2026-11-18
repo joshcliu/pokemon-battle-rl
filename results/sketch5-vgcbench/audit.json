@@ -1,0 +1,10 @@
+{
+  "scored_outcomes": 24320,
+  "unique_simulated_games": 16320,
+  "outcomes": {
+    "win": 18215,
+    "loss": 6105
+  },
+  "opponent_defaults": 0,
+  "opponent_repairs": 0
+}

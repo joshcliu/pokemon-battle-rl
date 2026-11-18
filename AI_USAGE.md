@@ -38,6 +38,8 @@ Codex implemented simultaneous closed-sheet lineup selection and its simulator c
 
 Codex sourced and validated 45 additional tournament rosters, ran their lineup sweeps on Sketch5, corrected the setup pilot’s handling of a forced recharge, refit the preview head, and compared its held-out picks with the previous head and original four. It generated the paired results, validation analysis, figure and report.
 
+Codex integrated the VGC-Bench behavior-cloned player and heuristic baselines, selected and checked 12 external rosters, and ran matched cross-play on Sketch5. It adapted MC461 to M-B, added open-sheet support, and implemented the four-seed PPO training and evaluation.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.
