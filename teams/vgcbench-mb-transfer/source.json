@@ -1,0 +1,101 @@
+{
+  "revision": "d79f9532947ac114dce1dda2456a590afcd375b2",
+  "teams": [
+    {
+      "team": "MB381.txt",
+      "source": "teams/reg_mb/MB381.txt",
+      "sha256": "e46f8ba9697b7a34a1b7b4c6df0a8079cfc705c8c4528d0ef7bad74b8a108233",
+      "git_blob": "4502a163ebd94ab0115e1c9b53008d5320da3961",
+      "base_species_six": "Ceruledge|Milotic|Raichu|Scolipede|Sinistcha|Weavile",
+      "playable_four": "Raichu|Scolipede|Sinistcha|Weavile"
+    },
+    {
+      "team": "MB383.txt",
+      "source": "teams/reg_mb/MB383.txt",
+      "sha256": "029ee0e82cf921140b04b9ca0d1c7ff2a3975bbb5c12498e5e6cca1d06b1bfe8",
+      "git_blob": "6f8d22fb2642b81f1014ac033f5aeee9bc348617",
+      "base_species_six": "Farigiraf|Floette|Incineroar|Pyroar|Torkoal|Vileplume",
+      "playable_four": "Incineroar|Pyroar|Torkoal|Vileplume"
+    },
+    {
+      "team": "MB392.txt",
+      "source": "teams/reg_mb/MB392.txt",
+      "sha256": "d7d02bbb21ab50ebbaa9eb5e8c8b3336efd8364b5024fe0f840c1021ee94a013",
+      "git_blob": "4ae3ef40688588edadc1baefbc00bfc399b1847e",
+      "base_species_six": "Blastoise|Charizard|Garchomp|Maushold|Vivillon|Whimsicott",
+      "playable_four": "Charizard|Garchomp|Maushold|Vivillon"
+    },
+    {
+      "team": "MB103.txt",
+      "source": "teams/reg_mb/MB103.txt",
+      "sha256": "9e66beff3c4943b45da069d8f4d5a890d0d368a28bbb496d053eb221bcd7f4fb",
+      "git_blob": "c4422f9d3e2952cc8195c903b0e84d9deef89943",
+      "base_species_six": "Archaludon|Basculegion|Froslass|Pelipper|Raichu|Sinistcha",
+      "playable_four": "Archaludon|Basculegion|Pelipper|Raichu"
+    },
+    {
+      "team": "MB361.txt",
+      "source": "teams/reg_mb/MB361.txt",
+      "sha256": "fea06ef44bf0677743442e78d84c920094d0fcd631c476a1ca3c44abda753938",
+      "git_blob": "0669df91115cdcb1f8aa03c16d746d067959a4d6",
+      "base_species_six": "Basculegion|Charizard|Glimmora|Kingambit|Mamoswine|Whimsicott",
+      "playable_four": "Charizard|Glimmora|Kingambit|Mamoswine"
+    },
+    {
+      "team": "MB427.txt",
+      "source": "teams/reg_mb/MB427.txt",
+      "sha256": "385fe87bcd4e9087e073d3bd19be2599984de6f4668301d137e4641883f568f3",
+      "git_blob": "ecd3ae7d34fa76f9f2628b8fd64e418f417756ef",
+      "base_species_six": "Aerodactyl|Farigiraf|Pyroar|Sylveon|Torkoal|Venusaur",
+      "playable_four": "Aerodactyl|Pyroar|Torkoal|Venusaur"
+    },
+    {
+      "team": "MB528.txt",
+      "source": "teams/reg_mb/MB528.txt",
+      "sha256": "d4eda7834625238063f7710c16348de3d8334d682db66ce641b64867f2900499",
+      "git_blob": "b064b2bd5c00ddb3fd5a851b43697cf8607065d6",
+      "base_species_six": "Ceruledge|Floette|Incineroar|Scrafty|Sinistcha|Vivillon",
+      "playable_four": "Ceruledge|Floette|Sinistcha|Vivillon"
+    },
+    {
+      "team": "MB191.txt",
+      "source": "teams/reg_mb/MB191.txt",
+      "sha256": "91b4fac4797b6f7bab1afedc72868a9c7d4154cb850fc73dd1481aa4828be6dc",
+      "git_blob": "435d965a15ac0b7ce6add67caf179172f30d3b89",
+      "base_species_six": "Basculegion|Farigiraf|Floette|Ninetales|Pyroar|Whimsicott",
+      "playable_four": "Farigiraf|Ninetales|Pyroar|Whimsicott"
+    },
+    {
+      "team": "MB512.txt",
+      "source": "teams/reg_mb/MB512.txt",
+      "sha256": "5cee7c384986ed7b015f74d199398f7e037d9c1e4267b5d0b6550254cae09963",
+      "git_blob": "cd5cc88883642b91a0a4bc952717cb5396021e82",
+      "base_species_six": "Charizard|Eelektross|Garchomp|Sylveon|Toxapex|Whimsicott",
+      "playable_four": "Charizard|Eelektross|Garchomp|Whimsicott"
+    },
+    {
+      "team": "MB375.txt",
+      "source": "teams/reg_mb/MB375.txt",
+      "sha256": "a29778b177229f6775b8c24a4e34ddf7e313d5b3d49eea0ff0f770eee4dbf869",
+      "git_blob": "16948632a8c9240b2a7737821451a88ca9e0436a",
+      "base_species_six": "Aerodactyl|Charizard|Garchomp|Metagross|Sylveon|Tsareena",
+      "playable_four": "Aerodactyl|Charizard|Metagross|Tsareena"
+    },
+    {
+      "team": "MB507.txt",
+      "source": "teams/reg_mb/MB507.txt",
+      "sha256": "e73338fa68ab86c7dca866c791547f105200671b4584e3ecf7b8addc92646cb0",
+      "git_blob": "abe8cf0751e0a8920f237d1f1af58262ed1ffa82",
+      "base_species_six": "Dragonite|Excadrill|Incineroar|Metagross|Sinistcha|Tyranitar",
+      "playable_four": "Incineroar|Metagross|Sinistcha|Tyranitar"
+    },
+    {
+      "team": "MB115.txt",
+      "source": "teams/reg_mb/MB115.txt",
+      "sha256": "7912e9a2ec7032ab3f9d1a5b4ec66878c7923ffa0e179a89bb1a37d50a80dcdb",
+      "git_blob": "6e51e427fb9130192db7499c54489247e10ace31",
+      "base_species_six": "Garchomp|Glimmora|Incineroar|Sinistcha|Staraptor|Whimsicott",
+      "playable_four": "Garchomp|Incineroar|Sinistcha|Staraptor"
+    }
+  ]
+}
