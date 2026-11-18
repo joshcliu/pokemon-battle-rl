@@ -78,7 +78,7 @@ def cell_path(root, model, team, family):
     return root / "cells" / model / Path(team).stem / f"{family}.csv"
 
 
-def evaluate_cell(root, spec, model, team_index, opponent_index):
+def evaluate_cell(root, spec, model, team_index, opponent_index, *, sample_learner=False):
     team = spec["opponent_teams"][team_index]
     family, bot = list(spec["opponents"].items())[opponent_index]
     dest = cell_path(root, model, team, family)
@@ -91,7 +91,15 @@ def evaluate_cell(root, spec, model, team_index, opponent_index):
         return
     condition = {"candidate": model, "roster": Path(team).stem, "family": family}
     rows = matches(
-        condition, spec["candidates"][model], spec["learner_team"], bot, team, base, 0, n
+        condition,
+        spec["candidates"][model],
+        spec["learner_team"],
+        bot,
+        team,
+        base,
+        0,
+        n,
+        sample_learner=sample_learner,
     )
     dest.parent.mkdir(parents=True, exist_ok=True)
     temp = dest.with_suffix(".tmp")
