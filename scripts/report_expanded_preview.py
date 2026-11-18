@@ -12,7 +12,56 @@ from evaluate_challenger_transfer import digest, read
 from expand_preview import OUT, PREVIOUS, RUN
 from fit_expanded_preview import POLICIES, models, pick, prediction
 from preview_sweep import read_games, save
-from report_preview_sweep import pair_name
+from report_preview_sweep import archive, pair_name
+
+
+def plot(scores, rosters, out):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import PercentFormatter
+
+    values = {(r["team"], r["policy"]): r for r in scores}
+    teams = [*rosters, "all-seven"]
+    fig, ax = plt.subplots(figsize=(8.6, 5.0), layout="constrained")
+    for i, team in enumerate(teams):
+        group = [values[team, p]["win_pct"] for p in POLICIES[:3]]
+        ax.hlines(i, min(group), max(group), color="#d7d9da", lw=2, zorder=1)
+    for label, name, offset, color, marker in (
+        ("original-four", "Original four", -0.16, "#4f636c", "s"),
+        ("previous-head", "15-team head", 0, "#b25a24", "^"),
+        ("expanded-head", "60-team head", 0.16, "#087d79", "o"),
+    ):
+        ys = np.arange(len(teams)) + offset
+        pct = [values[t, label]["win_pct"] for t in teams]
+        ax.errorbar(
+            pct,
+            ys,
+            xerr=[
+                [p - values[t, label]["low95_pct"] for t, p in zip(teams, pct)],
+                [values[t, label]["high95_pct"] - p for t, p in zip(teams, pct)],
+            ],
+            fmt=marker,
+            ms=6,
+            color=color,
+            capsize=2,
+            label=name,
+        )
+    ax.set(
+        yticks=range(len(teams)),
+        yticklabels=[*rosters, "Seven-team mean"],
+        xlim=(-1, 102),
+        xlabel="Win rate on matched confirmation battles",
+        title="Frozen MC461 Transformer",
+    )
+    ax.xaxis.set_major_formatter(PercentFormatter(100))
+    ax.invert_yaxis()
+    ax.spines[["top", "left", "right"]].set_visible(False)
+    ax.grid(axis="x", alpha=0.2)
+    fig.legend(*ax.get_legend_handles_labels(), loc="outside lower center", ncol=3, frameon=False)
+    fig.savefig(out / "held-out-win-rates.png", dpi=170)
+    plt.close(fig)
 
 
 def report(root, out):
@@ -126,10 +175,12 @@ def report(root, out):
             )
         )
     write_csv(out / "confirmation-games.csv.gz", all_games)
+    archive(out / "new-sweep-games.csv.gz", sorted((root / "train").glob("*/*.csv.gz")))
     write_csv(out / "team-choices.csv", choices)
     write_csv(out / "win-rates.csv", scores)
     write_csv(out / "paired.csv", effects)
     write_csv(out / "roster-sensitivity.csv", sensitivity)
+    plot(scores, rosters, out)
     save(
         out / "audit.json",
         dict(
