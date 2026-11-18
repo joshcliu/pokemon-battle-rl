@@ -240,7 +240,8 @@ def plot(out, summary):
         ax.spines[["top", "right"]].set_visible(False)
         ax.tick_params(axis="x", labelrotation=35)
     axes[0].set_ylabel("MC461 learner win rate (%)")
-    axes[0].legend(frameon=False, fontsize=8, loc="lower left")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, frameon=False, fontsize=9, ncol=3, loc="outside upper center")
     fig.savefig(out / "mc461-vs-seven.png", dpi=170)
     plt.close(fig)
 
