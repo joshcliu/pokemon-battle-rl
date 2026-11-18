@@ -43,6 +43,7 @@ def matches(
     count,
     replay_dir=None,
     sample_opponent=False,
+    sample_learner=False,
 ):
     torch.set_num_threads(1)
     texts = [(ROOT / t).read_text() for t in (team, other_team)]
@@ -54,11 +55,15 @@ def matches(
         if not isinstance(actors[1], FrozenActor):
             raise ValueError("Action sampling requires a frozen neural opponent")
         actors[1].deterministic = False
+    if sample_learner:
+        if not isinstance(actors[0], FrozenActor):
+            raise ValueError("Action sampling requires a frozen neural learner")
+        actors[0].deterministic = False
     rows = []
     with LocalBattle() as battle:
         for i in range(start, start + count):
             es = base + i
-            if sample_opponent:
+            if sample_opponent or sample_learner:
                 torch.manual_seed(es)
             sides = ("p1", "p2") if i % 2 == 0 else ("p2", "p1")
             players = {}
