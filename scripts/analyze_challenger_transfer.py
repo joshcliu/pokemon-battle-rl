@@ -33,7 +33,13 @@ POOLS = {
 COMPARISONS = [
     (model, baseline)
     for model in ("challenger-mirror", "challenger-fixed")
-    for baseline in ("parent", "tournament-full262", "tournament-mlp", "adapted")
+    for baseline in (
+        "parent",
+        "tournament-full65",
+        "tournament-full262",
+        "tournament-mlp",
+        "adapted",
+    )
 ]
 
 
