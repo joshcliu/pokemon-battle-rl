@@ -11,7 +11,18 @@ from functools import lru_cache
 import torch
 from eval_mb_roster_ppo import assignments
 from mb_policy import FineTune
-from mb_roster_ppo import LONG_ARMS, LONG_OUT, LONG_RUN, OUT, SEEDS, create_model, verify_assets
+from mb_roster_ppo import (
+    DIVERSE_OUT,
+    DIVERSE_RUN,
+    LONG_ARMS,
+    LONG_OUT,
+    LONG_RUN,
+    OUT,
+    SEEDS,
+    create_model,
+    diversity_protocol,
+    verify_assets,
+)
 from vgc_posttrain import atomic_rows, eval_job
 
 EARLY = 65_536
@@ -23,13 +34,13 @@ def label(arm, seed, steps, variant):
     return f"{arm}-{seed}-{steps}-{variant}"
 
 
-def path_for(arm, seed, steps):
-    return LONG_RUN / f"{arm}-{seed}" / ("65k.pt" if steps == EARLY else "policy.pt")
+def path_for(arm, seed, steps, run=LONG_RUN):
+    return run / f"{arm}-{seed}" / ("65k.pt" if steps == EARLY else "policy.pt")
 
 
-def jobspecs():
-    for steps in (EARLY, FINAL):
-        for arm in LONG_ARMS:
+def jobspecs(diverse=False):
+    for steps in (FINAL,) if diverse else (EARLY, FINAL):
+        for arm in ("shared", "moe") if diverse else LONG_ARMS:
             for variant in ("normal",) if arm == "shared" else ("normal", "rotate", "zero"):
                 for seed in SEEDS:
                     yield arm, seed, steps, variant
@@ -39,17 +50,23 @@ def is_archived(arm, steps, variant):
     return steps == EARLY and arm in ("shared", "moe") and variant in ("normal", "rotate")
 
 
-def schedule(arm, seed, steps, variant):
+def schedule(arm, seed, steps, variant, *, diverse=False):
     key = label(arm, seed, steps, variant)
+    if diverse:
+        key = "diverse/" + key
     for _, selector, own, foe, sims, mode, cell in assignments("moe", seed):
-        if variant == "normal" or cell in ("forward", "reverse"):
+        if cell in ("forward", "reverse") or (variant == "normal" and not diverse):
             yield key, selector, own, foe, sims, mode, cell
 
 
 @lru_cache(maxsize=3)
 def actor(key):
+    run = DIVERSE_RUN if key.startswith("diverse/") else LONG_RUN
+    key = key.removeprefix("diverse/")
     arm, seed, steps, variant = key.split("-")
-    ck = torch.load(path_for(arm, int(seed), int(steps)), weights_only=True, map_location="cpu")
+    ck = torch.load(
+        path_for(arm, int(seed), int(steps), run), weights_only=True, map_location="cpu"
+    )
     state = ck if int(steps) == EARLY else ck["state"]
     if variant == "zero":
         model = FineTune("native")
@@ -96,40 +113,43 @@ def archived_groups(variant):
     return groups
 
 
-def observations(arm, seed, steps, variant):
+def observations(arm, seed, steps, variant, *, diverse=False):
+    if diverse:
+        return read(DIVERSE_RUN / "scores" / (label(arm, seed, steps, variant) + ".csv"))
     if is_archived(arm, steps, variant):
         return archived_groups(variant)[arm, seed]
     return read(LONG_RUN / "scores" / (label(arm, seed, steps, variant) + ".csv"))
 
 
-def evaluate(workers):
+def evaluate(workers, *, diverse=False):
+    run = DIVERSE_RUN if diverse else LONG_RUN
     todo = [
         j
-        for j in jobspecs()
+        for j in jobspecs(diverse)
         if not is_archived(j[0], j[2], j[3])
-        and not (LONG_RUN / "scores" / (label(*j) + ".csv")).is_file()
+        and not (run / "scores" / (label(*j) + ".csv")).is_file()
     ]
     with ProcessPoolExecutor(workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         while todo:
-            ready = next((j for j in todo if path_for(*j[:3]).is_file()), None)
+            ready = next((j for j in todo if path_for(*j[:3], run=run).is_file()), None)
             if ready is None:
                 time.sleep(15)
                 continue
-            tasks = list(schedule(*ready))
+            tasks = list(schedule(*ready, diverse=diverse))
             rows = [r for group in pool.map(score, tasks) for r in group]
             assert len(rows) == sum(len(t[4]) for t in tasks)
-            atomic_rows(LONG_RUN / "scores" / (label(*ready) + ".csv"), rows)
+            atomic_rows(run / "scores" / (label(*ready) + ".csv"), rows)
             print(label(*ready), len(rows), flush=True)
             todo.remove(ready)
 
 
-def verify():
+def verify(*, diverse=False):
     checks = []
-    for n, job in enumerate(jobspecs()):
-        tasks = list(schedule(*job))
+    for n, job in enumerate(jobspecs(diverse)):
+        tasks = list(schedule(*job, diverse=diverse))
         task = list(tasks[(n * 17) % len(tasks)])
         task[4] = task[4][:2]
-        saved = {(r["cell"], int(r["seed"])): r for r in observations(*job)}
+        saved = {(r["cell"], int(r["seed"])): r for r in observations(*job, diverse=diverse)}
         for row in score(task):
             ref = saved[row["cell"], row["seed"]]
             for key in (
@@ -148,16 +168,19 @@ def verify():
                 counts = ref.get("routes") or ",".join(ref[f"expert_{i}"] for i in range(4))
                 assert row["routes"] == counts
             checks.append(row)
-    atomic_rows(LONG_OUT / "replayed.csv", checks)
+    atomic_rows((DIVERSE_OUT if diverse else LONG_OUT) / "replayed.csv", checks)
 
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--jobs", type=int, default=20)
     p.add_argument("--verify", action="store_true")
+    p.add_argument("--diverse", action="store_true")
     args = p.parse_args()
     verify_assets()
+    if args.diverse:
+        diversity_protocol()
     if args.verify:
-        verify()
+        verify(diverse=args.diverse)
     else:
-        evaluate(args.jobs)
+        evaluate(args.jobs, diverse=args.diverse)

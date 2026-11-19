@@ -145,6 +145,7 @@ The [M-B post-training pilot](results/sketch5-mb-posttraining-pilot/README.md) c
 The [HP and knockout ablation](results/sketch5-mb-reward-factorial/README.md) crosses the two intermediate signals with PPO and AWAC and measures roster-balanced held-out wins and sweeps.
 The [shared, per-team and top-2 MoE PPO comparison](results/sketch5-mb-roster-ppo/README.md) matches the training decisions per roster and uses the same frozen lineup selector in training and evaluation.
 The [262k training and routing experiment](results/sketch5-mb-long-ppo/README.md) tests longer training, expert-bank size and the number of active experts.
+The [team diversity experiment](results/sketch5-mb-team-diversity/README.md) compares shared PPO and four-expert top-2 routing after training on four or sixteen learner rosters with the same 262k budget.
 [Reproduce the VGC-Bench experiments](docs/vgcbench.md).
 
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:

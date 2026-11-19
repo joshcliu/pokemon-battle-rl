@@ -155,3 +155,21 @@ done
 ```
 
 The [long-run protocol](../results/sketch5-mb-long-ppo/protocol.json) fixes architectural controls, paired evaluation and routing interventions. The report uses 262,144 total decisions for each final model.
+
+## Learner roster diversity at 262k
+
+The 16-team comparison reuses the four-team experiment's final held-out games as a paired reference. Use the same Sketch5 checkout, frozen BC weights, simulator, and environment variables. The roster lock checks the pinned bank. Each learner team has an independent battle stream. The trainer resumes every 16,384 decisions from a checkpoint of all 16 streams.
+
+```bash
+.cache/node-runtime/node_modules/node/bin/node scripts/lock_mb_diversity.cjs
+for seed in 2 3 4 5; do
+  for arm in shared moe; do
+    .venv/bin/python scripts/mb_roster_ppo.py "$arm" "$seed" --diverse
+  done
+done
+.venv/bin/python scripts/eval_mb_long_ppo.py --diverse --jobs 12
+.venv/bin/python scripts/eval_mb_long_ppo.py --diverse --verify
+.venv/bin/python scripts/report_mb_team_diversity.py
+```
+
+The [team diversity report](../results/sketch5-mb-team-diversity/README.md) lists the exact assignments and defines the paired routing comparisons.
