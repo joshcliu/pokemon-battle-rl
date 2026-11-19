@@ -6,6 +6,8 @@ On the original MC461 development schedule, untouched BC won 365/768 games (47.5
 
 ## Familiar and unseen teams
 
+During post-training, our PPO learner sampled MC461-MB, MB537, MB51 or MB45. The frozen BC opponent sampled MB501, MB245, MB269, MB387, MB106, MB90, MB40 or MB102. Each evaluation crossed every roster in the assigned learner pool with every roster in the assigned opponent pool. The full assignment table includes the held-out pools, the reverse assignments, all six Pokémon per roster and wins for each exact pairing. [Exact team matrix](team-matrix.md)
+
 Columns identify familiarity of the learner’s roster and the opponent’s roster during this round of training. The frozen reference appears once per battle seed. Trained results average four model seeds. Each model played 256 battles per cell.
 
 | Learner | Familiar / familiar | Familiar / unseen | Unseen / familiar | Unseen / unseen |

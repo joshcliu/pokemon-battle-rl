@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+from report_mb_teams import write_team_matrix
 from vgc_posttrain import REPORT, ROOT, RUN, atomic_rows
 
 
@@ -345,6 +346,7 @@ def main():
     atomic_rows(REPORT / "checkpoints.csv", ckpts)
     atomic_rows(REPORT / "training.csv", logs)
     archive(REPORT / "preview-rollouts.csv.gz", previews)
+    write_team_matrix()
     print(
         "Audited",
         len(games),

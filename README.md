@@ -162,6 +162,8 @@ uv run --group analysis python scripts/plot_training.py runs/pilot \
 
 ## Outputs and reproducibility
 
+Every experiment report should give the exact team matrix for training and each evaluation. Identify the pilot and roster IDs on both sides, link the ordered six-Pokémon sheets, state who chose the four and the leads, and give games per pairing. Show any assignment swaps explicitly. [Example team matrix](results/sketch5-mb-posttraining-pilot/team-matrix.md)
+
 `runs/<name>/` contains:
 
 | File | Purpose |
