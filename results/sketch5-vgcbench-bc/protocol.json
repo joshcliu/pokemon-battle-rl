@@ -1,0 +1,83 @@
+{
+  "format": "gen9championsvgc2026regmb",
+  "open_team_sheets": true,
+  "learner_team": "teams/reg-mb-variant/MC461-MB.txt",
+  "lineup": "1234",
+  "teams": [
+    "teams/vgcbench-mb-transfer/MB381.txt",
+    "teams/vgcbench-mb-transfer/MB383.txt",
+    "teams/vgcbench-mb-transfer/MB392.txt",
+    "teams/vgcbench-mb-transfer/MB103.txt",
+    "teams/vgcbench-mb-transfer/MB361.txt",
+    "teams/vgcbench-mb-transfer/MB427.txt",
+    "teams/vgcbench-mb-transfer/MB528.txt",
+    "teams/vgcbench-mb-transfer/MB191.txt",
+    "teams/vgcbench-mb-transfer/MB512.txt",
+    "teams/vgcbench-mb-transfer/MB375.txt",
+    "teams/vgcbench-mb-transfer/MB507.txt",
+    "teams/vgcbench-mb-transfer/MB115.txt"
+  ],
+  "families": [
+    "random",
+    "max-base-power",
+    "simple-heuristics",
+    "bc-learned"
+  ],
+  "battles_per_cell": 64,
+  "seed_base": 945000000,
+  "primary": "BC-trained vs league-trained PPO at 65536 decisions against BC on 12 held-out teams",
+  "training_parent_seeds": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "training_budgets": [
+    0,
+    16384,
+    65536
+  ],
+  "training_simulator": {
+    "repository": "https://github.com/smogon/pokemon-showdown.git",
+    "commit": "965a535ef892d13cd68cf75c076db26f9f32842a",
+    "node": "22.22.0"
+  },
+  "evaluation_simulator": "913da3602a3aa1db79f9fdc5d5222eaf8d39569d",
+  "source_revision": "d79f9532947ac114dce1dda2456a590afcd375b2",
+  "model_revision": "204c76741829ca0681629e41382043c385850d5c",
+  "model_sha256": "57f5edcab415cf6ccc1b6231923c8b66d3b1b7249b6b2562b97531471e4ca60b",
+  "versions": {
+    "poke-env": "0.16.1",
+    "stable-baselines3": "2.8.0",
+    "gymnasium": "1.2.3",
+    "torch": "2.15.0+cpu",
+    "numpy": "2.5.4"
+  },
+  "sha256": {
+    "teams/reg-mb-variant/MC461-MB.txt": "fa272533d5077ac1a96add62d64b5fde761bc54e9776db522e1881dd794c368e",
+    "teams/reg-mb-variant/training-pool.json": "878385201f166efa147d37228cbecb4f91c4879ca1b978438a09b3c0bc8cd41b",
+    "teams/balance.txt": "d1cc0efc48fd422572de26bf599afa3a744f1f3c9fbc85536a202c94f6dfa497",
+    "teams/sun.txt": "2da20701dc8bd65ad39f779201bb1aea8f313e20ad4c0b7ac7d1393adcc463a3",
+    "teams/reg-mc-regionals/MC442.txt": "25598414aee577684e6f4bba878da1a54259ab5e5551eef58a5f4fe007177738",
+    "teams/reg-mc-regionals/MC751.txt": "d6fbce13695837381923c02691d5601ebcbeb0b0f9a803ee9b9a2c41f6f3b384",
+    "teams/vgcbench-mb-transfer/MB381.txt": "e46f8ba9697b7a34a1b7b4c6df0a8079cfc705c8c4528d0ef7bad74b8a108233",
+    "teams/vgcbench-mb-transfer/MB383.txt": "029ee0e82cf921140b04b9ca0d1c7ff2a3975bbb5c12498e5e6cca1d06b1bfe8",
+    "teams/vgcbench-mb-transfer/MB392.txt": "d7d02bbb21ab50ebbaa9eb5e8c8b3336efd8364b5024fe0f840c1021ee94a013",
+    "teams/vgcbench-mb-transfer/MB103.txt": "9e66beff3c4943b45da069d8f4d5a890d0d368a28bbb496d053eb221bcd7f4fb",
+    "teams/vgcbench-mb-transfer/MB361.txt": "fea06ef44bf0677743442e78d84c920094d0fcd631c476a1ca3c44abda753938",
+    "teams/vgcbench-mb-transfer/MB427.txt": "385fe87bcd4e9087e073d3bd19be2599984de6f4668301d137e4641883f568f3",
+    "teams/vgcbench-mb-transfer/MB528.txt": "d4eda7834625238063f7710c16348de3d8334d682db66ce641b64867f2900499",
+    "teams/vgcbench-mb-transfer/MB191.txt": "91b4fac4797b6f7bab1afedc72868a9c7d4154cb850fc73dd1481aa4828be6dc",
+    "teams/vgcbench-mb-transfer/MB512.txt": "5cee7c384986ed7b015f74d199398f7e037d9c1e4267b5d0b6550254cae09963",
+    "teams/vgcbench-mb-transfer/MB375.txt": "a29778b177229f6775b8c24a4e34ddf7e313d5b3d49eea0ff0f770eee4dbf869",
+    "teams/vgcbench-mb-transfer/MB507.txt": "e73338fa68ab86c7dca866c791547f105200671b4584e3ecf7b8addc92646cb0",
+    "teams/vgcbench-mb-transfer/MB115.txt": "7912e9a2ec7032ab3f9d1a5b4ec66878c7923ffa0e179a89bb1a37d50a80dcdb"
+  },
+  "training_opponent": "bc-learned",
+  "training_teams": [
+    "teams/balance.txt",
+    "teams/sun.txt",
+    "teams/reg-mc-regionals/MC442.txt",
+    "teams/reg-mc-regionals/MC751.txt"
+  ]
+}

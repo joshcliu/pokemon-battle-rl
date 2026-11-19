@@ -139,7 +139,9 @@ External cross-play uses the authors' published behavior-cloned VGC-Bench policy
 three benchmark heuristics. The [MC461 transfer test](results/sketch5-vgcbench/README.md)
 covers 12 external rosters and seven previous rosters. The [M-B training study](results/sketch5-vgcbench-mb/README.md)
 evaluates a legal MC461 variant with open sheets on the benchmark simulator.
-[Run both evaluations](docs/vgcbench.md).
+The [BC-opponent training study](results/sketch5-vgcbench-bc/README.md) compares four
+matched 65k PPO runs against the previous league-trained models on those 12 teams.
+[Reproduce the VGC-Bench experiments](docs/vgcbench.md).
 
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
 

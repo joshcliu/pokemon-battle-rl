@@ -1,0 +1,85 @@
+{
+  "new_benchmark_games": 24576,
+  "baseline_games_sha256": "cba2639758a39f55122e511cb0efcaabb10bb893f360f4f56375a54440b00e37",
+  "outcomes": {
+    "loss": 12189,
+    "win": 12387
+  },
+  "matched_opposing_lineups": true,
+  "replayed_records": 64,
+  "native_defaults": 0,
+  "training": [
+    {
+      "seed": 2,
+      "episodes": 7825,
+      "matched_training_schedule": 7825,
+      "training_team_episodes": {
+        "teams/balance.txt": 1923,
+        "teams/sun.txt": 2010,
+        "teams/reg-mc-regionals/MC442.txt": 1901,
+        "teams/reg-mc-regionals/MC751.txt": 1991
+      },
+      "distinct_ordered_bc_lineups": {
+        "teams/balance.txt": 79,
+        "teams/sun.txt": 97,
+        "teams/reg-mc-regionals/MC442.txt": 65,
+        "teams/reg-mc-regionals/MC751.txt": 112
+      },
+      "evaluation_seed_coincidences": []
+    },
+    {
+      "seed": 3,
+      "episodes": 7497,
+      "matched_training_schedule": 7497,
+      "training_team_episodes": {
+        "teams/balance.txt": 1861,
+        "teams/sun.txt": 1865,
+        "teams/reg-mc-regionals/MC442.txt": 1896,
+        "teams/reg-mc-regionals/MC751.txt": 1875
+      },
+      "distinct_ordered_bc_lineups": {
+        "teams/balance.txt": 78,
+        "teams/sun.txt": 105,
+        "teams/reg-mc-regionals/MC442.txt": 78,
+        "teams/reg-mc-regionals/MC751.txt": 109
+      },
+      "evaluation_seed_coincidences": []
+    },
+    {
+      "seed": 4,
+      "episodes": 7698,
+      "matched_training_schedule": 7698,
+      "training_team_episodes": {
+        "teams/balance.txt": 1955,
+        "teams/sun.txt": 1870,
+        "teams/reg-mc-regionals/MC442.txt": 1916,
+        "teams/reg-mc-regionals/MC751.txt": 1957
+      },
+      "distinct_ordered_bc_lineups": {
+        "teams/balance.txt": 81,
+        "teams/sun.txt": 104,
+        "teams/reg-mc-regionals/MC442.txt": 69,
+        "teams/reg-mc-regionals/MC751.txt": 109
+      },
+      "evaluation_seed_coincidences": []
+    },
+    {
+      "seed": 5,
+      "episodes": 8123,
+      "matched_training_schedule": 8123,
+      "training_team_episodes": {
+        "teams/balance.txt": 2038,
+        "teams/sun.txt": 2060,
+        "teams/reg-mc-regionals/MC442.txt": 2082,
+        "teams/reg-mc-regionals/MC751.txt": 1943
+      },
+      "distinct_ordered_bc_lineups": {
+        "teams/balance.txt": 81,
+        "teams/sun.txt": 104,
+        "teams/reg-mc-regionals/MC442.txt": 61,
+        "teams/reg-mc-regionals/MC751.txt": 118
+      },
+      "evaluation_seed_coincidences": []
+    }
+  ]
+}
