@@ -1,0 +1,18 @@
+{
+  "seed-2-step-16384": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-2/train/checkpoint-16384.pt",
+    "sha256": "6a0cf965fd3f9dd4177a383a2cf20bde4037b57a8a822c935994b1c74377f5c0"
+  },
+  "seed-3-step-16384": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-3/train/checkpoint-16384.pt",
+    "sha256": "e27ce19d3e4afb17b33a42fbb9d965c7c772dad4640229df27fb0ba034b9a31f"
+  },
+  "seed-4-step-16384": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-4/train/checkpoint-16384.pt",
+    "sha256": "d924c2b5eb4674a00331fcd98f0e22db81b79147877f2cc651e4917944c1c563"
+  },
+  "seed-5-step-16384": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-5/train/checkpoint-16384.pt",
+    "sha256": "9918265c3a219309b6924cbd8177c2e2a79e9d9c9c4e6472c06dcd8b9b8ecc2e"
+  }
+}

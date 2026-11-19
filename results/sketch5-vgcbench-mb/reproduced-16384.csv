@@ -1,0 +1,9 @@
+candidate,roster,opponent_team,family,seed,side,lineup,opponent_lineup,outcome,turn,opponent_defaults
+seed-2-step-16384,MB381,teams/vgcbench-mb-transfer/MB381.txt,random,945000000,p1,1234,3216,win,10,0
+seed-3-step-16384,MB383,teams/vgcbench-mb-transfer/MB383.txt,random,945004001,p2,1234,2543,win,12,0
+seed-4-step-16384,MB392,teams/vgcbench-mb-transfer/MB392.txt,max-base-power,945009000,p1,1234,3164,win,4,0
+seed-5-step-16384,MB103,teams/vgcbench-mb-transfer/MB103.txt,max-base-power,945013001,p2,1234,3152,win,5,0
+seed-2-step-16384,MB361,teams/vgcbench-mb-transfer/MB361.txt,simple-heuristics,945018000,p1,1234,6431,loss,8,0
+seed-3-step-16384,MB427,teams/vgcbench-mb-transfer/MB427.txt,simple-heuristics,945022001,p2,1234,2163,loss,7,0
+seed-4-step-16384,MB528,teams/vgcbench-mb-transfer/MB528.txt,bc-learned,945027000,p1,1234,4356,win,9,0
+seed-5-step-16384,MB191,teams/vgcbench-mb-transfer/MB191.txt,bc-learned,945031001,p2,1234,4156,loss,6,0

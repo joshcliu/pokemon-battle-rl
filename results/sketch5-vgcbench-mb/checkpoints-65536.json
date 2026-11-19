@@ -1,0 +1,18 @@
+{
+  "seed-2-step-65536": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-2/train/checkpoint-65536.pt",
+    "sha256": "ff1d5ff5f9400524a5817269f901fc0d68604fde5969b389d7c96d232e8ece02"
+  },
+  "seed-3-step-65536": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-3/train/checkpoint-65536.pt",
+    "sha256": "d53713b9e7e5817d172ed9660d53be9dcf99bc23cec527ce2250f982e03306d8"
+  },
+  "seed-4-step-65536": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-4/train/checkpoint-65536.pt",
+    "sha256": "dd0d499ffe04527b4c8ce465e1d214cfebc30d462d1ab43333565985123eef98"
+  },
+  "seed-5-step-65536": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-5/train/checkpoint-65536.pt",
+    "sha256": "94458ffdb46ea9c222e74e419a7e69111a3b9e2cf2399578d7846ccf7fc8a548"
+  }
+}

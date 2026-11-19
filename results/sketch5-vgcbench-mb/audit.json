@@ -1,0 +1,16 @@
+{
+  "games": 39936,
+  "outcomes": {
+    "win": 18134,
+    "loss": 21802
+  },
+  "native_defaults": 0,
+  "replicated_games": 24,
+  "matched_opponent_previews": true,
+  "evaluation_seed_coincidences_with_training": {
+    "2": [],
+    "3": [],
+    "4": [],
+    "5": []
+  }
+}

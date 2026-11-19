@@ -1,0 +1,17 @@
+{
+  "candidate": "seed-2-step-65536",
+  "repeated_games": 3072,
+  "identical_game_records": 3072,
+  "fields": [
+    "roster",
+    "opponent_team",
+    "family",
+    "seed",
+    "side",
+    "lineup",
+    "opponent_lineup",
+    "outcome",
+    "turn",
+    "opponent_defaults"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "seed-2-step-0": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-2/train/checkpoint-0.pt",
+    "sha256": "1349dc72764b3deb8d4e0d835a8a81ffc458ed917bb03ab40b7658446d938f60"
+  },
+  "seed-3-step-0": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-3/train/checkpoint-0.pt",
+    "sha256": "52b6863d0c9d444fb4339cd3fb066da20ec70e44e7288a886a59436bf0e6700d"
+  },
+  "seed-4-step-0": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-4/train/checkpoint-0.pt",
+    "sha256": "2831df8dc14f1019b02b777454a1ec12d590ee9590eb386ce0d926734195a94d"
+  },
+  "seed-5-step-0": {
+    "path": "runs/sketch5-vgcbench-mb-v1/seed-5/train/checkpoint-0.pt",
+    "sha256": "74af77b3669808623818081591baaeeb2ad00f1648b39dac345b1e1eae176a02"
+  },
+  "mc461-champion": {
+    "path": "results/sketch5-fixed-league/weights/expert-4.pt",
+    "sha256": "6e5a00ba994721c23afcb3100ab2277601dab688d097fbe15ab2874bbbb01bad"
+  }
+}
