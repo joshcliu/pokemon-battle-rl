@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from evaluate_vgcbench import simulator
+from evaluate_vgcbench import new_simulator, simulator
 from evaluate_vgcbench_mb import SEED_BASE, check_simulator
 from poke_env.environment import DoublesEnv
 from train_vgcbench_mb import FORMAT, TEAM
@@ -46,8 +46,9 @@ def players():
 
 
 class Match:
-    def __init__(self):
-        self.battle = simulator(FORMAT, True, CACHE / "showdown")
+    def __init__(self, *, independent=False):
+        factory = new_simulator if independent else simulator
+        self.battle = factory(FORMAT, True, CACHE / "showdown")
         self.player, self.opponent = players()
 
     def reset(self, own, foe, seed, side, preview="fixed", lineup="1234"):

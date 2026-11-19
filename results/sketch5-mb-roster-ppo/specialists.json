@@ -1,0 +1,530 @@
+[
+  {
+    "team": "MC461-MB",
+    "index": 0,
+    "training_team": "MC461-MB",
+    "shared_species": 6,
+    "shared_moves": 19,
+    "candidates": [
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 6,
+        "shared_moves": 19
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 2,
+        "shared_moves": 9
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 0,
+        "shared_moves": 6
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 2
+      }
+    ]
+  },
+  {
+    "team": "MB537",
+    "index": 1,
+    "training_team": "MB537",
+    "shared_species": 6,
+    "shared_moves": 20,
+    "candidates": [
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 6,
+        "shared_moves": 20
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 2,
+        "shared_moves": 9
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 1,
+        "shared_moves": 4
+      }
+    ]
+  },
+  {
+    "team": "MB51",
+    "index": 2,
+    "training_team": "MB51",
+    "shared_species": 6,
+    "shared_moves": 22,
+    "candidates": [
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 6,
+        "shared_moves": 22
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 0,
+        "shared_moves": 6
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  },
+  {
+    "team": "MB45",
+    "index": 3,
+    "training_team": "MB45",
+    "shared_species": 6,
+    "shared_moves": 20,
+    "candidates": [
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 6,
+        "shared_moves": 20
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 1,
+        "shared_moves": 4
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 0,
+        "shared_moves": 3
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 0,
+        "shared_moves": 2
+      }
+    ]
+  },
+  {
+    "team": "MB516",
+    "index": 0,
+    "training_team": "MC461-MB",
+    "shared_species": 1,
+    "shared_moves": 7,
+    "candidates": [
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 0,
+        "shared_moves": 5
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  },
+  {
+    "team": "MB216",
+    "index": 3,
+    "training_team": "MB45",
+    "shared_species": 3,
+    "shared_moves": 10,
+    "candidates": [
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 3,
+        "shared_moves": 10
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 4
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 0,
+        "shared_moves": 5
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  },
+  {
+    "team": "MB99",
+    "index": 2,
+    "training_team": "MB51",
+    "shared_species": 2,
+    "shared_moves": 7,
+    "candidates": [
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 2,
+        "shared_moves": 7
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 1,
+        "shared_moves": 6
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 1,
+        "shared_moves": 5
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 4
+      }
+    ]
+  },
+  {
+    "team": "MB444",
+    "index": 3,
+    "training_team": "MB45",
+    "shared_species": 3,
+    "shared_moves": 8,
+    "candidates": [
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 3,
+        "shared_moves": 8
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 1,
+        "shared_moves": 5
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 1,
+        "shared_moves": 5
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  },
+  {
+    "team": "MB481",
+    "index": 1,
+    "training_team": "MB537",
+    "shared_species": 3,
+    "shared_moves": 14,
+    "candidates": [
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 3,
+        "shared_moves": 14
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 2,
+        "shared_moves": 7
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 6
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 1,
+        "shared_moves": 4
+      }
+    ]
+  },
+  {
+    "team": "MB335",
+    "index": 0,
+    "training_team": "MC461-MB",
+    "shared_species": 2,
+    "shared_moves": 8,
+    "candidates": [
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 2,
+        "shared_moves": 8
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 5
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 0,
+        "shared_moves": 4
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 1
+      }
+    ]
+  },
+  {
+    "team": "MB259",
+    "index": 2,
+    "training_team": "MB51",
+    "shared_species": 1,
+    "shared_moves": 8,
+    "candidates": [
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 8
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  },
+  {
+    "team": "MB558",
+    "index": 0,
+    "training_team": "MC461-MB",
+    "shared_species": 1,
+    "shared_moves": 10,
+    "candidates": [
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 1,
+        "shared_moves": 10
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 1,
+        "shared_moves": 8
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 1,
+        "shared_moves": 4
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 0,
+        "shared_moves": 7
+      }
+    ]
+  },
+  {
+    "team": "MB163",
+    "index": 0,
+    "training_team": "MC461-MB",
+    "shared_species": 1,
+    "shared_moves": 6,
+    "candidates": [
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 1,
+        "shared_moves": 6
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 1,
+        "shared_moves": 5
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 5
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  },
+  {
+    "team": "MB562",
+    "index": 2,
+    "training_team": "MB51",
+    "shared_species": 1,
+    "shared_moves": 7,
+    "candidates": [
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 0,
+        "shared_moves": 5
+      },
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 0,
+        "shared_moves": 5
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 0,
+        "shared_moves": 5
+      }
+    ]
+  },
+  {
+    "team": "MB149",
+    "index": 1,
+    "training_team": "MB537",
+    "shared_species": 2,
+    "shared_moves": 8,
+    "candidates": [
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 2,
+        "shared_moves": 8
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 1,
+        "shared_moves": 6
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 0,
+        "shared_moves": 3
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  },
+  {
+    "team": "MB337",
+    "index": 1,
+    "training_team": "MB537",
+    "shared_species": 2,
+    "shared_moves": 7,
+    "candidates": [
+      {
+        "index": 1,
+        "training_team": "MB537",
+        "shared_species": 2,
+        "shared_moves": 7
+      },
+      {
+        "index": 2,
+        "training_team": "MB51",
+        "shared_species": 1,
+        "shared_moves": 7
+      },
+      {
+        "index": 3,
+        "training_team": "MB45",
+        "shared_species": 1,
+        "shared_moves": 2
+      },
+      {
+        "index": 0,
+        "training_team": "MC461-MB",
+        "shared_species": 0,
+        "shared_moves": 3
+      }
+    ]
+  }
+]

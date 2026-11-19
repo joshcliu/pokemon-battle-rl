@@ -143,6 +143,7 @@ The [BC-opponent training study](results/sketch5-vgcbench-bc/README.md) compares
 matched 65k PPO runs against the previous league-trained models on those 12 teams.
 The [M-B post-training pilot](results/sketch5-mb-posttraining-pilot/README.md) compares battle PPO and two preview optimizers on familiar and unseen rosters, with a separate test that swaps roster assignments.
 The [HP and knockout ablation](results/sketch5-mb-reward-factorial/README.md) crosses the two intermediate signals with PPO and AWAC and measures roster-balanced held-out wins and sweeps.
+The [shared, per-team and top-2 MoE PPO comparison](results/sketch5-mb-roster-ppo/README.md) matches the training decisions per roster and uses the same frozen lineup selector in training and evaluation.
 [Reproduce the VGC-Bench experiments](docs/vgcbench.md).
 
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:

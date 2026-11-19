@@ -85,12 +85,14 @@ def specification(count):
     )
 
 
-@lru_cache(maxsize=2)
-def simulator(fmt, sheets, directory):
+def new_simulator(fmt, sheets, directory):
     torch.set_num_threads(1)
     battle = LocalBattle(fmt, timeout=60, open_team_sheets=sheets, simulator=directory)
     atexit.register(battle.close)
     return battle
+
+
+simulator = lru_cache(maxsize=2)(new_simulator)
 
 
 @lru_cache(maxsize=6)

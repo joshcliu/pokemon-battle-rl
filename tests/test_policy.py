@@ -63,3 +63,16 @@ def test_gae_carries_nonterminal_advantages():
         1.0,
     )
     np.testing.assert_array_equal(result.numpy(), [1.0, 1.0])
+
+
+def test_batched_gae_keeps_interleaved_rosters_independent():
+    rewards = torch.tensor([[0.0, 1.0], [1.0, 0.0], [-1.0, 0.0]])
+    values = torch.tensor([[0.2, -0.4], [0.6, 0.9], [-0.2, 0.5]])
+    terminal = torch.tensor([[False, True], [True, False], [True, False]])
+    following = torch.cat((values[1:], torch.tensor([[0.1, 0.3]])))
+    batched = advantages(rewards, values, following, terminal, terminal, 0.99, 0.95)
+    for i in range(2):
+        expected = advantages(
+            rewards[:, i], values[:, i], following[:, i], terminal[:, i], terminal[:, i], 0.99, 0.95
+        )
+        torch.testing.assert_close(batched[:, i], expected)

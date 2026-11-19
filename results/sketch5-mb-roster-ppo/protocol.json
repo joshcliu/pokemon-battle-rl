@@ -1,0 +1,26 @@
+{
+  "roster_manifest": "../sketch5-mb-reward-factorial/protocol.json",
+  "total_decisions_per_seed": 65536,
+  "seeds": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "steps_per_practiced_roster": 16384,
+  "reward": "terminal win +1, draw 0, loss -1; no intermediate reward",
+  "preview": "released native frozen BC on each side in every training and evaluation battle",
+  "opponent": "released frozen BC with sampled actions and open team sheets",
+  "updates": "PPO pilot settings; 256 decisions per update, three epochs; shared and MoE collect 64 consecutive steps from each of four independent trajectories, specialists collect 256 from their one trajectory",
+  "experts": "4 independent 256 to 128 to 214 residual action heads, zero output at initialization. At each decision a linear gate on pretrained actor features picks top 2; selected weights softmax-normalized. Shared critic, no load balancing loss.",
+  "specialist_routing": "For familiar teams use the matching specialist. For new rosters maximize number of shared base species, break ties by number of shared distinct moves across all six, then by training roster order. No outcomes used.",
+  "evaluation": {
+    "games_per_pair": 16,
+    "seed_base": 851000000,
+    "familiar": "own_train x foe_train",
+    "familiar_unseen_opponent": "own_train x foe_test",
+    "held_out": "own_test x foe_test and swapped rosters; equal weight",
+    "seats": "eight battles each seat per pair and direction; same matched battle and action seeds across arms"
+  },
+  "interval": "Paired crossed bootstrap over training seeds, both roster axes, and game seeds within seat, 6000 replicates."
+}

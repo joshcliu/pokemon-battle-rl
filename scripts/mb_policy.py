@@ -111,8 +111,11 @@ class FineTune(nn.Module):
             None if mode == "native" else ActionResidual(mode, self.base.pi_features_extractor)
         )
 
+    def battle_logits(self, obs):
+        return self.base.get_logits(obs, actor_grad=True)
+
     def decision(self, obs, action=None, deterministic=False):
-        logits, value = self.base.get_logits(obs, actor_grad=True)
+        logits, value = self.battle_logits(obs)
         mask = obs["action_mask"]
         x = (
             self.extra.encode(obs["observation"], self.base.pi_features_extractor)
@@ -155,21 +158,25 @@ def load_trained(path):
     return model.eval()
 
 
-def update_ppo(model, optimizer, sampling, data, actions, logp, values, rewards, dones, bootstrap):
+def update_ppo(
+    model, optimizer, sampling, data, actions, logp, values, rewards, dones, bootstrap, *, streams=1
+):
     obs = {k: torch.as_tensor(np.stack([o[k] for o in data])) for k in data[0]}
     actions = torch.stack(actions)
     old = torch.tensor(logp)
     v = torch.tensor(values)
-    terminal = torch.tensor(dones)
+    v_by_stream = v.reshape(-1, streams)
+    terminal = torch.tensor(dones).reshape(-1, streams)
+    tail = torch.as_tensor(bootstrap, dtype=v.dtype).reshape(1, streams)
     adv = advantages(
-        torch.tensor(rewards, dtype=torch.float32),
-        v,
-        torch.tensor(values[1:] + [bootstrap]),
+        torch.tensor(rewards, dtype=torch.float32).reshape_as(v_by_stream),
+        v_by_stream,
+        torch.cat((v_by_stream[1:], tail)),
         terminal,
         terminal,
         0.99,
         0.95,
-    )
+    ).flatten()
     target = adv + v
     adv = (adv - adv.mean()) / (adv.std() + 1e-8)
     for _ in range(3):

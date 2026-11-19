@@ -1,0 +1,9 @@
+training_seed,cell,original_wins,permuted_wins,games
+2,forward,247,247,512
+2,reverse,320,322,512
+3,forward,241,247,512
+3,reverse,319,318,512
+4,forward,265,253,512
+4,reverse,342,345,512
+5,forward,255,256,512
+5,reverse,321,324,512

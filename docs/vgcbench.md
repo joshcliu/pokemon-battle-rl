@@ -111,3 +111,27 @@ done
 ```
 
 The evaluator also scores the released BC policy and tracks surviving opponents at the end of every battle. Each new policy and its training records are under `runs/sketch5-mb-reward-factorial/<algorithm>-<reward>-<seed>/`. The [report](../results/sketch5-mb-reward-factorial/README.md) links the game records, checkpoint hashes and roster matrix.
+
+## Shared, per-team and top-2 MoE battle PPO
+
+Run with the same pinned simulator and single-thread Python overlay on Sketch5. The [protocol](../results/sketch5-mb-roster-ppo/protocol.json) fixes budgets, rosters, preview behavior and the specialist assignment rule before scoring. The four specialist jobs collectively consume the same 65,536 decisions as each shared model.
+
+```bash
+node scripts/lock_mb_specialists.cjs
+for seed in 2 3 4 5; do
+  .venv/bin/python scripts/mb_roster_ppo.py shared "$seed"
+  .venv/bin/python scripts/mb_roster_ppo.py moe "$seed"
+  for roster in 0 1 2 3; do
+    .venv/bin/python scripts/mb_roster_ppo.py specialist "$seed" --index "$roster"
+  done
+done
+.venv/bin/python scripts/eval_mb_roster_ppo.py --jobs 20
+.venv/bin/python scripts/eval_mb_roster_ppo.py --verify
+.venv/bin/python scripts/report_mb_roster_ppo.py
+.venv/bin/python scripts/plot_mb_roster_ppo.py
+.venv/bin/python scripts/check_mb_expert_routing.py --jobs 20
+```
+
+Each trained checkpoint and its episode log are under `runs/sketch5-mb-roster-ppo/`. The evaluator records both ordered lineups in every game, the deployed specialist and the MoE expert counts.
+
+The final command is a post hoc inference check on the held-out games. It keeps the gate and all four trained experts frozen, assigning each gate output to the next expert cyclically. The primary three-way comparison uses normal routing.
