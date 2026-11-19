@@ -134,10 +134,10 @@ def actor(label):
 
 
 @torch.no_grad()
-def eval_job(task):
+def eval_job(task, *, actor_loader=actor, terminal_metrics=None):
     label, selector, own, foe, seeds, mode, cell = task
     match = Match()
-    policy = actor(label)
+    policy = actor_loader(label)
     rows = []
     for seed, side in seeds:
         lineup = "1234"
@@ -172,6 +172,7 @@ def eval_job(task):
                 opponent_lineup=match.opponent.lineup,
                 reward=reward,
                 turns=match.battle.turn,
+                **(terminal_metrics(match) if terminal_metrics else {}),
             )
         )
     return rows

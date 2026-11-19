@@ -44,6 +44,8 @@ Codex added the frozen VGC-Bench behavior-cloned opponent to training, ran the m
 
 Codex implemented and ran the M-B post-training pilot on Sketch5, including BC-initialized battle PPO, the shared action scorer, paired PPO and group-relative preview training, roster-transfer and reciprocal evaluations, and the targeting and replay audits. Codex prepared the pilot report and figure.
 
+Codex implemented and ran the four-seed HP and opposing-knockout reward ablation with PPO and a joint-action AWAC implementation on Sketch5. It audited the matched roster schedules and exported policies, analyzed reciprocal win rates and sweep losses, and produced the experiment report and figure.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

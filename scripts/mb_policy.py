@@ -155,6 +155,38 @@ def load_trained(path):
     return model.eval()
 
 
+def update_ppo(model, optimizer, sampling, data, actions, logp, values, rewards, dones, bootstrap):
+    obs = {k: torch.as_tensor(np.stack([o[k] for o in data])) for k in data[0]}
+    actions = torch.stack(actions)
+    old = torch.tensor(logp)
+    v = torch.tensor(values)
+    terminal = torch.tensor(dones)
+    adv = advantages(
+        torch.tensor(rewards, dtype=torch.float32),
+        v,
+        torch.tensor(values[1:] + [bootstrap]),
+        terminal,
+        terminal,
+        0.99,
+        0.95,
+    )
+    target = adv + v
+    adv = (adv - adv.mean()) / (adv.std() + 1e-8)
+    for _ in range(3):
+        for idx in torch.randperm(256, generator=sampling).split(32):
+            _, pred, lp, entropy = model.decision(
+                {k: arr[idx] for k, arr in obs.items()}, action=actions[idx]
+            )
+            ratio = (lp - old[idx]).exp()
+            pg = torch.minimum(adv[idx] * ratio, adv[idx] * ratio.clamp(0.8, 1.2)).mean()
+            loss = -pg + 0.5 * (pred - target[idx]).square().mean() - 0.005 * entropy.mean()
+            optimizer.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5, error_if_nonfinite=True)
+            optimizer.step()
+    return loss.item()
+
+
 def train(arm, seed, steps):
     if arm not in ("native", "flat", "structured") or steps % 256:
         raise ValueError("Expected a supported arm and a multiple of 256 steps")
@@ -213,40 +245,15 @@ def train(arm, seed, steps):
                     episodes.append({**episode, "reward": reward, "turns": match.battle.turn})
                     episode = reset()
             bootstrap = model.base.predict_values(batch_obs(match.obs())).item()
-        obs = {k: torch.as_tensor(np.stack([o[k] for o in data])) for k in data[0]}
-        actions = torch.stack(actions)
-        old = torch.tensor(logp)
-        v = torch.tensor(values)
-        terminal = torch.tensor(dones)
-        adv = advantages(
-            torch.tensor(rewards, dtype=torch.float32),
-            v,
-            torch.tensor(values[1:] + [bootstrap]),
-            terminal,
-            terminal,
-            0.99,
-            0.95,
+        loss = update_ppo(
+            model, optimizer, sampling, data, actions, logp, values, rewards, dones, bootstrap
         )
-        target = adv + v
-        adv = (adv - adv.mean()) / (adv.std() + 1e-8)
-        for _ in range(3):
-            for idx in torch.randperm(256, generator=sampling).split(32):
-                _, pred, lp, entropy = model.decision(
-                    {k: arr[idx] for k, arr in obs.items()}, action=actions[idx]
-                )
-                ratio = (lp - old[idx]).exp()
-                pg = torch.minimum(adv[idx] * ratio, adv[idx] * ratio.clamp(0.8, 1.2)).mean()
-                loss = -pg + 0.5 * (pred - target[idx]).square().mean() - 0.005 * entropy.mean()
-                optimizer.zero_grad()
-                loss.backward()
-                torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5, error_if_nonfinite=True)
-                optimizer.step()
         logs.append(
             dict(
                 steps=end,
                 games=len(episodes),
                 wins=sum(e["reward"] == 1 for e in episodes),
-                loss=loss.item(),
+                loss=loss,
             )
         )
         atomic_rows(dest / "training.csv", logs)

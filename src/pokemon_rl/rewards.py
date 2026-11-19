@@ -1,4 +1,4 @@
-"""Alternative training rewards for the fixed four-Pokémon pilot lineups."""
+"""Battle rewards from visible HP changes and episode outcomes."""
 
 from .env import BattleEnv
 
@@ -67,3 +67,29 @@ class RewardEnv(BattleEnv):
         if terminated or truncated:
             info["episode_training_return_undiscounted"] = self.total_reward
         return obs, reward, terminated, truncated, info
+
+
+def health_deficit(mon):
+    if mon.fainted:
+        return 1.0
+    # Team sheets can include a Pokémon that has never entered play.
+    return 1.0 - mon.current_hp_fraction if mon.max_hp else 0.0
+
+
+def public_board(view):
+    """Net HP advantage and fraction of opposing Pokémon fainted, from the acting side."""
+    own = view.team.values()
+    foes = view.opponent_team.values()
+    own_damage = sum(map(health_deficit, own))
+    foe_damage = sum(map(health_deficit, foes))
+    knocked_out = sum(m.fainted for m in foes)
+    assert 0 <= own_damage <= 4.00001 and 0 <= foe_damage <= 4.00001 and 0 <= knocked_out <= 4
+    return (foe_damage - own_damage) / 4, knocked_out / 4
+
+
+def shaped_outcome(outcome, before, after, *, terminal, gamma, hp_weight, ko_weight):
+    """Redistribute discounted outcome credit with two zero-at-terminal potentials."""
+    next_hp, next_ko = (0.0, 0.0) if terminal else after
+    hp = hp_weight * (gamma * next_hp - before[0])
+    ko = ko_weight * (gamma * next_ko - before[1])
+    return outcome + hp + ko, hp, ko

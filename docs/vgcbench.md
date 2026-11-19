@@ -91,3 +91,23 @@ done
 ```
 
 The training jobs are independent across arms and seeds. The evaluation commands read completed checkpoints under `runs/sketch5-mb-posttraining-pilot`. The `native-preview` condition combines a trained native battle policy with the released BC preview. The history control uses the earlier 65k M-B weights and samples legal battle actions, matching the deployment mode of the post-training pilot. See the [pilot results](../results/sketch5-mb-posttraining-pilot/README.md) for the lineup rules, primary comparison and roster-swap diagnostic.
+
+## HP and opponent-survival reward ablation
+
+Use the same pinned simulator, model, teams, Python overlay and single-thread settings on Sketch5. The [reward protocol](../results/sketch5-mb-reward-factorial/protocol.json) defines the two independent reward factors, optimizer settings and evaluation schedule. Each training command below is independent.
+
+```bash
+for algo in ppo awac; do
+  for reward in none hp alive both; do
+    for seed in 2 3 4 5; do
+      .venv/bin/python scripts/mb_reward_factorial.py "$algo" "$reward" "$seed"
+    done
+  done
+done
+.venv/bin/python scripts/eval_mb_rewards.py --jobs 28
+.venv/bin/python scripts/eval_mb_rewards.py --verify
+.venv/bin/python scripts/report_mb_rewards.py
+.venv/bin/python scripts/plot_mb_rewards.py
+```
+
+The evaluator also scores the released BC policy and tracks surviving opponents at the end of every battle. Each new policy and its training records are under `runs/sketch5-mb-reward-factorial/<algorithm>-<reward>-<seed>/`. The [report](../results/sketch5-mb-reward-factorial/README.md) links the game records, checkpoint hashes and roster matrix.

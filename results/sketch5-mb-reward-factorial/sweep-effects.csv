@@ -1,0 +1,29 @@
+algorithm,effect,delta_pp,lo95,hi95,seeds_positive,seeds
+ppo,HP main effect,0.244140625,-1.3189697265625002,1.904296875,3,4
+ppo,opponent KO main effect,-0.537109375,-2.392578125,1.416015625,1,4
+ppo,HP x KO interaction,1.07421875,-2.4914550781250004,4.541015625,4,4
+ppo,none minus frozen BC,-0.87890625,-3.90625,1.806640625,0,4
+ppo,hp minus frozen BC,-1.171875,-4.248046875,1.904296875,0,4
+ppo,hp minus none,-0.29296875,-2.63671875,2.1484375,1,4
+ppo,alive minus frozen BC,-1.953125,-5.029296875,0.78125,0,4
+ppo,alive minus none,-1.07421875,-3.61328125,1.3671875,0,4
+ppo,both minus frozen BC,-1.171875,-4.345703125,1.6125488281249822,0,4
+ppo,both minus none,-0.29296875,-2.880859375,2.24609375,1,4
+awac,HP main effect,0.1953125,-1.416015625,1.9775390625,2,4
+awac,opponent KO main effect,0.048828125,-1.5386962890625002,1.4892578125,2,4
+awac,HP x KO interaction,0.390625,-2.9296875,3.7109375,2,4
+awac,none minus frozen BC,-1.3671875,-4.541015625,1.66015625,0,4
+awac,hp minus frozen BC,-1.3671875,-5.078125,2.24609375,0,4
+awac,hp minus none,0.0,-2.44140625,2.63671875,1,4
+awac,alive minus frozen BC,-1.513671875,-4.98046875,1.85546875,0,4
+awac,alive minus none,-0.146484375,-2.5390625,2.05078125,1,4
+awac,both minus frozen BC,-1.123046875,-4.19921875,1.806640625,0,4
+awac,both minus none,0.244140625,-1.904296875,2.587890625,2,4
+cross,none | AWAC minus PPO,-0.48828125,-3.125,2.197265625,0,4
+cross,hp | AWAC minus PPO,-0.1953125,-2.83203125,2.63671875,2,4
+cross,alive | AWAC minus PPO,0.439453125,-2.1484375,2.978515625,3,4
+cross,both | AWAC minus PPO,0.048828125,-2.83203125,2.9296875,3,4
+cross,AWAC minus PPO averaged over rewards,-0.048828125,-1.77001953125,1.7822265625,3,4
+cross,AWAC x HP interaction,-0.048828125,-2.1978759765625,2.2705078125,3,4
+cross,AWAC x KO interaction,0.5859375,-1.953125,3.052368164062491,3,4
+cross,AWAC x HP x KO interaction,-0.68359375,-5.17578125,3.7109375,0,4

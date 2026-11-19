@@ -1,0 +1,8 @@
+{
+  "algorithm": "awac",
+  "reward": "both",
+  "seed": 2,
+  "steps": 4096,
+  "equal_state_tensors": 130,
+  "original_sha256": "d076936ff8836cb44106eff33265624e96d5f13235578f2e21f3dd74c56d8580"
+}
