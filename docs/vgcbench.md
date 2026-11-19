@@ -135,3 +135,23 @@ done
 Each trained checkpoint and its episode log are under `runs/sketch5-mb-roster-ppo/`. The evaluator records both ordered lineups in every game, the deployed specialist and the MoE expert counts.
 
 The final command is a post hoc inference check on the held-out games. It keeps the gate and all four trained experts frozen, assigning each gate output to the next expert cyclically. The primary three-way comparison uses normal routing.
+
+## PPO duration and expert-routing controls
+
+Use the same frozen BC assets and roster-ppo environment on Sketch5. The archived 65k shared and original MoE weights from the preceding experiment are required for the exact-continuation check. The 65k score archives supply the original paired baseline. Every long command can be rerun after interruption and resumes at its last 16,384-decision optimizer checkpoint.
+
+```bash
+.venv/bin/python scripts/check_mb_long_state.py
+for seed in 2 3 4 5; do
+  for arm in shared moe moe8 moe1; do
+    .venv/bin/python scripts/mb_roster_ppo.py "$arm" "$seed" --long
+  done
+done
+.venv/bin/python scripts/eval_mb_long_ppo.py --jobs 20
+.venv/bin/python scripts/eval_mb_long_ppo.py --verify
+.venv/bin/python scripts/probe_mb_long_routing.py
+.venv/bin/python scripts/report_mb_long_ppo.py
+.venv/bin/python scripts/plot_mb_long_ppo.py
+```
+
+The [long-run protocol](../results/sketch5-mb-long-ppo/protocol.json) fixes architectural controls, paired evaluation and routing interventions. The report uses 262,144 total decisions for each final model.

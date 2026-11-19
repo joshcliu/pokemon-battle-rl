@@ -48,6 +48,8 @@ Codex implemented and ran the four-seed HP and opposing-knockout reward ablation
 
 Codex implemented shared, per-team and sparse top-2 MoE battle PPO, defined a roster-only selector for deploying specialists on new teams, and ran the matched 65,536-decision experiment on Sketch5. It analyzed paired wins on familiar and held-out rosters, the frozen expert-identity control, and replay and routing checks.
 
+Codex extended shared PPO and MoE training to 262,144 decisions on Sketch5, verified exact reproduction of the eight original 65k checkpoints, and trained four- and eight-expert controls. It evaluated familiar and held-out matchups, measured the effects of rotating and removing experts, checked matched opening choices and replays, and prepared the paired analysis and figure.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

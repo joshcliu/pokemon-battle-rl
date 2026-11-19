@@ -1,0 +1,23 @@
+{
+  "steps": 262144,
+  "reference_steps": 65536,
+  "training_seeds": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "source_protocol": "../sketch5-mb-roster-ppo/protocol.json",
+  "arms": {
+    "shared": "Original native shared actor and critic",
+    "moe": "Four expert residuals, two active, original architecture",
+    "moe8": "Eight of the same residual experts, two active",
+    "moe1": "Four residual experts, one active. Unit forward weight with straight-through selected full-softmax probability for router gradients."
+  },
+  "continuation": "Recreate the original 65,536 decisions from BC, require exact equality with every archived shared and MoE parameter/buffer, then continue uninterrupted for 196,608 additional decisions per run.",
+  "training": "Original four balanced streams, 256-decision updates, Adam carries through 65k, PPO settings and outcome-only reward unchanged. Frozen BC team preview for each side.",
+  "evaluation": "Same 16 games and simulator/action seeds per pair, frozen BC opponent, familiar x familiar, familiar x unseen, unseen x unseen in both directions. Primary held-out win rate weights the two directions equally.",
+  "routing": "Main test is normal routing minus the same cyclic frozen expert-identity permutation as at 65k on held-out teams. Compare that paired effect at 262k and 65k. Also zero expert residuals at evaluation to distinguish collective expert contribution from expert identity.",
+  "capacity": "Compare 4/top-2 with 8/top-2 at both budgets holding active count fixed. Compare 4/top-2 with 4/top-1 to test active count at fixed bank size; the top-1 router uses a straight-through gradient.",
+  "uncertainty": "Paired 6,000-draw crossed percentile bootstrap over training seeds, roster axes and game seeds within simulator seat."
+}
