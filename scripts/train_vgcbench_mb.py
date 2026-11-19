@@ -1,5 +1,6 @@
 """Repeat the fixed-team fine-tuning recipe with an M-B legal variant and open sheets."""
 
+import argparse
 import json
 from concurrent.futures import ThreadPoolExecutor
 
@@ -11,8 +12,11 @@ FORMAT = "gen9championsvgc2026regmb"
 RUN = ROOT / "runs/sketch5-vgcbench-mb-v1"
 
 
-def train(seed):
-    dest = RUN / f"seed-{seed}"
+BC_RUN = ROOT / "runs/sketch5-vgcbench-bc-v1"
+
+
+def train(seed, bc=False):
+    dest = (BC_RUN if bc else RUN) / f"seed-{seed}"
     if (dest / "train/summary.json").is_file():
         return
     dest.mkdir(parents=True, exist_ok=True)
@@ -29,9 +33,7 @@ def train(seed):
             FORMAT,
             "--open-team-sheets",
             "--opponent",
-            "mixture",
-            "--opponent-pool",
-            POOL,
+            *(["vgcbench-bc"] if bc else ["mixture", "--opponent-pool", POOL]),
             "--reward-mode",
             "win-loss",
             "--steps",
@@ -58,5 +60,22 @@ def train(seed):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--bc", action="store_true", help="Train against the frozen behavior-cloned bot"
+    )
+    args = parser.parse_args()
+    if args.bc:
+        from evaluate_vgcbench_mb import lock, protocol
+
+        spec = protocol()
+        assert not (set(spec["training_pool"]) & set(spec["teams"]))
+        spec["primary"] = (
+            "BC-trained vs league-trained PPO at 65536 decisions against BC on 12 held-out teams"
+        )
+        spec["training_opponent"] = "bc-learned"
+        spec["training_teams"] = list(spec.pop("training_pool"))
+        BC_RUN.mkdir(parents=True, exist_ok=True)
+        lock(BC_RUN / "protocol.json", spec)
     with ThreadPoolExecutor(max_workers=len(SEEDS)) as pool:
-        list(pool.map(train, SEEDS))
+        list(pool.map(train, SEEDS, [args.bc] * len(SEEDS)))

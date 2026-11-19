@@ -52,6 +52,13 @@ class BattleEnv(gym.Env):
                 "Mirror training requires the same ordered learner and opponent rosters"
             )
         self.opponent_teams = [(ROOT / p).read_text() for p in self.opponent_paths]
+        self.bc = None
+        if opponent == "vgcbench-bc":
+            from .vgcbench import TrainingBC
+
+            if opponent_pool:
+                raise ValueError("BC training takes opponent teams directly")
+            self.bc = TrainingBC(battle_format)
         self.pool = None
         if opponent_pool:
             from .league import OpponentPool
@@ -72,7 +79,7 @@ class BattleEnv(gym.Env):
         self.team_index = int(self.np_random.integers(len(self.opponent_teams)))
         # Opponent decisions must not change the next episode's team/seed schedule.
         opponent_rng = np.random.default_rng(np.random.SeedSequence([episode_seed, 19]))
-        self.opponent = (
+        self.opponent = self.bc or (
             self.pool.draw(self.opponent_paths[self.team_index], opponent_rng)
             if self.pool
             else Heuristic(self.style, opponent_rng)
@@ -87,7 +94,12 @@ class BattleEnv(gym.Env):
         learner = self.learner_teams[self.learner_index]
         if self.shuffle_move_slots:
             learner = shuffled_moves(learner, episode_seed)
-        self.battle.reset(episode_seed, learner, self.opponent_teams[self.team_index])
+        pickers = None
+        if self.bc:
+            pickers = {"p2": lambda _: self.bc.preview(self.battle.players["p2"], episode_seed)}
+        self.battle.reset(
+            episode_seed, learner, self.opponent_teams[self.team_index], preview_pickers=pickers
+        )
         self.decisions, self.finished = 0, False
         obs = observation(self.battle.players["p1"])
         return obs, self._info()
@@ -98,6 +110,7 @@ class BattleEnv(gym.Env):
             "simulator_seed": self.episode_seed,
             "opponent": self.opponent.style,
             "opponent_team_index": self.team_index,
+            **({"opponent_lineup": self.bc.lineup} if self.bc else {}),
             "learner_team": str(self.learner_paths[self.learner_index]),
         }
 
@@ -123,9 +136,12 @@ class BattleEnv(gym.Env):
         choices = {"p1": legal[pair].message.removeprefix("/choose ")}
         while True:
             if self.battle.needs_action("p2"):
-                opponent_legal = self.battle.legal_actions("p2")
-                other = self.opponent.choose(self.battle.players["p2"], opponent_legal)
-                choices["p2"] = opponent_legal[other].message.removeprefix("/choose ")
+                if self.bc:
+                    choices["p2"] = self.bc.order(self.battle.players["p2"])
+                else:
+                    opponent_legal = self.battle.legal_actions("p2")
+                    other = self.opponent.choose(self.battle.players["p2"], opponent_legal)
+                    choices["p2"] = opponent_legal[other].message.removeprefix("/choose ")
             self.battle.step(choices)
             self.decisions += 1
             truncated = not self.battle.ended and (

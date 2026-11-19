@@ -3,15 +3,12 @@
 import argparse
 import atexit
 import csv
-import io
 import json
 import multiprocessing
 import os
 import random
 import traceback
-import zipfile
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from contextlib import chdir
 from functools import lru_cache
 from importlib.metadata import version
 from pathlib import Path
@@ -21,27 +18,23 @@ import torch
 from analyze_long_rewards import write_csv
 from evaluate_challenger_transfer import digest, read
 from fit_expanded_preview import POLICIES, pick
-from gymnasium import spaces
 from poke_env.player import MaxBasePowerPlayer, RandomPlayer, SimpleHeuristicsPlayer, baselines
 
 from pokemon_rl.battle import DEFAULT_FORMAT, ROOT, LocalBattle
 from pokemon_rl.league import FrozenActor
+from pokemon_rl.vgcbench import (
+    BC_HASH,
+    CACHE,
+    UPSTREAM_SHA256,
+    ZIP,
+    learned_preview,
+    load_bc_player,
+)
 
-CACHE = ROOT / ".cache/vgcbench-external"
-ZIP = CACHE / "vgcbench-bc100-mc461-20261118.zip"
 EXTERNAL = ROOT / "teams/vgcbench-mb-transfer"
 HEAD = ROOT / "results/sketch5-preview-expanded"
 RUN = ROOT / "runs/sketch5-vgcbench-v1"
-BC_HASH = "57f5edcab415cf6ccc1b6231923c8b66d3b1b7249b6b2562b97531471e4ca60b"
 BASELINE_HASH = "8e5812fa9bbb879aaeec32c706f3eee9bd8bf7de0ae102eff0be3d1c0f6a8e85"
-UPSTREAM_SHA256 = {
-    "vgc_bench/src/policy.py": "ab8969ebe18f88be955b19d1b9f77157a65ee23f38f9e8d1d5d601ae12f822a4",
-    "vgc_bench/src/policy_player.py": "3c8cefbdea8d68a6504d9dd5fbf97a2d689b80cecb3e7522d67138b8b129d86f",
-    "vgc_bench/src/utils.py": "534b93ea18806b84a52f21998b8485b56915794751ab77497e882734caaf0313",
-    "data/abilities.json": "c6110d7963365d44d5741b204df8a92aa543db1d2a20a6e96233815c96d09d68",
-    "data/items.json": "0bdc97131a61608de77cc1de8e4142d39561895d9cfc796d9f6a1fb576624c9b",
-    "data/moves.json": "f0cb56065ec93cdf028f4ca187df0b9943a25a75812cd8a89d2c90e2ce24373e",
-}
 BOTS = ("random", "max-base-power", "simple-heuristics", "bc-learned", "bc-first-four")
 CLASSES = dict(
     zip(BOTS[:3], (RandomPlayer, MaxBasePowerPlayer, SimpleHeuristicsPlayer), strict=True)
@@ -110,29 +103,7 @@ def rival(name, fmt):
     kwargs = dict(battle_format=fmt, start_listening=False)
     if name in CLASSES:
         return CLASSES[name](**kwargs)
-    with chdir(CACHE / "source"):
-        from vgc_bench.src.policy_player import MaskedActorCriticPolicy, PolicyPlayer
-        from vgc_bench.src.utils import act_len, chunk_obs_len
-    obs = spaces.Dict(
-        {
-            "observation": spaces.Box(-1, np.inf, shape=(12 * chunk_obs_len,), dtype=np.float32),
-            "action_mask": spaces.MultiBinary(2 * act_len),
-        }
-    )
-    model = MaskedActorCriticPolicy(
-        obs,
-        spaces.MultiDiscrete([act_len] * 2),
-        lambda _: 0.0,
-        d_model=256,
-        choose_on_teampreview=True,
-    )
-    with zipfile.ZipFile(ZIP) as z:
-        weights = torch.load(
-            io.BytesIO(z.read("policy.pth")), map_location="cpu", weights_only=True
-        )
-    model.load_state_dict(weights, strict=True)
-    model.eval()
-    return PolicyPlayer(policy=model, deterministic=False, **kwargs)
+    return load_bc_player(fmt)
 
 
 def seed_actions(seed):
@@ -161,13 +132,9 @@ def game(spec, team, family, label, seed, side):
         if spec["open_team_sheets"]:
             assert all(1 <= len(mon.moves) <= 4 for mon in view.opponent_team.values())
             assert all(len(mon.moves) == 4 for mon in battle.players[side].opponent_team.values())
-        # On this Showdown revision the preview request marks the first two slots
-        # active. All six are legal draft choices; the upstream converter also
-        # checks available_switches when decoding its two masked preview actions.
         if family == "bc-learned":
-            for switches in view.available_switches:
-                switches[:] = view.team.values()
-        if family == "bc-first-four":
+            lineup = learned_preview(other, view)
+        elif family == "bc-first-four":
             for mon in list(view.team.values())[:4]:
                 mon._selected_in_teampreview = True
             lineup = "1234"

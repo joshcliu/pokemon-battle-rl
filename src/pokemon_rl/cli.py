@@ -40,7 +40,11 @@ def main():
         p.add_argument("--max-turns", type=int, default=200)
         p.add_argument("--replays", type=int, default=3)
         p.add_argument("--threads", type=int, default=1)
-        p.add_argument("--opponent", choices=STYLES, default="damage")
+        p.add_argument(
+            "--opponent",
+            choices=(*STYLES, "vgcbench-bc") if command == "train" else STYLES,
+            default="damage",
+        )
         if command != "train":
             p.add_argument("--battles", type=int, default=100)
             if command == "battle":
