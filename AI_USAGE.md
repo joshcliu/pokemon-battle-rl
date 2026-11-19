@@ -40,6 +40,8 @@ Codex sourced and validated 45 additional tournament rosters, ran their lineup s
 
 Codex integrated the VGC-Bench behavior-cloned player and heuristic baselines, selected and checked 12 external rosters, and ran matched cross-play on Sketch5. It adapted MC461 to M-B, added open-sheet support, and implemented the four-seed PPO training and evaluation.
 
+Codex added the frozen VGC-Bench behavior-cloned opponent to training, ran the matched four-seed experiment on Sketch5, and prepared the held-out comparison and model exports.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

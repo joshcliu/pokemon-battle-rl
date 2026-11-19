@@ -50,3 +50,16 @@ To evaluate another legal team and an exported PPO checkpoint, use a fresh outpu
   --checkpoint results/sketch5-vgcbench-mb/weights/seed-2.pt \
   --team teams/reg-mb-variant/MC461-MB.txt --out runs/mb-export-repeat --jobs 24
 ```
+
+## Training against the published behavior-cloned player
+
+With the same upstream Python overlay and single-thread settings as cross-play, the following commands repeat the four-seed opponent comparison. The M-B variant, tournament initialization for each seed, 65,536-step budget, training simulator and four training rosters match the league experiment. The frozen upstream policy samples its own lineup and battle actions. Its random-number stream is separate from PPO. Each evaluation uses the previous 12 opposing rosters and their original side and seed schedule.
+
+```sh
+.venv/bin/python scripts/train_vgcbench_mb.py --bc
+.venv/bin/python scripts/compare_vgcbench_bc.py evaluate --steps 16384
+.venv/bin/python scripts/compare_vgcbench_bc.py evaluate --steps 65536
+.venv/bin/python scripts/compare_vgcbench_bc.py report
+```
+
+The comparison reads the previous scores from `results/sketch5-vgcbench-mb/games.csv.gz` and checks the original training manifests and initial policy tensors on Sketch5. It writes matched outcomes, per-seed and per-team effects, and all four final policies to `results/sketch5-vgcbench-bc`.

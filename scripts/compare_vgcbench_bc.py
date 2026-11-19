@@ -200,6 +200,50 @@ def compare(steps, spec, prior):
     return games, replays, effects, means
 
 
+def plot_final(effects, means):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, (left, right) = plt.subplots(
+        1, 2, figsize=(10.4, 4.6), layout="constrained", gridspec_kw={"width_ratios": [1, 1.3]}
+    )
+    rows = [r for r in effects if r["subset"] == "external-12" and r["family"] == "bc-learned"]
+    for r, color in zip(rows, ("#155d8b", "#b95e27", "#267e61", "#80589a"), strict=True):
+        rates = [100 * r[field] / r["battles_each"] for field in ("league_wins", "bc_wins")]
+        left.plot([0, 1], rates, marker="o", color=color, linewidth=2, label=f"Seed {r['seed']}")
+    left.set(
+        xticks=[0, 1],
+        xticklabels=["League", "Behavior cloning"],
+        xlim=(-0.18, 1.18),
+        xlabel="Training opponent",
+        ylabel="Win rate against BC (%)",
+        title="All 12 held-out teams",
+    )
+    left.set_ylim(0, 100)
+    left.grid(axis="y", alpha=0.2)
+    left.legend(fontsize=8, loc="best")
+    teams = sorted(
+        (r for r in means if r["family"] == "bc-learned" and r["subset"] != "external-12"),
+        key=lambda r: r["delta_pp"],
+    )
+    right.axvline(0, linestyle=":", color="#777", linewidth=1)
+    for i, r in enumerate(teams):
+        right.plot([r["low95_pp"], r["high95_pp"]], [i, i], color="#6e8b9b", linewidth=1.6)
+        right.plot(r["delta_pp"], i, "o", color="#12556f", markersize=4)
+    right.set(
+        yticks=range(len(teams)),
+        yticklabels=[r["subset"] for r in teams],
+        title="Effect of BC training by opposing team",
+        xlabel="Paired win-rate change (percentage points)",
+    )
+    for ax in (left, right):
+        ax.spines[["top", "right"]].set_visible(False)
+    fig.savefig(OUT / "paired-bc-crossplay.png", dpi=175)
+    plt.close(fig)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("stage", choices=["evaluate", "report"])
@@ -217,6 +261,7 @@ def main():
     shutil.copyfile(BC_RUN / "protocol.json", OUT / "protocol.json")
     (OUT / "weights").mkdir(exist_ok=True)
     data = [compare(step, spec, prior) for step in STEPS]
+    plot_final(data[-1][2], data[-1][3])
     for name, parts in zip(
         ("games.csv.gz", "reproduced.csv", "paired-by-seed.csv", "mean-changes.csv"),
         zip(*data, strict=True),
