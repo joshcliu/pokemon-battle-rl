@@ -94,3 +94,23 @@ def test_train_checkpoint_and_reload_evaluation(tmp_path):
     assert updated["steps"] == 32
     assert any(not torch.equal(updated["policy"][k], v) for k, v in saved["policy"].items())
     assert all(s["step"].item() == 1 for s in updated["optimizer"]["state"].values())
+
+
+def test_sampled_bc_opponent_has_an_independent_rng(monkeypatch):
+    from pokemon_rl import vgcbench
+
+    # Constructing the actual actor initializes a neural network before loading its weights.
+    monkeypatch.setattr(vgcbench, "load_bc_player", lambda fmt: torch.rand(16))
+    with torch.random.fork_rng(devices=[]):
+        torch.manual_seed(112)
+        before = torch.get_rng_state()
+        opponent = vgcbench.TrainingBC("gen9championsvgc2026regmb")
+        assert torch.equal(before, torch.get_rng_state())
+        reference = torch.Generator().manual_seed(826002288)
+        opponent.generator.manual_seed(826002288)
+        for _ in range(3):
+            torch.rand(4)
+            before = torch.get_rng_state()
+            sampled = opponent.sample(torch.rand, 5)
+            assert torch.equal(sampled, torch.rand(5, generator=reference))
+            assert torch.equal(before, torch.get_rng_state())

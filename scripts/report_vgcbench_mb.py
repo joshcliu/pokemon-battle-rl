@@ -139,6 +139,22 @@ def plot_crossplay(scores, average):
     plt.close(fig)
 
 
+def export_policy(root, out, seed):
+    cp = root / "checkpoint-65536.pt"
+    exported = out / f"weights/seed-{seed}.pt"
+    checkpoint = torch.load(cp, map_location="cpu", weights_only=True)
+    del checkpoint["optimizer"]
+    torch.save(checkpoint, exported)
+    restored = torch.load(exported, map_location="cpu", weights_only=True)
+    assert all(torch.equal(v, restored["policy"][k]) for k, v in checkpoint["policy"].items())
+    return dict(
+        seed=seed,
+        source_sha256=digest(cp),
+        weights=str(exported.relative_to(out)),
+        sha256=digest(exported),
+    )
+
+
 def report():
     spec = read(RUN / "protocol.json")
     assert all(digest(p) == h for p, h in spec["sha256"].items())
@@ -204,21 +220,7 @@ def report():
             args["transformer_chunks"],
         ) == (FORMAT, TEAM, 65536, seed + 110, True, "full")
         assert read(root / "summary.json")["steps"] == 65536
-        cp = root / "checkpoint-65536.pt"
-        exported = OUT / f"weights/seed-{seed}.pt"
-        checkpoint = torch.load(cp, map_location="cpu", weights_only=True)
-        del checkpoint["optimizer"]
-        torch.save(checkpoint, exported)
-        restored = torch.load(exported, map_location="cpu", weights_only=True)
-        assert all(torch.equal(v, restored["policy"][k]) for k, v in checkpoint["policy"].items())
-        exports.append(
-            dict(
-                seed=seed,
-                source_sha256=digest(cp),
-                weights=str(exported.relative_to(OUT)),
-                sha256=digest(exported),
-            )
-        )
+        exports.append(export_policy(root, OUT, seed))
         source = torch.load(args["init_checkpoint"], map_location="cpu", weights_only=True)
         initial = torch.load(root / "checkpoint-0.pt", map_location="cpu", weights_only=True)
         assert all(
