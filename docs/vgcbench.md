@@ -63,3 +63,31 @@ With the same upstream Python overlay and single-thread settings as cross-play, 
 ```
 
 The comparison reads the previous scores from `results/sketch5-vgcbench-mb/games.csv.gz` and checks the original training manifests and initial policy tensors on Sketch5. It writes matched outcomes, per-seed and per-team effects, and all four final policies to `results/sketch5-vgcbench-bc`.
+
+## M-B battle-policy and preview post-training pilot
+
+The pilot uses the pinned benchmark simulator for both training and evaluation. Use the Python overlay and single-thread settings above. All commands below run in the project checkout on Sketch5. The roster manifest records the upstream paths and hashes. The previous twelve teams are a separate MC461 development schedule.
+
+```bash
+.cache/node-runtime/node_modules/node/bin/node scripts/lock_mb_pilot.cjs
+.venv/bin/python scripts/vgc_posttrain.py baseline --jobs 10
+for s in 2 3 4 5; do
+  for arm in native flat structured; do
+    .venv/bin/python scripts/vgc_posttrain.py train --arm "$arm" --seed "$s"
+  done
+  for arm in ppo grpo; do
+    .venv/bin/python scripts/vgc_posttrain.py preview --arm "$arm" --seed "$s"
+  done
+done
+.venv/bin/python scripts/run_mb_matrix.py --jobs 16 bc bc-native \
+  history-{2,3,4,5} native-{2,3,4,5} flat-{2,3,4,5} structured-{2,3,4,5} \
+  native-preview-{2,3,4,5} preview-ppo-{2,3,4,5} preview-grpo-{2,3,4,5}
+.venv/bin/python scripts/eval_mb_development.py
+.venv/bin/python scripts/mb_reciprocal.py
+.venv/bin/python scripts/probe_mb_posttraining.py
+.venv/bin/python scripts/verify_mb_posttraining.py
+.venv/bin/python scripts/report_mb_posttraining.py
+.venv/bin/python scripts/plot_mb_posttraining.py
+```
+
+The training jobs are independent across arms and seeds. The evaluation commands read completed checkpoints under `runs/sketch5-mb-posttraining-pilot`. The `native-preview` condition combines a trained native battle policy with the released BC preview. The history control uses the earlier 65k M-B weights and samples legal battle actions, matching the deployment mode of the post-training pilot. See the [pilot results](../results/sketch5-mb-posttraining-pilot/README.md) for the lineup rules, primary comparison and roster-swap diagnostic.

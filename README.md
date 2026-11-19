@@ -141,6 +141,7 @@ covers 12 external rosters and seven previous rosters. The [M-B training study](
 evaluates a legal MC461 variant with open sheets on the benchmark simulator.
 The [BC-opponent training study](results/sketch5-vgcbench-bc/README.md) compares four
 matched 65k PPO runs against the previous league-trained models on those 12 teams.
+The [M-B post-training pilot](results/sketch5-mb-posttraining-pilot/README.md) compares battle PPO and two preview optimizers on familiar and unseen rosters, with a separate test that swaps roster assignments.
 [Reproduce the VGC-Bench experiments](docs/vgcbench.md).
 
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
