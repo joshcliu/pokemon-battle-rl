@@ -51,4 +51,22 @@ const text = JSON.stringify(protocol, null, 2) + '\n';
 fs.mkdirSync(path.dirname(dest), {recursive:true});
 if (fs.existsSync(dest) && fs.readFileSync(dest,'utf8') !== text) throw Error('Roster lock changed.');
 fs.writeFileSync(dest, text);
+const union = files => new Set(files.flatMap(file => sheet(file).species));
+const oldSpecies = union(base.own_train);
+const newSpecies = union(own);
+const testSpecies = union([...base.own_test, ...base.foe_test]);
+const countCovered = pool => [...testSpecies].filter(mon => pool.has(mon)).length;
+const lines = [
+  '# Tournament rosters', '',
+  `The original four learner teams contain ${oldSpecies.size} distinct base species. The 16-team pool contains ${newSpecies.size}. Of the ${testSpecies.size} distinct base species on held-out teams, ${countCovered(oldSpecies)} appear on the original learner rosters and ${countCovered(newSpecies)} appear on the expanded learner rosters. These counts use the full six-slot sheets. Preview determines which four enter each game.`,
+  '', '| Assignment | Team | Six Pokémon in sheet order |', '|---|---|---|',
+];
+for (const [role, group] of [['Original learner', base.own_train], ['Added learner', own.slice(4)],
+    ['Training opponent', base.foe_train], ['Held-out group of four', base.own_test],
+    ['Held-out group of eight', base.foe_test]]) {
+  for (const file of group) {
+    lines.push(`| ${role} | ${path.basename(file, '.txt')} | ${sheet(file).sets.map(s => s.species).join(', ')} |`);
+  }
+}
+fs.writeFileSync(path.join(path.dirname(dest), 'rosters.md'), lines.join('\n') + '\n');
 console.log(own.map(x => path.basename(x,'.txt')).join(', '));

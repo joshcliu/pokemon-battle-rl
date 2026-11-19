@@ -9,6 +9,8 @@
 | Held-out forward | MB516, MB216, MB99, MB444 | MB481, MB335, MB259, MB558, MB163, MB562, MB149, MB337 |
 | Held-out reverse | MB481, MB335, MB259, MB558, MB163, MB562, MB149, MB337 | MB516, MB216, MB99, MB444 |
 
+The larger pool expands learner coverage from 20 to 52 distinct base species. Of the 40 base species on the held-out teams, 14 occur on the original four learner teams and 25 occur on the expanded pool. [All six Pokémon on every team](rosters.md)
+
 The 12 additions come from the pinned VGC-Bench Regulation M-B roster bank. We selected them by a fixed hash ordering before playing any games. Each has a legal team sheet, six Pokémon with four moves each, and at most three base species in common with any other addition, original training roster, held-out roster or reserved development roster. The twelve held-out teams were excluded from both sides of PPO training. They were used in earlier evaluations and their exposure during upstream behavior cloning is unknown. [Roster file hashes and protocol](protocol.json) · [Roster selection](../../scripts/lock_mb_diversity.cjs)
 
 ## Training and evaluation
