@@ -50,7 +50,7 @@ Codex implemented shared, per-team and sparse top-2 MoE battle PPO, defined a ro
 
 Codex extended shared PPO and MoE training to 262,144 decisions on Sketch5, verified exact reproduction of the eight original 65k checkpoints, and trained four- and eight-expert controls. It evaluated familiar and held-out matchups, measured the effects of rotating and removing experts, checked matched opening choices and replays, and prepared the paired analysis and figure.
 
-Codex selected 12 additional Regulation M-B tournament rosters using a deterministic legality and species-overlap filter. It implemented the balanced 16-team roster schedule, launched shared PPO and four-expert top-2 PPO on Sketch5, and prepared the matched evaluation against the four-team checkpoints.
+Codex selected 12 additional Regulation M-B tournament rosters using a deterministic legality and species-overlap filter. It implemented the balanced 16-team schedule, ran shared and four-expert top-2 PPO across four seeds on Sketch5, recovered the interrupted MoE seed, and verified 32,768 matched evaluation records and 32 replays. It prepared the paired intervals, routing controls, figure and final report.
 
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
