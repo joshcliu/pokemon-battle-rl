@@ -1,5 +1,11 @@
 # Does a more diverse training roster make expert routing useful?
 
+## Interim held-out results
+
+Shared PPO has finished across all four seeds. The 16-team policy won 2,383 of 4,096 games (58.18%), compared with 2,325 (56.76%) after four-team training. The paired difference is +1.42 percentage points (95% interval −4.42 to +6.74). All matchups, seats and preview choices match across these two evaluations.
+
+MoE seeds 3, 4 and 5 have finished. Seed 2 resumed from 163,840 decisions after a simulator timeout and passed the original interruption. On the three completed seeds, the normally routed 16-team MoE won 1,837 of 3,072 games (59.80%). Rotating the expert identities won 1,852 (60.29%), giving learned routing a −0.49-point difference. Disabling expert corrections won 1,849 (60.19%). The shared 16-team policy won 1,808 on those same games (58.85%). The primary four-seed routing comparison is pending.
+
 ## Team matrix
 
 | Schedule | PPO rosters | Frozen VGC-Bench BC rosters |
