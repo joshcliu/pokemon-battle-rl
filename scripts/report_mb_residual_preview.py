@@ -214,6 +214,51 @@ def gather():
     return table, team_counts, comparisons
 
 
+def plot_effects(deltas):
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    rows = [r for r in deltas if r["cell"] == "heldout"][:3]
+    fig, ax = plt.subplots(figsize=(7.7, 3.0), layout="constrained")
+    for i, r in enumerate(rows):
+        ax.plot([r["lo95"], r["hi95"]], [i, i], color="#176c71", lw=2)
+        ax.scatter(
+            r["delta_pp"],
+            i,
+            color="#176c71",
+            s=40,
+            zorder=3,
+            label="Pooled estimate and 95% interval" if i == 0 else None,
+        )
+        ax.scatter(
+            [r[f"seed_{seed}_pp"] for seed in SEEDS],
+            i + np.linspace(0.12, 0.24, len(SEEDS)),
+            marker="|",
+            s=46,
+            color="#52555b",
+            label="Individual training seeds" if i == 0 else None,
+        )
+    ax.axvline(0, color="#777", lw=1, ls="--", zorder=0)
+    ax.set_yticks(
+        range(3),
+        [
+            "Learned − native\nopponent visible",
+            "Learned − native\nopponent hidden",
+            "Change in gain\nvisible − hidden",
+        ],
+    )
+    ax.set_ylim(2.55, -0.55)
+    ax.set_xlabel("Paired change in held-out win rate (percentage points)")
+    ax.set_title("Effect of PPO on team preview", loc="left", weight="bold")
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.50), ncol=2, frameon=False, fontsize=8)
+    ax.spines[["top", "right", "left"]].set_visible(False)
+    ax.tick_params(axis="y", length=0)
+    fig.savefig(OUT / "preview-effects.png", dpi=165)
+    plt.close(fig)
+
+
 def summarize(table, counts, changes):
     effects = {}
     for cell in ("forward", "reverse", "heldout"):
@@ -263,6 +308,7 @@ def summarize(table, counts, changes):
         )
     atomic_rows(OUT / "scores.csv", scores)
     atomic_rows(OUT / "effects.csv", deltas)
+    plot_effects(deltas)
     groups = []
     for view in ("visible", "hidden"):
         rows = [r for r in changes if r["view"] == view]
@@ -311,6 +357,8 @@ def summarize(table, counts, changes):
                 f"| {r['effect']} | {r['delta_pp']:+.2f} ({r['lo95']:+.2f} to {r['hi95']:+.2f}) | {seeds} |"
             )
     lines += [
+        "",
+        "![Paired preview effects with confidence intervals and individual seeds](preview-effects.png)",
         "",
         "## Lineup choices",
         "",
