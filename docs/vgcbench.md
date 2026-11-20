@@ -173,3 +173,7 @@ done
 ```
 
 The [team diversity report](../results/sketch5-mb-team-diversity/README.md) lists the exact assignments and defines the paired routing comparisons.
+
+## PPO for native BC preview
+
+Use the four completed 16-roster MoE checkpoints and the same pinned simulator and BC assets on Sketch5. From the repository root, run `bash scripts/run_mb_residual_preview.sh`. The driver checks zero-initialization parity, trains four independent lineup adapters, evaluates all four visibility and preview conditions, audits matched games and enumerates the 360 legal ordered lineups for the matchup probe. Each training seed saves its optimizer after 128 new battles. The run logs and full optimizer checkpoints are under `runs/sketch5-mb-preview-ppo/`. The [protocol](../results/sketch5-mb-preview-ppo/protocol.json) records the decision budget, data splits, controls and primary comparison.

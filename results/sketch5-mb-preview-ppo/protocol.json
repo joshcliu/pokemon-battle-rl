@@ -1,0 +1,23 @@
+{
+  "roster_source": "../sketch5-mb-team-diversity/protocol.json",
+  "pilot_source": "../sketch5-mb-team-diversity/checkpoints.csv",
+  "pilot": "16-team 262144-step four-expert top-2 MoE matched by training seed, frozen in all conditions",
+  "seeds": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "battles_per_seed": 16384,
+  "groups_per_update": 32,
+  "lineups_per_group": 4,
+  "updates": 128,
+  "learning_rate": 0.0005,
+  "epochs": 4,
+  "minibatch": 64,
+  "clip": 0.2,
+  "entropy": 0.002,
+  "training": "16 learner x 8 frozen BC opposing teams; each of 32 balanced passes covers all 128 matchup pairs once; alternate seat per pairing across passes. Four independently sampled lineups share the opponent preview, simulator seed and action-sampling seeds.",
+  "model": "Frozen native BC actor features and legal logits at both ordered pair selections; a 256 -> 64 tanh -> 12 zero-output residual modifies six slots per active position. A value head on the initial preview estimates the terminal reward. Outcome +1/0/-1, half critic and half matched leave-one-out baseline.",
+  "evaluation": "Same reciprocal 4 x 8 held-out schedule and deployment sampling as the 16-team study. Full native and learned, plus opponent tokens zeroed for both selectors only at preview. Primary full learned minus full native, diagnostic full gain minus blinded gain. Paired 6000-draw crossed bootstrap. No held-out checkpoint selection."
+}

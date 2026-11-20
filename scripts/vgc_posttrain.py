@@ -51,7 +51,7 @@ class Match:
         self.battle = factory(FORMAT, True, CACHE / "showdown")
         self.player, self.opponent = players()
 
-    def reset(self, own, foe, seed, side, preview="fixed", lineup="1234"):
+    def reset(self, own, foe, seed, side, preview="fixed", lineup="1234", *, preview_picker=None):
         self.side = side
         self.foe = "p2" if side == "p1" else "p1"
         self.requests = 0
@@ -67,9 +67,9 @@ class Match:
                     torch.manual_seed(seed + 500_000_000)
                     self.lineup = learned_preview(self.player, view)
             else:
-                self.lineup = lineup
+                self.lineup = lineup if preview_picker is None else preview_picker(view)
                 mons = list(view.team.values())
-                for slot in map(int, lineup):
+                for slot in map(int, self.lineup):
                     mons[slot - 1]._selected_in_teampreview = True
             return tuple(map(int, self.lineup))
 
