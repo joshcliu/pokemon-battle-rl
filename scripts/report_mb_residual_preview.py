@@ -221,7 +221,8 @@ def plot_effects(deltas):
     import matplotlib.pyplot as plt
 
     rows = [r for r in deltas if r["cell"] == "heldout"][:3]
-    fig, ax = plt.subplots(figsize=(7.7, 3.0), layout="constrained")
+    fig, ax = plt.subplots(figsize=(7.7, 3.4))
+    fig.subplots_adjust(left=0.24, right=0.98, top=0.88, bottom=0.31)
     for i, r in enumerate(rows):
         ax.plot([r["lo95"], r["hi95"]], [i, i], color="#176c71", lw=2)
         ax.scatter(
@@ -252,7 +253,7 @@ def plot_effects(deltas):
     ax.set_ylim(2.55, -0.55)
     ax.set_xlabel("Paired change in held-out win rate (percentage points)")
     ax.set_title("Effect of PPO on team preview", loc="left", weight="bold")
-    ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.50), ncol=2, frameon=False, fontsize=8)
+    fig.legend(loc="lower center", bbox_to_anchor=(0.5, 0.02), ncol=2, frameon=False, fontsize=8)
     ax.spines[["top", "right", "left"]].set_visible(False)
     ax.tick_params(axis="y", length=0)
     fig.savefig(OUT / "preview-effects.png", dpi=165)
