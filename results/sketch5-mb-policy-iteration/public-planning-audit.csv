@@ -1,0 +1,17 @@
+seed,seat,own,opponent,intervention,original,alternate,identical_observation,identical_forecasts,identical_command
+2,p1,MB45,MB269,reserves,1234,1256,True,True,True
+2,p1,MB45,MB269,reserves-and-stats,1234,1256,True,True,True
+2,p2,MB45,MB269,reserves,1234,1256,True,True,True
+2,p2,MB45,MB269,reserves-and-stats,1234,1256,True,True,True
+3,p1,MB503,MB387,reserves,1234,1256,True,True,True
+3,p1,MB503,MB387,reserves-and-stats,1234,1256,True,True,True
+3,p2,MB503,MB387,reserves,1234,1256,True,True,True
+3,p2,MB503,MB387,reserves-and-stats,1234,1256,True,True,True
+4,p1,MB56,MB106,reserves,1234,1256,True,True,True
+4,p1,MB56,MB106,reserves-and-stats,1234,1256,True,True,True
+4,p2,MB56,MB106,reserves,1234,1256,True,True,True
+4,p2,MB56,MB106,reserves-and-stats,1234,1256,True,True,True
+5,p1,MB156,MB90,reserves,1234,1256,True,True,True
+5,p1,MB156,MB90,reserves-and-stats,1234,1256,True,True,True
+5,p2,MB156,MB90,reserves,1234,1256,True,True,True
+5,p2,MB156,MB90,reserves-and-stats,1234,1256,True,True,True

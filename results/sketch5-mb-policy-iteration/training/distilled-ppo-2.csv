@@ -1,0 +1,2 @@
+steps,games,wins_in_batch,loss,teacher_positions,modeled_transitions
+512,44,28,0.23936821520328522,110,1760
