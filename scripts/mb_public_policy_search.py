@@ -212,7 +212,7 @@ def optimize(own, public, seed):
 
 
 @torch.no_grad()
-def play(task):
+def play(task, *, method="adaptive-es"):
     seed, cell = task
     i, j, d, own, foe, start = cell
     public = public_fixture(own, foe)
@@ -231,11 +231,17 @@ def play(task):
         torch.manual_seed(sim + 700_000_000)
         done = False
         while not done:
-            a = action(model, batch_obs(match.obs()), match.view, weights)
+            if method == "adaptive-es":
+                a = action(model, batch_obs(match.obs()), match.view, weights)
+            else:
+                from mb_midgame_plan import choose
+
+                assert method == "adaptive-belief-es"
+                a = choose(model, batch_obs(match.obs()), match.view, seed, False)[0]
             done, r = match.step(a)
         rows.append(
             dict(
-                method="adaptive-es",
+                method=method,
                 training_seed=seed,
                 i=i,
                 j=j,
@@ -260,6 +266,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("stage", choices=("check", "validation", "custom-dev"))
     p.add_argument("--jobs", type=int, default=8)
+    p.add_argument("--method", choices=("adaptive-es", "adaptive-belief-es"), default="adaptive-es")
     args = p.parse_args()
     verify()
     if args.stage == "check":
@@ -280,9 +287,10 @@ if __name__ == "__main__":
             args.jobs, mp_context=multiprocessing.get_context("spawn")
         ) as pool:
             for s in SEEDS:
-                file = OUT / "scores" / f"{args.stage}-adaptive-es-{s}.csv"
+                file = OUT / "scores" / f"{args.stage}-{args.method}-{s}.csv"
                 if file.exists():
                     continue
-                rows = [r for batch in pool.map(play, [(s, c) for c in cells]) for r in batch]
+                worker = functools.partial(play, method=args.method)
+                rows = [r for batch in pool.map(worker, [(s, c) for c in cells]) for r in batch]
                 atomic_rows(file, rows)
                 print(args.stage, s, len(rows), sum(r["reward"] == 1 for r in rows), flush=True)

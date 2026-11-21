@@ -96,6 +96,7 @@ def report():
                         if not mode.startswith("search-") and mode not in (
                             "lineup-q-map",
                             "adaptive-es",
+                            "adaptive-belief-es",
                         ):
                             assert r["lineup"] == equality[pos][0]
                     if mode == "map":
@@ -158,10 +159,14 @@ def report():
                 controls += ["search-map", name.removeprefix("search-")]
                 if name != "search-es-trained":
                     controls.append("search-es-trained")
+                if name in ("search-wide-belief-es", "search-multistep-es"):
+                    controls.append("search-belief-es")
             if name in ("endgame-es", "belief-es", "context-ppo") or name.startswith("joint-ppo-"):
                 controls.append("es-trained")
             if name == "adaptive-es":
                 controls.extend(["es-trained", "search-es-trained"])
+            if name == "adaptive-belief-es":
+                controls.extend(["belief-es", "adaptive-es", "search-belief-es"])
             if name in ("multistep-es", "wide-belief-es"):
                 controls.extend(["es-trained", "belief-es"])
             if name.startswith("distilled-ppo-"):
@@ -209,7 +214,10 @@ def report():
             "search-context-ppo": "Preview search + state-dependent PPO",
             "search-endgame-es": "Preview search + endgame value search",
             "search-belief-es": "Preview search + full-battle belief search",
+            "search-wide-belief-es": "Preview search + wider in-battle search",
+            "search-multistep-es": "Preview search + learned multi-step search",
             "adaptive-es": "Public-matchup policy search",
+            "adaptive-belief-es": "Adapted preview + in-battle value search",
             "fitted-terminal": "Fitted mechanics from terminal outcomes",
             "fitted-td": "Fitted mechanics with three-step targets",
             "endgame-es": "Endgame value search + learned mechanics",

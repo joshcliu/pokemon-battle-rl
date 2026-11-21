@@ -34,8 +34,12 @@ def main():
             ("context-ppo", RUN / "context-ppo" / f"seed-{s}" / "progress.pt"),
             ("endgame-value", RUN / "endgame" / f"seed-{s}" / "value.npy"),
             ("midgame-value", RUN / "midgame" / f"seed-{s}" / "value.npy"),
+            ("multistep-horizon", RUN / "multistep" / f"seed-{s}" / "horizon.npz"),
         ):
-            if name in ("context-ppo", "endgame-value", "midgame-value") and not file.exists():
+            if (
+                name in ("context-ppo", "endgame-value", "midgame-value", "multistep-horizon")
+                and not file.exists()
+            ):
                 continue
             if name == "context-ppo":
                 ck = torch.load(file, weights_only=True, map_location="cpu")
@@ -46,6 +50,11 @@ def main():
                 values = np.load(file)
                 assert values.shape == ((14,) if name == "endgame-value" else (23,))
                 assert np.isfinite(values).all()
+            if name == "multistep-horizon":
+                with np.load(file) as data:
+                    w = data["weights"]
+                    assert int(data["seed"]) == s and int(data["roots"]) >= 100
+                    assert w.shape == (3,) and np.all(w >= 0) and np.isclose(w.sum(), 1)
             if name == "es":
                 ck = json.loads(file.read_text())
                 assert ck["seed"] == s and ck["update"] == 24 and len(ck["logs"]) == 24

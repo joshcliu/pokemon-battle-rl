@@ -137,7 +137,10 @@ def fit(seed):
 
 @functools.lru_cache(maxsize=4)
 def weights(seed):
-    with np.load(path(seed) / "horizon.npz") as data:
+    file = path(seed) / "horizon.npz"
+    if not file.exists():
+        file = OUT / "weights" / f"multistep-horizon-seed-{seed}.npz"
+    with np.load(file) as data:
         assert int(data["seed"]) == seed
         return tuple(data["weights"])
 

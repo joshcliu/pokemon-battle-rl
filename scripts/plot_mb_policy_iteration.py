@@ -20,6 +20,9 @@ METHODS = {
     "search-context-ppo": "Preview search + state-dependent PPO",
     "belief-es": "In-battle search with learned values",
     "search-belief-es": "Preview and in-battle search",
+    "search-wide-belief-es": "Preview and wider in-battle search",
+    "search-multistep-es": "Preview and multi-step in-battle search",
+    "adaptive-belief-es": "Adapted preview and in-battle search",
 }
 
 
@@ -28,6 +31,8 @@ def main():
         scores = {(r["split"], r["method"]): r for r in csv.DictReader(f)}
     fig, axes = plt.subplots(1, 3, figsize=(12, 4.8), sharey=True)
     methods = {k: label for k, label in METHODS.items() if ("validation", k) in scores}
+    upper = max(float(r["hi95"]) for (_, mode), r in scores.items() if mode in methods)
+    axis_max = min(100, max(83, 5 * np.ceil(upper / 5) + 1))
     ys = np.arange(len(methods))[::-1]
     for ax, (split, title) in zip(
         axes,
@@ -46,7 +51,7 @@ def main():
             estimate, lo, hi = (float(r[k]) for k in ("win_pct", "lo95", "hi95"))
             seeds = [float(s) for s in r["seeds_pct"].split("/")]
             ax.scatter(seeds, [y + 0.13] * len(seeds), s=8, color="#95abb7", edgecolors="none")
-            color = "#11605b" if method in ("belief-es", "search-belief-es") else "#334f65"
+            color = "#11605b" if "belief-es" in method else "#334f65"
             ax.errorbar(
                 estimate,
                 y,
@@ -58,8 +63,8 @@ def main():
                 elinewidth=1.5,
             )
         ax.set_title(title, fontsize=11)
-        ax.set_xticks([40, 50, 60, 70, 80])
-        ax.set_xlim(32, 83)
+        ax.set_xticks(np.arange(40, axis_max + 1, 10))
+        ax.set_xlim(32, axis_max)
         ax.spines[["top", "right", "left"]].set_visible(False)
         ax.grid(axis="x", alpha=0.15)
         ax.tick_params(labelsize=9, axis="both", length=0, pad=6)

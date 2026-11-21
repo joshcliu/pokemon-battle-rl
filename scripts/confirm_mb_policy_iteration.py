@@ -72,11 +72,17 @@ def fingerprint(mode):
         "mb_policy",
         "report_mb_policy_iteration",
     ]
-    if mode.startswith("search-") or battle == "adaptive-es":
+    if mode.startswith(("search-", "adaptive-")):
         scripts.append("mb_public_preview_search")
-    if battle in ("belief-es", "wide-belief-es", "multistep-es", "endgame-es"):
+    if battle in (
+        "belief-es",
+        "wide-belief-es",
+        "multistep-es",
+        "endgame-es",
+        "adaptive-belief-es",
+    ):
         scripts += ["mb_endgame_plan", "mb_endgame_value", "mb_opening_planner"]
-    if battle in ("belief-es", "wide-belief-es", "multistep-es"):
+    if battle in ("belief-es", "wide-belief-es", "multistep-es", "adaptive-belief-es"):
         scripts.append("mb_midgame_plan")
     if battle == "multistep-es":
         scripts.append("mb_multistep_value")
@@ -84,7 +90,7 @@ def fingerprint(mode):
         scripts.append("mb_context_ppo")
     if battle.startswith(("joint-ppo-", "distilled-ppo-")):
         scripts.append("mb_joint_mechanics_ppo")
-    if battle == "adaptive-es":
+    if battle.startswith("adaptive-"):
         scripts += ["mb_public_policy_search", "mb_offline_lineup_value"]
     files = [OUT / "protocol.json", ZIP, path_for("shared", 2, FINAL)]
     files.extend(ROOT / "scripts" / f"{name}.py" for name in scripts)
@@ -101,7 +107,7 @@ def fingerprint(mode):
             DIVERSE_RUN / f"moe-{seed}" / "policy.pt",
             RUN / "es" / f"seed-{seed}" / "weights.json",
         ]
-        if battle in ("belief-es", "wide-belief-es", "multistep-es"):
+        if battle in ("belief-es", "wide-belief-es", "multistep-es", "adaptive-belief-es"):
             files.append(RUN / "midgame" / f"seed-{seed}" / "value.npy")
         if battle == "endgame-es":
             files.append(RUN / "endgame" / f"seed-{seed}" / "value.npy")
@@ -109,7 +115,7 @@ def fingerprint(mode):
             files.append(RUN / "multistep" / f"seed-{seed}" / "horizon.npz")
         if battle == "context-ppo":
             files.append(RUN / "context-ppo" / f"seed-{seed}" / "progress.pt")
-        if battle == "adaptive-es":
+        if battle.startswith("adaptive-"):
             files.append(RUN / "lineup-value" / f"seed-{seed}.npz")
         if battle.startswith(("joint-ppo-", "distilled-ppo-")):
             arm, steps = battle.rsplit("-", 1)
@@ -121,6 +127,7 @@ def freeze(mode):
     supported = {
         "es-trained",
         "adaptive-es",
+        "adaptive-belief-es",
         "belief-es",
         "multistep-es",
         "wide-belief-es",
@@ -191,10 +198,10 @@ def play(task):
             from mb_policy_transfer import score
 
             game_rows = score((seed, mode, cell))
-        elif mode == "adaptive-es":
+        elif mode.startswith("adaptive-"):
             from mb_public_policy_search import play as adaptive_play
 
-            game_rows = adaptive_play((seed, cell))
+            game_rows = adaptive_play((seed, cell), method=mode)
         elif mode.startswith("search-"):
             from mb_public_preview_search import score
 
@@ -247,7 +254,7 @@ def evaluate(jobs):
                             fours[key] = r["lineup"], r["opp_lineup"]
                         else:
                             assert r["opp_lineup"] == fours[key][1]
-                            if not label.startswith("search-") and label != "adaptive-es":
+                            if not label.startswith(("search-", "adaptive-")):
                                 assert r["lineup"] == fours[key][0]
                         x[key] = int(r["reward"] == "1")
                 assert np.isfinite(x).all()

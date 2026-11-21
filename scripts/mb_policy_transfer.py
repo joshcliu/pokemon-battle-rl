@@ -35,10 +35,8 @@ def opponent():
 def score(task):
     seed, mode, cell = task
     i, j, d, own, foe, start = cell
-    public = (
-        public_fixture(own, foe) if mode.startswith("search-") or mode == "adaptive-es" else None
-    )
-    if mode == "adaptive-es":
+    public = public_fixture(own, foe) if mode.startswith(("search-", "adaptive-")) else None
+    if mode.startswith("adaptive-"):
         from mb_mechanics_es import action
         from mb_public_policy_search import optimize
 
@@ -80,7 +78,13 @@ def score(task):
             if mode == "adaptive-es":
                 a = action(model, obs, match.view, adapted)
             else:
-                a = decide(model, obs, mode.removeprefix("search-"), seed, match.view)
+                a = decide(
+                    model,
+                    obs,
+                    mode.removeprefix("search-").removeprefix("adaptive-"),
+                    seed,
+                    match.view,
+                )
             done, r = match.step(a)
         rows.append(
             dict(
@@ -122,6 +126,7 @@ if __name__ == "__main__":
             "search-belief-es",
             "multistep-es",
             "adaptive-es",
+            "adaptive-belief-es",
         ),
     )
     p.add_argument("--jobs", type=int, default=8)
