@@ -180,10 +180,12 @@ def dimensions(split):
 
 def cells(split):
     a, b, directions = dimensions(split)
-    for i, x in enumerate(a):
-        for j, y in enumerate(b):
-            for d in range(directions):
-                for block in (0, 8):
+    # Give all other public pairings work before revisiting this one. The second
+    # block can reuse its deterministic preview without concurrent cache creation.
+    for block in (0, 8):
+        for i, x in enumerate(a):
+            for j, y in enumerate(b):
+                for d in range(directions):
                     own, foe = (x, y) if not d else (y, x)
                     start = BASES[split] + 10_000 * i + 100 * j + 20 * d + block
                     yield (i, j, d, own, foe, start), block
