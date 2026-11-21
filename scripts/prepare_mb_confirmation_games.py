@@ -1,4 +1,4 @@
-"""Compute independent frozen secondary-test shards in otherwise released worker slots."""
+"""Compute prespecified frozen-test shards in otherwise released worker slots."""
 
 import argparse
 import json
@@ -32,14 +32,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seeds", nargs="+", type=int, required=True)
     parser.add_argument("--jobs", type=int, default=4)
+    parser.add_argument(
+        "--splits", nargs="+", choices=confirm.SPLITS, default=("custom", "transfer")
+    )
+    parser.add_argument("--candidate-only", action="store_true")
     args = parser.parse_args()
     frozen = json.loads(confirm.LOCK.read_text())
     mode = frozen["method"]
     confirm.freeze(mode)
     assert set(args.seeds) <= set(frozen["seeds"])
     with ProcessPoolExecutor(args.jobs, mp_context=multiprocessing.get_context("spawn")) as pool:
-        for split in ("custom", "transfer"):
-            for method in ("native", mode):
+        for split in args.splits:
+            for method in (mode,) if args.candidate_only else ("native", mode):
                 tasks = [
                     (split, method, s, cell, block)
                     for s in args.seeds
