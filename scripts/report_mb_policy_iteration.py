@@ -91,7 +91,10 @@ def report():
                         equality[pos] = (r["lineup"], r["opp_lineup"])
                     else:
                         assert r["opp_lineup"] == equality[pos][1]
-                        if not mode.startswith("search-") and mode != "lineup-q-map":
+                        if not mode.startswith("search-") and mode not in (
+                            "lineup-q-map",
+                            "adaptive-es",
+                        ):
                             assert r["lineup"] == equality[pos][0]
                     if mode == "map":
                         greedy[pos] = r["lineup"], r["reward"], r["turns"]
@@ -147,6 +150,12 @@ def report():
             controls = [] if name in ("map", "native", "cool") else ["map"]
             if name.startswith("search-") and name != "search-map":
                 controls += ["search-map", name.removeprefix("search-")]
+            if name in ("endgame-es", "belief-es", "context-ppo") or name.startswith("joint-ppo-"):
+                controls.append("es-trained")
+            if name == "adaptive-es":
+                controls.extend(["es-trained", "search-es-trained"])
+            if name == "fitted-td":
+                controls.append("fitted-terminal")
             if name == "es-trained":
                 controls.append("es-initial")
             if name.startswith("group-") and name.endswith("-native"):
@@ -185,9 +194,13 @@ def report():
             "lineup-q-map": "Offline lineup value + frozen PPO",
             "opening-map": "Opening search + frozen PPO",
             "context-ppo": "State-dependent mechanics PPO",
+            "adaptive-es": "Public-matchup policy search",
             "fitted-terminal": "Fitted mechanics from terminal outcomes",
             "fitted-td": "Fitted mechanics with three-step targets",
             "endgame-es": "Endgame value search + learned mechanics",
+            "belief-es": "Full-battle belief search + learned mechanics",
+            "joint-ppo-16384": "Joint-action tactical PPO (16k)",
+            "joint-ppo-65536": "Joint-action tactical PPO (65k)",
         }
         headings = {
             "validation": "Reciprocal development against released BC",

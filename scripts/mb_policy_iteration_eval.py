@@ -45,6 +45,10 @@ def distribution(model, obs):
 
 @torch.no_grad()
 def decide(model, obs, mode, seed, view=None):
+    if mode.startswith("joint-ppo-"):
+        from mb_joint_mechanics_ppo import deployment
+
+        return deployment(view, obs, seed, int(mode.rsplit("-", 1)[1]))
     if mode == "context-ppo":
         from mb_context_ppo import deploy
 
