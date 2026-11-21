@@ -149,6 +149,7 @@ The [team diversity experiment](results/sketch5-mb-team-diversity/README.md) com
 The [team preview PPO experiment](results/sketch5-mb-preview-ppo/README.md) tests whether learning the leads and reserves improves on BC preview with the battle policy frozen.
 
 The [Regulation M-B battle policy study](results/sketch5-mb-policy-iteration/README.md) compares terminal-reward learning, simulated lineup selection, and in-battle planning across reciprocal tournament matchups and a newly built Sun Room team. The [four-seed scorecard](results/sketch5-mb-policy-iteration/scorecard.md) also reports transfer to an independently trained opponent.
+Its frozen planner won 77.17% against the released BC opponent on 16 untouched rosters, compared with 56.98% for the original PPO on the same games. The next experiment tests whether modeling the opponent's commands and ranking joint moves with a learned value can improve this result. [First held-out evaluation](results/sketch5-mb-policy-iteration/confirmation/README.md) · [Opponent modeling and second team matrix](results/sketch5-mb-opponent-search/README.md)
 [Reproduce the VGC-Bench experiments](docs/vgcbench.md).
 
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:

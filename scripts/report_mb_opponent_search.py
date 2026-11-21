@@ -107,7 +107,7 @@ def main():
             "",
             f"The second policy reached 80% with {at80} of 16 assigned rosters. It improved on the first-round planner with {gained} of 16. The primary rates for pilot seeds 2–5 were {mainrow['seeds']}%. Group A as learner and Group B as learner scored {mainrow['directions']}%.",
             "",
-            f"We checked all {n:,} game records, including starting fours, both seats, terminal outcomes and simulator seeds. Game archive SHA-256: `{hashlib.sha256(archive.read_bytes()).hexdigest()}`. [Frozen deployment assets](confirmation/candidate.json) · [Raw games](confirmation/games.csv.gz) · [Every matchup](confirmation/matchups.csv) · [Paired effects and intervals](confirmation/results.csv)",
+            f"We checked all {n:,} game records, including starting fours, both seats, terminal outcomes and simulator seeds. The SHA-256 of the game archive is `{hashlib.sha256(archive.read_bytes()).hexdigest()}`. [Frozen deployment assets](confirmation/candidate.json) · [Raw games](confirmation/games.csv.gz) · [Every matchup](confirmation/matchups.csv) · [Paired effects and intervals](confirmation/results.csv)",
             "",
         ]
     lines += [
@@ -122,7 +122,7 @@ def main():
         )
     lines += [
         "",
-        "We fixed six candidate configurations before the first complete four-seed result. The highest development win count qualifies at 1,680 of 2,048 wins (82%); a fixed order resolves ties. Every development comparison uses the incumbent’s assigned rosters, simulator seats, seeds and both submitted lineups. Intervals resample training seeds, both team axes and game replicates within seat. [Selection rule](selection.json)",
+        "We fixed six candidate configurations before the first complete four-seed result. The highest development win count qualifies at 1,680 of 2,048 wins (82%). A fixed order resolves ties. Every development comparison uses the incumbent’s assigned rosters, simulator seats, seeds and both submitted lineups. Intervals resample training seeds, both team axes and game replicates within seat. [Selection rule](selection.json)",
         "",
         "## What the policy learns and simulates",
         "",
@@ -141,6 +141,19 @@ def main():
         )
         lines += [
             "Across 16 training fixtures, changing both the true hidden reserves and private stats with the public board fixed produced identical hypothesized reserves, response logits and selected commands in both seats. [Intervention records](public-input-audit.csv)",
+            "",
+        ]
+    if (OUT / "move-latency.csv").exists():
+        timings = read(OUT / "move-latency.csv")
+        comparisons = {r["mode"]: r for r in timings}
+        timing_modes = (
+            ("incumbent", json.loads(LOCK.read_text())["method"])
+            if LOCK.exists()
+            else ("incumbent", "reply-wide", "coordinate")
+        )
+        detail = ", ".join(f"{m} {float(comparisons[m]['median_ms']):.0f} ms" for m in timing_modes)
+        lines += [
+            f"Median move-selection times on the same {timings[0]['matched_decisions']} decisions from eight training-roster games were {detail}. These timings used the shared Sketch5 host. [Median and 95th percentile by method](move-latency.csv) · [Cached and uncached preview timing](preview-latency.csv)",
             "",
         ]
     if (OUT / "reply-predictions.csv").exists():
@@ -162,7 +175,7 @@ def main():
         if all(len(z) == 4 and sum(float(r["target"]) for r in z) == 2 for z in grouped.values()):
             error = np.mean([(float(r["posterior"]) - float(r["target"])) ** 2 for r in reserve])
             lines += [
-                f"On {len(grouped)} opening positions, the modeled reserve probabilities had a Brier score of {error:.3f}; assigning 50% to each of the four unseen Pokémon scored 0.250. Lower is better. [Reserve forecasts and checked outcomes](reserve-predictions.csv)",
+                f"On {len(grouped)} opening positions, the modeled reserve probabilities had a Brier score of {error:.3f}. Assigning 50% to each of the four unseen Pokémon scored 0.250. Lower is better. [Reserve forecasts and checked outcomes](reserve-predictions.csv)",
                 "",
             ]
     lines += [
@@ -175,6 +188,8 @@ def main():
         f"- Second confirmation A — {names(SPEC['confirmation_a'])}.",
         f"- Second confirmation B — {names(SPEC['confirmation_b'])}.",
         "- The learner plays every A team against every B team, then the two sides exchange rosters. The new reciprocal test plays 16 games per direction per seed, alternating seats. The original Sun Room team separately plays all 16 tournament sheets. The independent opponent is shared PPO seed 2 at 262,144 steps with native BC preview. [Sun Room import](../../teams/reg-mb-original/sun-room.txt)",
+        "",
+        "The roster exclusions cover our own training and model selection. The released behavior-cloning checkpoint provides the common starting point for the pilots and uses its upstream replay data. These results measure performance in the pinned Showdown simulator.",
         "",
     ]
     (OUT / "README.md").write_text("\n".join(lines))

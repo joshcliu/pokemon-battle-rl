@@ -177,3 +177,19 @@ The [team diversity report](../results/sketch5-mb-team-diversity/README.md) list
 ## PPO for native BC preview
 
 Use the four completed 16-roster MoE checkpoints and the same pinned simulator and BC assets on Sketch5. From the repository root, run `bash scripts/run_mb_residual_preview.sh`. The driver checks zero-initialization parity, trains four independent lineup adapters, evaluates all four visibility and preview conditions, audits matched games and enumerates the 360 legal ordered lineups for the matchup probe. Each training seed saves its optimizer after 128 new battles. The run logs and full optimizer checkpoints are under `runs/sketch5-mb-preview-ppo/`. The [protocol](../results/sketch5-mb-preview-ppo/protocol.json) records the decision budget, data splits, controls and primary comparison.
+
+## Public opponent modeling and policy improvement
+
+Use the existing Sketch5 checkout with its four benchmark pilots, training-only fitted values and lineup models. The first-round manifest checks their exact hashes. The second-round roster lock checks the tournament sheets and excludes every prior team. The value learner trains on the 28-by-20 training pool. The development driver reuses the 4-by-8 reciprocal schedule, and the confirmation driver scores the winning method and both controls side by side.
+
+```bash
+node scripts/lock_mb_opponent_search.cjs
+.venv/bin/python scripts/mb_world_value.py train --jobs 8
+.venv/bin/python scripts/audit_mb_opponent_search.py
+.venv/bin/python scripts/mb_opponent_search.py validation reply reply-wide reply-deep coordinate reply-critic coordinate-critic --jobs 12
+.venv/bin/python scripts/confirm_mb_opponent_search.py freeze
+.venv/bin/python scripts/confirm_mb_opponent_search.py score --jobs 16
+.venv/bin/python scripts/report_mb_opponent_search.py
+```
+
+The freeze step verifies the matched development games for all six configurations and selects the highest win count under the locked tie rule. It writes the scored model, weights and source hashes. The final report verifies both players' submitted lineups, the roster assignment, simulator seed and seat for every game. [Selection rule](../results/sketch5-mb-opponent-search/selection.json) · [Exact team matrix](../results/sketch5-mb-opponent-search/protocol.json)

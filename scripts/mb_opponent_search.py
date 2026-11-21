@@ -3,12 +3,15 @@
 import argparse
 import atexit
 import copy
+import csv
 import functools
 import hashlib
 import json
 import multiprocessing
+import os
 import selectors
 import subprocess
+import tempfile
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -196,6 +199,7 @@ if __name__ == "__main__":
     p.add_argument("stage", choices=("check", "validation", "custom-dev"))
     p.add_argument("modes", nargs="+", choices=CONFIGS)
     p.add_argument("--jobs", type=int, default=8)
+    p.add_argument("--seeds", nargs="+", type=int, choices=SEEDS, default=SEEDS)
     args = p.parse_args()
     verify()
     if args.stage == "check":
@@ -209,7 +213,7 @@ if __name__ == "__main__":
             args.jobs, mp_context=multiprocessing.get_context("spawn")
         ) as pool:
             for mode in args.modes:
-                for seed in SEEDS:
+                for seed in args.seeds:
                     dest = OUT / "scores" / f"{args.stage}-{mode}-{seed}.csv"
                     if dest.exists():
                         continue
@@ -220,7 +224,20 @@ if __name__ == "__main__":
                         for r in batch
                     ]
                     assert len(rows) == len(cells) * 8
-                    atomic_rows(dest, rows)
+                    dest.parent.mkdir(parents=True, exist_ok=True)
+                    with tempfile.TemporaryDirectory(dir=dest.parent) as staging:
+                        tmp = Path(staging) / dest.name
+                        atomic_rows(tmp, rows)
+                        try:
+                            os.link(tmp, dest)
+                        except FileExistsError:
+                            with dest.open() as f:
+                                existing = list(csv.DictReader(f))
+                            assert len(existing) == len(rows)
+                            assert all(
+                                all(str(r[k]) == v for k, v in old.items())
+                                for r, old in zip(rows, existing, strict=True)
+                            )
                     print(
                         args.stage,
                         mode,
