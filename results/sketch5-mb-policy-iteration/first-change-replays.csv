@@ -1,0 +1,65 @@
+seed,sim,side,own,foe,first_turn,original_command,selected_command,base_reward,planner_reward,intervention_reward
+2,610000000,p1,MB566,MB252,1,"move tripleaxel 2, move protect","move tripleaxel 2, switch Annihilape",1,1,1
+4,610000021,p2,MB252,MB566,1,"move earthquake, move closecombat 2","move dragonclaw 1, move closecombat 2",1,1,-1
+3,610000101,p2,MB566,MB475,5,"move heatwave, move followme","move heatwave, switch Annihilape",1,1,1
+5,610000122,p1,MB475,MB566,1,"move fakeout 2, move earthquake","move flareblitz 2, move earthquake",1,-1,-1
+4,610000202,p1,MB566,MB380,2,"move psyshock 2, move lightscreen","move heatwave, move lightscreen",1,1,1
+2,610000223,p2,MB380,MB566,,,,1,1,1
+5,610000303,p2,MB566,MB140,2,"move taunt 2, move tripleaxel 2","move taunt 2, move tripleaxel 1",-1,-1,-1
+3,610000324,p1,MB140,MB566,6,"move moonblast 1, move matchagotcha","move moonblast 1, switch Incineroar",1,-1,-1
+2,610000404,p1,MB566,MB330,1,"move followme, move heatwave mega","move protect, move heatwave mega",-1,1,1
+4,610000425,p2,MB330,MB566,1,"move superfang 1, move fakeout 1","move superfang 1, move darkestlariat 2",-1,1,-1
+3,610000505,p2,MB566,MB291,1,"move gunkshot 2, move heatwave mega","move protect, move heatwave mega",1,1,1
+5,610000526,p1,MB291,MB566,,,,-1,-1,-1
+4,610000606,p1,MB566,MB549,1,"move heatwave mega, move protect","move protect mega, move protect",1,1,-1
+2,610000627,p2,MB549,MB566,1,"move rockslide mega, move scald 2","move rockslide mega, move scald 1",-1,1,1
+5,610000707,p2,MB566,MB463,1,"move psyshock mega 1, move protect","move psyshock mega 2, move protect",1,1,1
+3,610000720,p1,MB463,MB566,3,"move superpower 2, move minimize","move superpower 2, move throatchop 1",1,1,1
+3,610010002,p1,MB482,MB252,2,"move makeitrain, move earthquake","move makeitrain, move heavyslam 1",-1,-1,-1
+5,610010023,p2,MB252,MB482,,,,-1,-1,-1
+4,610010103,p2,MB482,MB475,2,"move tripleaxel 1, move flareblitz 2","move tripleaxel 2, move rockslide",1,1,-1
+2,610010124,p1,MB475,MB482,3,"move heatwave, move earthpower 2","move heatwave, move solarbeam 2",1,1,1
+5,610010204,p1,MB482,MB380,3,"switch Blaziken, move scaleshot 1","switch Blaziken, move scaleshot 2",1,1,1
+3,610010225,p2,MB380,MB482,3,"move closecombat 2, move twinbeam 2","move bravebird 1, move twinbeam 2",-1,1,1
+2,610010305,p2,MB482,MB140,2,"move makeitrain, move heavyslam 1","switch Dragonite, move heavyslam 1",1,-1,-1
+4,610010326,p1,MB140,MB482,1,"move dracometeor mega 2, move fakeout 2","move sludgebomb mega 2, move fakeout 2",1,1,1
+3,610010406,p1,MB482,MB330,1,"move earthquake, move makeitrain","move earthquake, switch Dragonite",1,-1,1
+5,610010427,p2,MB330,MB482,6,"move fakeout 2, move heatwave","move darkestlariat 2, move heatwave",1,1,1
+4,610010507,p2,MB482,MB291,1,"move protect, move scaleshot 1","move earthquake, move scaleshot 1",1,1,1
+2,610010520,p1,MB291,MB482,,,,1,1,1
+5,610010600,p1,MB482,MB549,2,"move tripleaxel 2, move earthquake","move protect, move earthquake",-1,1,-1
+3,610010621,p2,MB549,MB482,2,"move flipturn 1, move clangingscales","move scald 1, move clangingscales",1,1,1
+2,610010701,p2,MB482,MB463,1,"move earthquake, move flowertrick 2","move earthquake, move protect",1,1,1
+4,610010722,p1,MB463,MB482,1,"move minimize, switch Audino","move minimize, move superpower mega 2",1,-1,-1
+4,610020004,p1,MB561,MB252,2,"move flipturn 1, move flareblitz 2","move flipturn 1, switch Gengar",-1,1,-1
+2,610020025,p2,MB252,MB561,1,"move closecombat 2, move calmmind","move fakeout 1, move calmmind",-1,1,-1
+5,610020105,p2,MB561,MB475,1,"move fakeout 2, move yawn 2","move fakeout 2, move icebeam 2",1,1,1
+3,610020126,p1,MB475,MB561,1,"move heatwave mega, move fakeout 2","move heatwave mega, move fakeout 1",1,1,1
+2,610020206,p1,MB561,MB380,3,"move protect, move yawn 1","move flareblitz 1, move yawn 1",1,-1,-1
+4,610020227,p2,MB380,MB561,1,"move kowtowcleave 1, move rockslide","move kowtowcleave 1, move protect",1,-1,1
+3,610020307,p2,MB561,MB140,1,"move icebeam 2, move sludgebomb mega 2","move icebeam 2, move protect mega",-1,1,1
+5,610020320,p1,MB140,MB561,,,,1,1,1
+4,610020400,p1,MB561,MB330,1,"move perishsong mega, move yawn 1","move sludgebomb mega 1, move yawn 1",1,1,1
+2,610020421,p2,MB330,MB561,6,"move superfang 1, move flareblitz 2","move followme, move flareblitz 2",1,1,1
+5,610020501,p2,MB561,MB291,,,,1,1,1
+3,610020522,p1,MB291,MB561,9,"move suckerpunch 1, move closecombat 1","move suckerpunch 2, move closecombat 1",1,1,1
+2,610020602,p1,MB561,MB549,6,"move lowkick 2, move partingshot 2","move protect, move partingshot 2",1,1,1
+4,610020623,p2,MB549,MB561,2,"switch Sylveon, move partingshot 2","move scald 1, move throatchop 2",-1,-1,1
+3,610020703,p2,MB561,MB463,1,"move protect mega, move icebeam 2","move sludgebomb mega 2, move icebeam 2",1,1,1
+5,610020724,p1,MB463,MB561,2,"move superpower 1, move trickroom","move superpower 2, move trickroom",-1,1,1
+5,610030006,p1,MB296,MB252,2,"move earthquake, move flashcannon 1","move wavecrash 1, move flashcannon 1",-1,-1,-1
+3,610030027,p2,MB252,MB296,1,"move tailwind, move closecombat 2","move flamethrower 2, move closecombat 2",1,-1,-1
+2,610030107,p2,MB296,MB475,1,"move dragonpulse 1, move icepunch mega 1","move dragonpulse 1, move earthquake mega",-1,1,1
+4,610030120,p1,MB475,MB296,2,"move heatwave, move kowtowcleave 2","move weatherball 2, move kowtowcleave 2",1,1,1
+3,610030200,p1,MB296,MB380,3,"move icepunch 2, move protect","move icepunch 1, move protect",-1,-1,-1
+5,610030221,p2,MB380,MB296,1,"move closecombat mega 2, move rockslide","move closecombat mega 2, move closecombat 2",1,1,-1
+4,610030301,p2,MB296,MB140,1,"move playrough mega 1, move dragonpulse 2","switch Farigiraf, move dragonpulse 2",1,1,-1
+2,610030322,p1,MB140,MB296,1,"move protect mega, move fakeout 2","move dracometeor mega 2, move fakeout 2",-1,1,1
+5,610030402,p1,MB296,MB330,1,"move playrough mega 2, move protect","move protect, move icepunch mega 2",1,-1,-1
+3,610030423,p2,MB330,MB296,2,"move darkestlariat 2, move superfang 1","move darkestlariat 1, move superfang 1",-1,1,-1
+2,610030503,p2,MB296,MB291,2,"switch Pelipper, move playrough 2","switch Pelipper, move protect",1,1,-1
+4,610030524,p1,MB291,MB296,1,"move dazzlinggleam mega, move closecombat 1","move dazzlinggleam mega, move closecombat 2",1,-1,-1
+3,610030604,p1,MB296,MB549,1,"switch Mawile, move earthquake mega","move dragonpulse 1, move earthquake mega",1,1,1
+5,610030625,p2,MB549,MB296,2,"switch Incineroar, move sludgebomb mega 2","move flipturn 2, move sludgebomb mega 2",1,1,-1
+4,610030705,p2,MB296,MB463,1,"move flashcannon 2, move earthquake mega","move flashcannon 2, move icepunch mega 2",1,1,1
+2,610030726,p1,MB463,MB296,3,"move psychup 2, switch Dragapult","move psychup 2, move protect",-1,-1,-1

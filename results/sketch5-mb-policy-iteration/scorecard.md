@@ -6,12 +6,20 @@ Each row includes every scheduled game for four pilots. Intervals resample both 
 
 | Agent | Wins / games | Win rate (95% interval) | Four seed rates (%) |
 |---|---:|---:|---|
+| Adapted preview + in-battle value search | 1653 / 2048 | 80.71% (75.44–85.64) | 78.52 / 81.84 / 82.03 / 80.47 |
+| Preview search + full-battle belief search | 1632 / 2048 | 79.69% (74.07–85.16) | 77.73 / 78.91 / 81.45 / 80.66 |
+| Wider public search with successive halving | 1575 / 2048 | 76.90% (71.29–82.76) | 79.30 / 74.80 / 78.12 / 75.39 |
+| Learned multi-step public value search | 1553 / 2048 | 75.83% (70.56–80.91) | 76.76 / 76.37 / 75.98 / 74.22 |
 | Full-battle belief search + learned mechanics | 1530 / 2048 | 74.71% (69.53–79.69) | 75.98 / 74.80 / 74.61 / 73.44 |
 | Preview search + state-dependent PPO | 1499 / 2048 | 73.19% (67.53–79.00) | 71.88 / 72.27 / 74.61 / 74.02 |
+| Public-matchup policy search | 1465 / 2048 | 71.53% (65.18–77.83) | 74.41 / 72.46 / 71.48 / 67.77 |
+| Preview search + endgame value search | 1455 / 2048 | 71.04% (65.23–76.90) | 71.88 / 70.90 / 71.29 / 70.12 |
 | Preview search + learned mechanics | 1421 / 2048 | 69.38% (63.18–75.49) | 71.68 / 69.34 / 69.14 / 67.38 |
 | Endgame value search + learned mechanics | 1420 / 2048 | 69.34% (63.23–75.93) | 67.38 / 72.46 / 70.51 / 66.99 |
 | State-dependent mechanics PPO | 1404 / 2048 | 68.55% (62.60–74.32) | 67.19 / 69.73 / 69.73 / 67.58 |
 | PPO with learned mechanics weights | 1383 / 2048 | 67.53% (61.13–74.51) | 65.43 / 71.68 / 68.75 / 64.26 |
+| PPO with search distillation (16k) | 1379 / 2048 | 67.33% (60.99–74.03) | 65.82 / 70.70 / 69.34 / 63.48 |
+| Joint-action tactical PPO (16k) | 1357 / 2048 | 66.26% (59.08–72.90) | 67.19 / 69.14 / 68.55 / 60.16 |
 | PPO with hand-set mechanics weights | 1335 / 2048 | 65.19% (58.89–71.73) | 63.67 / 68.95 / 63.28 / 64.84 |
 | Preview search + frozen PPO | 1314 / 2048 | 64.16% (57.91–70.56) | 68.16 / 63.48 / 62.50 / 62.50 |
 | Fitted mechanics from terminal outcomes | 1280 / 2048 | 62.50% (56.54–68.60) | 60.16 / 62.89 / 64.65 / 62.30 |
@@ -32,12 +40,18 @@ Each row includes every scheduled game for four pilots. Intervals resample both 
 
 | Agent | Wins / games | Win rate (95% interval) | Four seed rates (%) |
 |---|---:|---:|---|
+| Preview search + full-battle belief search | 290 / 384 | 75.52% (62.24–86.72) | 72.92 / 76.04 / 71.88 / 81.25 |
+| Learned multi-step public value search | 278 / 384 | 72.40% (60.94–82.81) | 75.00 / 72.92 / 70.83 / 70.83 |
 | Full-battle belief search + learned mechanics | 269 / 384 | 70.05% (58.59–79.95) | 69.79 / 68.75 / 71.88 / 69.79 |
+| Wider public search with successive halving | 269 / 384 | 70.05% (57.03–81.51) | 70.83 / 71.88 / 71.88 / 65.62 |
+| Preview search + endgame value search | 268 / 384 | 69.79% (57.29–81.25) | 66.67 / 69.79 / 72.92 / 69.79 |
 | Offline lineup value + frozen PPO | 264 / 384 | 68.75% (53.65–81.25) | 61.46 / 70.83 / 76.04 / 66.67 |
 | Preview search + state-dependent PPO | 261 / 384 | 67.97% (54.43–79.95) | 61.46 / 73.96 / 68.75 / 67.71 |
 | Preview search + learned mechanics | 260 / 384 | 67.71% (55.21–79.17) | 65.62 / 67.71 / 70.83 / 66.67 |
+| Public-matchup policy search | 251 / 384 | 65.36% (52.34–77.34) | 65.62 / 65.62 / 67.71 / 62.50 |
 | Preview search + frozen PPO | 248 / 384 | 64.58% (51.30–76.30) | 60.42 / 63.54 / 65.62 / 68.75 |
 | Endgame value search + learned mechanics | 242 / 384 | 63.02% (49.47–75.78) | 67.71 / 60.42 / 63.54 / 60.42 |
+| PPO with search distillation (16k) | 240 / 384 | 62.50% (48.96–75.78) | 69.79 / 63.54 / 55.21 / 61.46 |
 | State-dependent mechanics PPO | 229 / 384 | 59.64% (46.61–72.40) | 60.42 / 63.54 / 56.25 / 58.33 |
 | PPO with learned mechanics weights | 227 / 384 | 59.11% (44.27–72.92) | 64.58 / 58.33 / 57.29 / 56.25 |
 | PPO with hand-set mechanics weights | 222 / 384 | 57.81% (42.96–71.88) | 61.46 / 61.46 / 50.00 / 58.33 |
@@ -55,6 +69,8 @@ Each row includes every scheduled game for four pilots. Intervals resample both 
 
 | Agent | Wins / games | Win rate (95% interval) | Four seed rates (%) |
 |---|---:|---:|---|
+| Preview search + full-battle belief search | 1468 / 2048 | 71.68% (64.99–78.52) | 69.92 / 70.31 / 74.61 / 71.88 |
+| Full-battle belief search + learned mechanics | 1382 / 2048 | 67.48% (62.16–73.15) | 69.73 / 68.36 / 66.99 / 64.84 |
 | Preview search + state-dependent PPO | 1336 / 2048 | 65.23% (59.42–71.24) | 65.82 / 64.26 / 66.80 / 64.06 |
 | Preview search + learned mechanics | 1319 / 2048 | 64.40% (57.52–71.09) | 64.65 / 62.50 / 69.34 / 61.13 |
 | State-dependent mechanics PPO | 1227 / 2048 | 59.91% (54.00–66.70) | 56.64 / 59.57 / 60.35 / 63.09 |

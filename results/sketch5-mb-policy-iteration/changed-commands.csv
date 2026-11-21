@@ -1,0 +1,194 @@
+seed,sim,side,own,foe,turn,decision,slot,old_action,new_action,kind,old_move,new_move,old_target,new_target,modeled_win_delta,matched_worlds
+2,610000000,p1,MB566,MB252,1,0,2,"move tripleaxel 2, move protect","move tripleaxel 2, switch Annihilape",status to switch,protect,annihilape,0,0,0.11959387134041755,4
+2,610000000,p1,MB566,MB252,2,1,2,"move tripleaxel 2, move drainpunch 2","move tripleaxel 2, move ragefist 2",attack to attack,drainpunch,ragefist,2,2,0.05564273528556274,4
+4,610000021,p2,MB252,MB566,1,0,1,"move earthquake, move closecombat 2","move dragonclaw 1, move closecombat 2",attack to attack,earthquake,dragonclaw,0,1,0.12661657374266255,4
+4,610000021,p2,MB252,MB566,2,1,1,"move earthquake, move direclaw 2","move dragonclaw 2, move direclaw 2",attack to attack,earthquake,dragonclaw,0,2,0.2518926266514531,4
+4,610000021,p2,MB252,MB566,5,6,1,"move moonblast 1, pass","move hypervoice, pass",attack to attack,moonblast,hypervoice,1,0,0.09337397416584481,4
+4,610000021,p2,MB252,MB566,6,7,1,"move moonblast 2, pass","move hypervoice, pass",attack to attack,moonblast,hypervoice,2,0,0.5812308109795461,4
+3,610000101,p2,MB566,MB475,5,5,2,"move heatwave, move followme","move heatwave, switch Annihilape",status to switch,followme,annihilape,0,0,0.1400063455478675,4
+5,610000122,p1,MB475,MB566,1,0,1,"move fakeout 2, move earthquake","move flareblitz 2, move earthquake",attack to attack,fakeout,flareblitz,2,2,0.11651739330228561,4
+5,610000122,p1,MB475,MB566,2,1,1,"move darkestlariat 1, move earthquake","switch Aerodactyl, move earthquake",attack to switch,darkestlariat,aerodactyl,1,0,0.12448079453104965,4
+5,610000122,p1,MB475,MB566,5,5,2,"move darkestlariat 1, move rockslide","move darkestlariat 1, move dragonclaw 2",attack to attack,rockslide,dragonclaw,0,2,0.08385309932811824,4
+4,610000202,p1,MB566,MB380,2,1,1,"move psyshock 2, move lightscreen","move heatwave, move lightscreen",attack to attack,psyshock,heatwave,2,0,0.09177561748482643,4
+5,610000303,p2,MB566,MB140,2,1,2,"move taunt 2, move tripleaxel 2","move taunt 2, move tripleaxel 1",retarget,tripleaxel,tripleaxel,2,1,0.38553827227194676,4
+5,610000303,p2,MB566,MB140,4,4,2,"move followme, move protect","move followme, move ragefist 2",status to attack,protect,ragefist,0,2,0.0751237833736273,4
+3,610000324,p1,MB140,MB566,6,7,2,"move moonblast 1, move matchagotcha","move moonblast 1, switch Incineroar",attack to switch,matchagotcha,incineroar,0,0,0.21123684129694587,4
+3,610000324,p1,MB140,MB566,8,9,2,"move moonblast 1, switch Sinistcha","move moonblast 1, move partingshot 1",switch to status,sinistcha,partingshot,0,1,0.0036159004112409354,4
+2,610000404,p1,MB566,MB330,1,0,1,"move followme, move heatwave mega","move protect, move heatwave mega",status to status,followme,protect,0,0,0.11359473082517779,4
+2,610000404,p1,MB566,MB330,2,1,1,"move beatup 2, move heatwave","move followme, move heatwave",attack to status,beatup,followme,2,0,0.10802685773323956,4
+2,610000404,p1,MB566,MB330,5,5,1,"move bulkup, move psyshock 2","move drainpunch 1, move protect",status to attack,bulkup,drainpunch,0,1,0.25228898161568525,4
+2,610000404,p1,MB566,MB330,5,5,2,"move bulkup, move psyshock 2","move drainpunch 1, move protect",attack to status,psyshock,protect,2,0,0.25228898161568525,4
+2,610000404,p1,MB566,MB330,6,6,2,"move drainpunch 1, move heatwave","move drainpunch 1, move psyshock 2",attack to attack,heatwave,psyshock,0,2,0.18725007785231906,4
+2,610000404,p1,MB566,MB330,8,9,2,"move ragefist 1, move protect","move ragefist 1, move tripleaxel 2",status to attack,protect,tripleaxel,0,2,0.06935195474669276,4
+2,610000404,p1,MB566,MB330,9,10,2,"move ragefist 1, move knockoff 2","move ragefist 1, move protect",attack to status,knockoff,protect,2,0,0.07039558681368285,4
+4,610000425,p2,MB330,MB566,1,0,2,"move superfang 1, move fakeout 1","move superfang 1, move darkestlariat 2",attack to attack,fakeout,darkestlariat,1,2,0.14815576442118372,4
+4,610000425,p2,MB330,MB566,2,1,2,"move protect, move partingshot 1","move protect, move darkestlariat 2",status to attack,partingshot,darkestlariat,1,2,0.10990986404873193,4
+4,610000425,p2,MB330,MB566,7,6,1,"move leafstorm 2, move flareblitz 1","switch Maushold, move partingshot 1",attack to switch,leafstorm,mausholdfour,2,0,0.23953316111186906,4
+4,610000425,p2,MB330,MB566,7,6,2,"move leafstorm 2, move flareblitz 1","switch Maushold, move partingshot 1",attack to status,flareblitz,partingshot,1,1,0.23953316111186906,4
+4,610000425,p2,MB330,MB566,9,9,1,"move superfang 1, move heatwave mega","switch Incineroar, move heatwave mega",attack to switch,superfang,incineroar,1,0,0.01554202353725398,4
+4,610000425,p2,MB330,MB566,11,13,1,"move superfang 2, move psyshock 2","move followme, move psyshock 2",attack to status,superfang,followme,2,0,0.3211722013048006,4
+3,610000505,p2,MB566,MB291,1,0,1,"move gunkshot 2, move heatwave mega","move protect, move heatwave mega",attack to status,gunkshot,protect,2,0,0.2385517605267793,4
+3,610000505,p2,MB566,MB291,4,3,1,"move gunkshot 2, move heatwave","move protect, move heatwave",attack to status,gunkshot,protect,2,0,0.06390657802790789,4
+4,610000606,p1,MB566,MB549,1,0,1,"move heatwave mega, move protect","move protect mega, move protect",attack to status,heatwave,protect,0,0,0.094915046957179,4
+4,610000606,p1,MB566,MB549,2,1,1,"move nastyplot, move followme","move heatwave, move followme",status to attack,nastyplot,heatwave,0,0,0.14556726482911708,4
+4,610000606,p1,MB566,MB549,7,6,2,"move psyshock 2, move taunt 2","move psyshock 2, move followme",status to status,taunt,followme,2,0,0.0019964969922732223,4
+4,610000606,p1,MB566,MB549,8,8,1,"move fakeout 2, move ragefist 2","move tripleaxel 2, move ragefist 1",attack to attack,fakeout,tripleaxel,2,2,0.2053377257277633,4
+4,610000606,p1,MB566,MB549,8,8,2,"move fakeout 2, move ragefist 2","move tripleaxel 2, move ragefist 1",retarget,ragefist,ragefist,2,1,0.2053377257277633,4
+4,610000606,p1,MB566,MB549,10,10,1,"move tripleaxel 2, move protect","move protect, move ragefist 2",attack to status,tripleaxel,protect,2,0,0.5586022662442649,4
+4,610000606,p1,MB566,MB549,10,10,2,"move tripleaxel 2, move protect","move protect, move ragefist 2",status to attack,protect,ragefist,0,2,0.5586022662442649,4
+4,610000606,p1,MB566,MB549,11,11,2,"move tripleaxel 2, move drainpunch 1","move tripleaxel 2, move ragefist 2",attack to attack,drainpunch,ragefist,1,2,0.04348093092487809,4
+2,610000627,p2,MB549,MB566,1,0,2,"move rockslide mega, move scald 2","move rockslide mega, move scald 1",retarget,scald,scald,2,1,0.04765786627016266,4
+2,610000627,p2,MB549,MB566,2,1,2,"move rockslide, move flipturn 1","move rockslide, move scald 1",attack to attack,flipturn,scald,1,1,0.11651985136405396,4
+2,610000627,p2,MB549,MB566,5,5,1,"move rockslide, move hyperbeam 2","move tailwind, move hyperbeam 2",attack to status,rockslide,tailwind,0,0,0.21255337734083768,4
+5,610000707,p2,MB566,MB463,1,0,1,"move psyshock mega 1, move protect","move psyshock mega 2, move protect",retarget,psyshock,psyshock,1,2,0.0712295654715499,4
+5,610000707,p2,MB566,MB463,2,1,2,"move heatwave, move followme","move heatwave, move taunt 1",status to status,followme,taunt,0,1,0.04164087266236094,4
+3,610000720,p1,MB463,MB566,3,3,2,"move superpower 2, move minimize","move superpower 2, move throatchop 1",status to attack,minimize,throatchop,0,1,0.21171721177323088,4
+3,610000720,p1,MB463,MB566,10,11,1,"move superpower 2, move reflect","move storedpower 2, move reflect",attack to attack,superpower,storedpower,2,2,0.5184993072173469,4
+3,610000720,p1,MB463,MB566,11,12,1,"move rest, move willowisp 2","move storedpower 1, move willowisp 2",status to attack,rest,storedpower,0,1,0.08550615636394554,4
+3,610010002,p1,MB482,MB252,2,2,2,"move makeitrain, move earthquake","move makeitrain, move heavyslam 1",attack to attack,earthquake,heavyslam,0,1,0.13709981604850718,4
+3,610010002,p1,MB482,MB252,5,6,2,"pass, move heavyslam 2","pass, move earthquake",attack to attack,heavyslam,earthquake,2,0,0.10907534520112105,4
+3,610010002,p1,MB482,MB252,6,7,2,"pass, move earthquake","pass, move protect",attack to status,earthquake,protect,0,0,0.19047270513194758,4
+4,610010103,p2,MB482,MB475,2,1,1,"move tripleaxel 1, move flareblitz 2","move tripleaxel 2, move rockslide",retarget,tripleaxel,tripleaxel,1,2,0.22012403628863186,4
+4,610010103,p2,MB482,MB475,2,1,2,"move tripleaxel 1, move flareblitz 2","move tripleaxel 2, move rockslide",attack to attack,flareblitz,rockslide,2,0,0.22012403628863186,4
+4,610010103,p2,MB482,MB475,3,2,1,"move tripleaxel 1, move flareblitz 2","move protect, move flareblitz 2",attack to status,tripleaxel,protect,1,0,0.2235076812594109,4
+2,610010124,p1,MB475,MB482,3,3,2,"move heatwave, move earthpower 2","move heatwave, move solarbeam 2",attack to attack,earthpower,solarbeam,2,2,0.07557468991038674,4
+5,610010204,p1,MB482,MB380,3,2,2,"switch Blaziken, move scaleshot 1","switch Blaziken, move scaleshot 2",retarget,scaleshot,scaleshot,1,2,0.041145915064625616,4
+5,610010204,p1,MB482,MB380,5,5,2,"move hypervoice, move scaleshot 2","move hypervoice, move extremespeed 2",attack to attack,scaleshot,extremespeed,2,2,0.1537377638785179,4
+3,610010225,p2,MB380,MB482,3,3,1,"move closecombat 2, move twinbeam 2","move bravebird 1, move twinbeam 2",attack to attack,closecombat,bravebird,2,1,0.10794986936184148,4
+2,610010305,p2,MB482,MB140,2,1,1,"move makeitrain, move heavyslam 1","switch Dragonite, move heavyslam 1",attack to switch,makeitrain,dragonite,0,0,0.17750310078302506,4
+2,610010305,p2,MB482,MB140,9,10,2,"pass, move makeitrain","pass, move focusblast 2",attack to attack,makeitrain,focusblast,0,2,0.08248406064807497,4
+4,610010326,p1,MB140,MB482,1,0,1,"move dracometeor mega 2, move fakeout 2","move sludgebomb mega 2, move fakeout 2",attack to attack,dracometeor,sludgebomb,2,2,0.03037379870383783,4
+4,610010326,p1,MB140,MB482,4,4,1,"move ragefist 2, move dazzlinggleam","move ragefist 1, move dazzlinggleam",retarget,ragefist,ragefist,2,1,0.1570248884448741,4
+4,610010326,p1,MB140,MB482,5,5,1,"move ragefist 1, move dazzlinggleam","move closecombat 1, move dazzlinggleam",attack to attack,ragefist,closecombat,1,1,0.16605689404514745,4
+3,610010406,p1,MB482,MB330,1,0,2,"move earthquake, move makeitrain","move earthquake, switch Dragonite",attack to switch,makeitrain,dragonite,0,0,0.28559737650814543,4
+3,610010406,p1,MB482,MB330,3,2,1,"move earthquake, move scaleshot 2","move protect, move scaleshot 1",attack to status,earthquake,protect,0,0,0.12080224770476478,4
+3,610010406,p1,MB482,MB330,3,2,2,"move earthquake, move scaleshot 2","move protect, move scaleshot 1",retarget,scaleshot,scaleshot,2,1,0.12080224770476478,4
+3,610010406,p1,MB482,MB330,5,5,2,"move earthquake, move scaleshot 1","move earthquake, move protect",attack to status,scaleshot,protect,1,0,0.31537729862461766,4
+3,610010406,p1,MB482,MB330,6,6,2,"move earthquake, move scaleshot 1","move earthquake, move extremespeed 1",attack to attack,scaleshot,extremespeed,1,1,0.07537992548245442,4
+3,610010406,p1,MB482,MB330,8,9,2,"move makeitrain, move scaleshot 1","move makeitrain, move superpower 1",attack to attack,scaleshot,superpower,1,1,0.16104492739942,4
+5,610010427,p2,MB330,MB482,6,8,1,"move fakeout 2, move heatwave","move darkestlariat 2, move heatwave",attack to attack,fakeout,darkestlariat,2,2,0.75,4
+4,610010507,p2,MB482,MB291,1,0,1,"move protect, move scaleshot 1","move earthquake, move scaleshot 1",status to attack,protect,earthquake,0,0,0.19237397934590694,4
+5,610010600,p1,MB482,MB549,2,1,1,"move tripleaxel 2, move earthquake","move protect, move earthquake",attack to status,tripleaxel,protect,2,0,0.2514152123001778,4
+5,610010600,p1,MB482,MB549,4,3,1,"move tripleaxel 2, move heavyslam 1","move suckerpunch 2, move heavyslam 1",attack to attack,tripleaxel,suckerpunch,2,2,0.44572284930035094,4
+5,610010600,p1,MB482,MB549,5,5,2,"move flareblitz mega 1, move scaleshot 2","move flareblitz mega 1, move extremespeed 2",attack to attack,scaleshot,extremespeed,2,2,0.26120181061031633,4
+3,610010621,p2,MB549,MB482,2,1,1,"move flipturn 1, move clangingscales","move scald 1, move clangingscales",attack to attack,flipturn,scald,1,1,0.2293949936447206,4
+2,610010701,p2,MB482,MB463,1,0,2,"move earthquake, move flowertrick 2","move earthquake, move protect",attack to status,flowertrick,protect,2,0,0.14408586812739266,4
+2,610010701,p2,MB482,MB463,3,2,2,"move heavyslam 1, move tripleaxel 1","move heavyslam 1, move flowertrick 2",attack to attack,tripleaxel,flowertrick,1,2,0.03949846596421147,4
+2,610010701,p2,MB482,MB463,4,3,2,"move heavyslam 1, move tripleaxel 1","move heavyslam 1, move flowertrick 1",attack to attack,tripleaxel,flowertrick,1,1,0.03849773260055278,4
+4,610010722,p1,MB463,MB482,1,0,2,"move minimize, switch Audino","move minimize, move superpower mega 2",switch to attack,audino,superpower,0,2,0.06586933949674739,4
+4,610010722,p1,MB463,MB482,2,1,2,"move stockpile, move superpower 2","move stockpile, move superpower 1",retarget,superpower,superpower,2,1,0.0761707982535213,4
+4,610010722,p1,MB463,MB482,4,4,1,"move healpulse -2, move lightscreen","move protect, move lightscreen",status to status,healpulse,protect,-2,0,0.4225525954562171,4
+4,610010722,p1,MB463,MB482,6,6,1,"move simplebeam 1, move reflect","move protect, move reflect",status to status,simplebeam,protect,1,0,0.045637995073366855,4
+4,610020004,p1,MB561,MB252,2,1,2,"move flipturn 1, move flareblitz 2","move flipturn 1, switch Gengar",attack to switch,flareblitz,gengar,2,0,0.12406714647242556,4
+4,610020004,p1,MB561,MB252,5,5,2,"move flareblitz 1, move perishsong","move flareblitz 1, move sludgebomb 2",status to attack,perishsong,sludgebomb,0,2,0.32116115346526675,4
+2,610020025,p2,MB252,MB561,1,0,1,"move closecombat 2, move calmmind","move fakeout 1, move calmmind",attack to attack,closecombat,fakeout,2,1,0.1643225570043746,4
+2,610020025,p2,MB252,MB561,2,1,2,"move closecombat 2, move moonblast 2","move closecombat 2, move hypervoice",attack to attack,moonblast,hypervoice,2,0,0.17528485034902963,4
+2,610020025,p2,MB252,MB561,5,4,2,"switch Sneasler, move ragepowder","switch Sneasler, move matchagotcha",status to attack,ragepowder,matchagotcha,0,0,0.19502458627878982,4
+5,610020105,p2,MB561,MB475,1,0,2,"move fakeout 2, move yawn 2","move fakeout 2, move icebeam 2",status to attack,yawn,icebeam,2,2,0.09373630541284372,4
+5,610020105,p2,MB561,MB475,14,18,1,"move perishsong, move fakeout 1","move shadowball 2, move fakeout 1",status to attack,perishsong,shadowball,0,2,0.12247720997357625,4
+5,610020105,p2,MB561,MB475,16,20,2,"move protect, move protect","move protect, switch Vaporeon",status to switch,protect,vaporeon,0,0,0.11555092392799937,4
+5,610020105,p2,MB561,MB475,18,23,2,"move perishsong, move fakeout 1","move perishsong, move fakeout 2",retarget,fakeout,fakeout,1,2,0.1945268237996346,4
+3,610020126,p1,MB475,MB561,1,0,2,"move heatwave mega, move fakeout 2","move heatwave mega, move fakeout 1",retarget,fakeout,fakeout,2,1,0.07099338640197506,4
+3,610020126,p1,MB475,MB561,2,1,1,"move heatwave, move darkestlariat 2","move weatherball 1, move darkestlariat 2",attack to attack,heatwave,weatherball,0,1,0.05584257133392123,4
+2,610020206,p1,MB561,MB380,3,2,1,"move protect, move yawn 1","move flareblitz 1, move yawn 1",status to attack,protect,flareblitz,0,1,0.06848054509659618,4
+2,610020206,p1,MB561,MB380,6,7,1,"move yawn 2, move closecombat 1","move flipturn 2, move closecombat 1",status to attack,yawn,flipturn,2,2,0.04440346349581603,4
+2,610020206,p1,MB561,MB380,7,8,2,"pass, move closecombat 2","pass, move protect",attack to status,closecombat,protect,2,0,0.43265315937956006,4
+2,610020206,p1,MB561,MB380,8,9,2,"pass, move closecombat 1","pass, move closecombat 2",retarget,closecombat,closecombat,1,2,0.03588183430135172,4
+4,610020227,p2,MB380,MB561,1,0,2,"move kowtowcleave 1, move rockslide","move kowtowcleave 1, move protect",attack to status,rockslide,protect,0,0,0.11707179488248964,4
+4,610020227,p2,MB380,MB561,2,1,1,"move kowtowcleave 2, move rockslide","move suckerpunch 1, move rockslide",attack to attack,kowtowcleave,suckerpunch,2,1,0.03901873526430888,4
+4,610020227,p2,MB380,MB561,3,2,2,"move kowtowcleave 2, move closecombat 1","move kowtowcleave 2, move rockslide",attack to attack,closecombat,rockslide,1,0,0.056410863112513865,4
+4,610020227,p2,MB380,MB561,6,6,1,"move protect, move heatwave","move twinbeam 1, move heatwave",status to attack,protect,twinbeam,0,1,0.15187514923857193,4
+3,610020307,p2,MB561,MB140,1,0,2,"move icebeam 2, move sludgebomb mega 2","move icebeam 2, move protect mega",attack to status,sludgebomb,protect,2,0,0.4319141891801366,4
+3,610020307,p2,MB561,MB140,2,1,1,"move yawn 2, move sludgebomb 2","move flipturn 2, move sludgebomb 2",status to attack,yawn,flipturn,2,2,0.08430943208176983,4
+3,610020307,p2,MB561,MB140,3,3,2,"move gunkshot 2, move sludgebomb 2","move gunkshot 2, move shadowball 2",attack to attack,sludgebomb,shadowball,2,2,0.07652281356976631,4
+3,610020307,p2,MB561,MB140,4,4,1,"move gunkshot 1, move protect","move closecombat 1, move protect",attack to attack,gunkshot,closecombat,1,1,0.024109439794591347,4
+3,610020307,p2,MB561,MB140,5,5,1,"move closecombat 1, move shadowball 1","move gunkshot 1, switch Incineroar",attack to attack,closecombat,gunkshot,1,1,0.18648292960103774,4
+3,610020307,p2,MB561,MB140,5,5,2,"move closecombat 1, move shadowball 1","move gunkshot 1, switch Incineroar",attack to switch,shadowball,incineroar,1,0,0.18648292960103774,4
+3,610020307,p2,MB561,MB140,9,10,2,"move protect, move protect","move protect, move shadowball 2",status to attack,protect,shadowball,0,2,0.151209435600674,4
+3,610020307,p2,MB561,MB140,10,12,2,"move closecombat 2, move yawn 1","move closecombat 2, move icebeam 1",status to attack,yawn,icebeam,1,1,0.1417470538680452,4
+4,610020400,p1,MB561,MB330,1,0,1,"move perishsong mega, move yawn 1","move sludgebomb mega 1, move yawn 1",status to attack,perishsong,sludgebomb,0,1,0.12902252945078319,4
+4,610020400,p1,MB561,MB330,2,1,1,"switch Kingambit, move yawn 2","move protect, move yawn 2",switch to status,kingambit,protect,0,0,0.03823689933465141,4
+4,610020400,p1,MB561,MB330,6,5,2,"move sludgebomb 1, move suckerpunch 2","move sludgebomb 1, move suckerpunch 1",retarget,suckerpunch,suckerpunch,2,1,0.29414811179849454,4
+4,610020400,p1,MB561,MB330,7,7,2,"move closecombat 2, move kowtowcleave 1","move closecombat 2, move suckerpunch 1",attack to attack,kowtowcleave,suckerpunch,1,1,0.4041946356150102,4
+4,610020400,p1,MB561,MB330,9,9,2,"move closecombat 2, move protect","move closecombat 2, move kowtowcleave 1",status to attack,protect,kowtowcleave,0,1,0.1957444015093367,4
+4,610020400,p1,MB561,MB330,10,10,1,"move gunkshot 1, move suckerpunch 2","move closecombat 1, move suckerpunch 2",attack to attack,gunkshot,closecombat,1,1,0.05232508607568598,4
+2,610020421,p2,MB330,MB561,6,5,1,"move superfang 1, move flareblitz 2","move followme, move flareblitz 2",attack to status,superfang,followme,1,0,0.01948026597630048,4
+2,610020421,p2,MB330,MB561,9,9,2,"move psychocut 1, move leafstorm 2","move psychocut 1, move protect",attack to status,leafstorm,protect,2,0,0.04355662139978822,4
+3,610020522,p1,MB291,MB561,9,9,1,"move suckerpunch 1, move closecombat 1","move suckerpunch 2, move closecombat 1",retarget,suckerpunch,suckerpunch,1,2,0.06535976897740481,4
+2,610020602,p1,MB561,MB549,6,6,1,"move lowkick 2, move partingshot 2","move protect, move partingshot 2",attack to status,lowkick,protect,2,0,0.31730160038270216,4
+2,610020602,p1,MB561,MB549,9,10,1,"move lowkick 2, move icebeam 2","move suckerpunch 2, move icebeam 2",attack to attack,lowkick,suckerpunch,2,2,0.07665110941730335,4
+4,610020623,p2,MB549,MB561,2,1,1,"switch Sylveon, move partingshot 2","move scald 1, move throatchop 2",switch to attack,sylveon,scald,0,1,0.11947431834655253,4
+4,610020623,p2,MB549,MB561,2,1,2,"switch Sylveon, move partingshot 2","move scald 1, move throatchop 2",status to attack,partingshot,throatchop,2,2,0.11947431834655253,4
+4,610020623,p2,MB549,MB561,4,3,1,"move flipturn 1, move protect","move flipturn 2, move protect",retarget,flipturn,flipturn,1,2,0.1386172277395562,4
+4,610020623,p2,MB549,MB561,9,12,2,"move throatchop 2, move shadowball mega 1","move throatchop 2, move sludgebomb mega 2",attack to attack,shadowball,sludgebomb,1,2,0.34097061876776874,4
+3,610020703,p2,MB561,MB463,1,0,1,"move protect mega, move icebeam 2","move sludgebomb mega 2, move icebeam 2",status to attack,protect,sludgebomb,0,2,0.11121109923996253,4
+5,610020724,p1,MB463,MB561,2,1,1,"move superpower 1, move trickroom","move superpower 2, move trickroom",retarget,superpower,superpower,1,2,0.10821803422742149,4
+5,610020724,p1,MB463,MB561,3,2,1,"move superpower 1, switch Chandelure","move superpower 2, switch Chandelure",retarget,superpower,superpower,1,2,0.32923838140853356,4
+5,610020724,p1,MB463,MB561,6,5,1,"move superpower 2, move acidarmor","move storedpower 1, move acidarmor",attack to attack,superpower,storedpower,2,1,0.12099754160906384,4
+5,610030006,p1,MB296,MB252,2,1,1,"move earthquake, move flashcannon 1","move wavecrash 1, move flashcannon 1",attack to attack,earthquake,wavecrash,0,1,0.6640248228929263,4
+5,610030006,p1,MB296,MB252,4,4,1,"move protect, move thunderbolt 2","switch Pelipper, move thunderbolt 2",status to switch,protect,pelipper,0,0,0.006531944274261292,4
+5,610030006,p1,MB296,MB252,6,7,2,"pass, move icepunch 1","pass, move protect",attack to status,icepunch,protect,1,0,0.04824235346562511,4
+3,610030027,p2,MB252,MB296,1,0,1,"move tailwind, move closecombat 2","move flamethrower 2, move closecombat 2",status to attack,tailwind,flamethrower,0,2,0.2709026459119285,4
+3,610030027,p2,MB252,MB296,4,4,1,"move tailwind, move matchagotcha","switch Primarina, move matchagotcha",status to switch,tailwind,primarina,0,0,0.10742244043794855,4
+3,610030027,p2,MB252,MB296,6,7,1,"move moonblast 2, move roost","move hypervoice, move roost",attack to attack,moonblast,hypervoice,2,0,0.06390438568861037,4
+3,610030027,p2,MB252,MB296,7,8,1,"move protect, move tailwind","move moonblast 2, move tailwind",status to attack,protect,moonblast,0,2,0.23014943057089984,4
+3,610030027,p2,MB252,MB296,8,9,1,"move moonblast 2, pass","move moonblast 1, pass",retarget,moonblast,moonblast,2,1,0.12846373019700175,4
+2,610030107,p2,MB296,MB475,1,0,2,"move dragonpulse 1, move icepunch mega 1","move dragonpulse 1, move earthquake mega",attack to attack,icepunch,earthquake,1,0,0.031890260889420374,4
+2,610030107,p2,MB296,MB475,4,3,1,"move dragonpulse 2, move weatherball 1","move dragonpulse 1, move wideguard",retarget,dragonpulse,dragonpulse,2,1,0.2219753293855481,4
+2,610030107,p2,MB296,MB475,4,3,2,"move dragonpulse 2, move weatherball 1","move dragonpulse 1, move wideguard",attack to status,weatherball,wideguard,1,0,0.2219753293855481,4
+2,610030107,p2,MB296,MB475,8,9,1,"move hurricane 1, move thunderbolt 2","move wideguard, move thunderbolt 2",attack to status,hurricane,wideguard,1,0,0.28522609785744446,4
+2,610030107,p2,MB296,MB475,9,10,1,"move weatherball 1, move thunderbolt 2","move wideguard, move thunderbolt 2",attack to status,weatherball,wideguard,1,0,0.29766712599263645,4
+2,610030107,p2,MB296,MB475,10,11,1,"move weatherball 1, move thunderbolt 1","move wideguard, move psychic 1",attack to status,weatherball,wideguard,1,0,0.48800882604576223,4
+2,610030107,p2,MB296,MB475,10,11,2,"move weatherball 1, move thunderbolt 1","move wideguard, move psychic 1",attack to attack,thunderbolt,psychic,1,1,0.48800882604576223,4
+4,610030120,p1,MB475,MB296,2,2,1,"move heatwave, move kowtowcleave 2","move weatherball 2, move kowtowcleave 2",attack to attack,heatwave,weatherball,0,2,0.07114572628704807,4
+4,610030120,p1,MB475,MB296,3,3,2,"move weatherball 1, move kowtowcleave 1","move weatherball 1, move kowtowcleave 2",retarget,kowtowcleave,kowtowcleave,1,2,0.04036316154043318,4
+3,610030200,p1,MB296,MB380,3,2,1,"move icepunch 2, move protect","move icepunch 1, move protect",retarget,icepunch,icepunch,2,1,0.14516195052181013,4
+3,610030200,p1,MB296,MB380,8,9,1,"move flashcannon 1, move icepunch 2","move flashcannon 2, move icepunch 1",retarget,flashcannon,flashcannon,1,2,0.27175254923734804,4
+3,610030200,p1,MB296,MB380,8,9,2,"move flashcannon 1, move icepunch 2","move flashcannon 2, move icepunch 1",retarget,icepunch,icepunch,2,1,0.27175254923734804,4
+5,610030221,p2,MB380,MB296,1,0,2,"move closecombat mega 2, move rockslide","move closecombat mega 2, move closecombat 2",attack to attack,rockslide,closecombat,0,2,0.09877665232566635,4
+5,610030221,p2,MB380,MB296,3,2,1,"move roost, move closecombat 1","move protect, move closecombat 1",status to status,roost,protect,0,0,0.1573720587669133,4
+5,610030221,p2,MB380,MB296,8,9,1,"move kowtowcleave 2, move twinbeam 2","move suckerpunch 2, move twinbeam 2",attack to attack,kowtowcleave,suckerpunch,2,2,0.09001615910989069,4
+4,610030301,p2,MB296,MB140,1,0,1,"move playrough mega 1, move dragonpulse 2","switch Farigiraf, move dragonpulse 2",attack to switch,playrough,farigiraf,1,0,0.09427401984919759,4
+4,610030301,p2,MB296,MB140,2,1,1,"move thunderbolt 1, move protect","move psychic 1, move flashcannon 2",attack to attack,thunderbolt,psychic,1,1,0.23172068345119207,4
+4,610030301,p2,MB296,MB140,2,1,2,"move thunderbolt 1, move protect","move psychic 1, move flashcannon 2",status to attack,protect,flashcannon,0,2,0.23172068345119207,4
+4,610030301,p2,MB296,MB140,5,4,1,"move protect, move flashcannon 2","switch Swampert, move flashcannon 2",status to switch,protect,swampert,0,0,0.015898982711081144,4
+2,610030322,p1,MB140,MB296,1,0,1,"move protect mega, move fakeout 2","move dracometeor mega 2, move fakeout 2",status to attack,protect,dracometeor,0,2,0.17668117637892866,4
+2,610030322,p1,MB140,MB296,3,2,2,"move matchagotcha, move partingshot 2","move matchagotcha, switch Dragalge",status to switch,partingshot,dragalgemega,2,0,0.08984494972931256,4
+2,610030322,p1,MB140,MB296,7,6,2,"move matchagotcha, switch Dragalge","move matchagotcha, move protect",switch to status,dragalgemega,protect,0,0,0.033095665930042095,4
+5,610030402,p1,MB296,MB330,1,0,1,"move playrough mega 2, move protect","move protect, move icepunch mega 2",attack to status,playrough,protect,2,0,0.12157099118077319,4
+5,610030402,p1,MB296,MB330,1,0,2,"move playrough mega 2, move protect","move protect, move icepunch mega 2",status to attack,protect,icepunch,0,2,0.12157099118077319,4
+5,610030402,p1,MB296,MB330,2,1,1,"move playrough 2, move icepunch 2","move suckerpunch 2, move wavecrash 1",attack to attack,playrough,suckerpunch,2,2,0.36437200660768526,4
+5,610030402,p1,MB296,MB330,2,1,2,"move playrough 2, move icepunch 2","move suckerpunch 2, move wavecrash 1",attack to attack,icepunch,wavecrash,2,1,0.36437200660768526,4
+5,610030402,p1,MB296,MB330,4,4,1,"move wideguard, move earthquake","move hurricane 1, move earthquake",status to attack,wideguard,hurricane,0,1,0.1180628937446786,4
+5,610030402,p1,MB296,MB330,6,7,1,"move dragonpulse 2, pass","move dragonpulse 1, pass",retarget,dragonpulse,dragonpulse,2,1,0.4100156850158864,4
+3,610030423,p2,MB330,MB296,2,1,1,"move darkestlariat 2, move superfang 1","move darkestlariat 1, move superfang 1",retarget,darkestlariat,darkestlariat,2,1,0.2532965663917247,4
+3,610030423,p2,MB330,MB296,3,3,1,"move darkestlariat 2, move wavecrash 1","move partingshot 2, move wavecrash 1",attack to status,darkestlariat,partingshot,2,2,0.2100173067145532,4
+3,610030423,p2,MB330,MB296,4,5,2,"move leafstorm 1, switch Incineroar","move leafstorm 1, move wavecrash 1",switch to attack,incineroar,wavecrash,0,1,0.09111222223700705,4
+3,610030423,p2,MB330,MB296,5,6,2,"move leafstorm 1, move wavecrash 2","move leafstorm 1, move protect",attack to status,wavecrash,protect,2,0,0.13824678538232682,4
+3,610030423,p2,MB330,MB296,6,7,1,"move leafstorm 2, move protect","move ragepowder, move protect",attack to status,leafstorm,ragepowder,2,0,0.029764264542549546,4
+3,610030423,p2,MB330,MB296,7,8,2,"move leafstorm 2, move wavecrash 2","move leafstorm 2, switch Incineroar",attack to switch,wavecrash,incineroar,2,0,0.23181907267068402,4
+3,610030423,p2,MB330,MB296,10,12,2,"move leafstorm 2, move protect","move leafstorm 2, switch Incineroar",status to switch,protect,incineroar,0,0,0.1659758951663498,4
+3,610030423,p2,MB330,MB296,13,17,2,"move darkestlariat 2, move lastrespects 2","move darkestlariat 2, move protect",attack to status,lastrespects,protect,2,0,0.1580693929520176,4
+3,610030423,p2,MB330,MB296,14,18,2,"move darkestlariat 2, move aquajet 2","move darkestlariat 2, move protect",attack to status,aquajet,protect,2,0,0.1409159859655349,4
+2,610030503,p2,MB296,MB291,2,1,2,"switch Pelipper, move playrough 2","switch Pelipper, move protect",attack to status,playrough,protect,2,0,0.16852679539216334,4
+2,610030503,p2,MB296,MB291,3,2,2,"move weatherball 1, move playrough 2","move weatherball 1, switch Swampert",attack to switch,playrough,swampert,2,0,0.1486123008901724,4
+2,610030503,p2,MB296,MB291,4,3,2,"move weatherball 1, move wavecrash 2","move weatherball 1, move wavecrash 1",retarget,wavecrash,wavecrash,2,1,0.13941475297602068,4
+2,610030503,p2,MB296,MB291,6,6,1,"move weatherball 2, move playrough 2","move hurricane 2, move playrough 2",attack to attack,weatherball,hurricane,2,2,0.033812299223716424,4
+4,610030524,p1,MB291,MB296,1,0,2,"move dazzlinggleam mega, move closecombat 1","move dazzlinggleam mega, move closecombat 2",retarget,closecombat,closecombat,1,2,0.096121791449441,4
+3,610030604,p1,MB296,MB549,1,0,1,"switch Mawile, move earthquake mega","move dragonpulse 1, move earthquake mega",switch to attack,mawile,dragonpulse,0,1,0.08296626388321382,4
+3,610030604,p1,MB296,MB549,3,2,1,"move weatherball 2, switch Mawile","move weatherball 1, switch Mawile",retarget,weatherball,weatherball,2,1,0.013467060588012836,4
+5,610030625,p2,MB549,MB296,2,2,1,"switch Incineroar, move sludgebomb mega 2","move flipturn 2, move sludgebomb mega 2",switch to attack,incineroar,flipturn,0,2,0.5758755081752935,4
+5,610030625,p2,MB549,MB296,3,4,2,"move hypervoice, move shadowball 2","move hypervoice, move shadowball 1",retarget,shadowball,shadowball,2,1,0.06635544889026734,4
+5,610030625,p2,MB549,MB296,4,5,1,"move hypervoice, move shadowball 2","move detect, move shadowball 2",attack to status,hypervoice,detect,0,0,0.11331351313431548,4
+5,610030625,p2,MB549,MB296,5,6,2,"move hypervoice, move sludgebomb 1","move hypervoice, move protect",attack to status,sludgebomb,protect,1,0,0.22735995904942663,4
+5,610030625,p2,MB549,MB296,12,17,2,"move fakeout 1, move protect","move fakeout 1, move shadowball 1",status to attack,protect,shadowball,0,1,0.02241557395673821,4
+4,610030705,p2,MB296,MB463,1,0,2,"move flashcannon 2, move earthquake mega","move flashcannon 2, move icepunch mega 2",attack to attack,earthquake,icepunch,0,2,0.11062937574373677,4
+2,610030726,p1,MB463,MB296,3,2,2,"move psychup 2, switch Dragapult","move psychup 2, move protect",switch to status,dragapult,protect,0,0,0.21016495113233047,4
+2,610030726,p1,MB463,MB296,4,3,1,"move psychup 2, move healpulse 2","move superpower 2, move healpulse 2",status to attack,psychup,superpower,2,2,0.08638584074178696,4
+2,610030726,p1,MB463,MB296,8,8,1,"move psychup 1, move willowisp 1","move superpower 1, move willowisp 1",status to attack,psychup,superpower,1,1,0.21832761113931026,4
+2,610030726,p1,MB463,MB296,11,12,1,"move psychup 1, move memento 2","move storedpower 1, move lightscreen",status to attack,psychup,storedpower,1,1,0.357685533608281,4
+2,610030726,p1,MB463,MB296,11,12,2,"move psychup 1, move memento 2","move storedpower 1, move lightscreen",status to status,memento,lightscreen,2,0,0.357685533608281,4
+2,610030726,p1,MB463,MB296,13,14,1,"move psychup 2, move memento 2","move storedpower 2, move memento 2",status to attack,psychup,storedpower,2,2,0.3093101410041449,4
+2,610030726,p1,MB463,MB296,14,15,1,"move psychup 2, move memento 2","move storedpower 2, move memento 2",status to attack,psychup,storedpower,2,2,0.3149922443376253,4
+2,610030726,p1,MB463,MB296,15,16,1,"move psychup 2, move memento 2","move storedpower 2, move memento 2",status to attack,psychup,storedpower,2,2,0.07383524485364468,4
+2,610030726,p1,MB463,MB296,16,17,2,"pass, move memento 2","pass, move protect",status to status,memento,protect,2,0,0.5149372230252872,4
