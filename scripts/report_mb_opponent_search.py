@@ -100,6 +100,12 @@ def main():
                 f"| {label} | {float(t['native']['win_pct']):.2f}% | {float(t[OLD]['win_pct']):.2f}% | {float(v['win_pct']):.2f}% ({float(v['lo95']):.2f}–{float(v['hi95']):.2f}) | {float(v['baseline_gain']):+.2f} ({float(v['baseline_lo95']):+.2f} to {float(v['baseline_hi95']):+.2f}) |"
             )
         archive = LOCK.parent / "games.csv.gz"
+        if (OUT / "prospective-win-rates.png").exists():
+            lines += [
+                "",
+                "![Win rates and 95% intervals for the original PPO and frozen planners on both prospective tests](prospective-win-rates.png)",
+                "",
+            ]
         affected = (
             set(json.loads(addendum.read_text())["affected_public_sheets"])
             if addendum.exists()
@@ -126,6 +132,23 @@ def main():
             f"We checked all {n:,} game records, including starting fours, both seats, terminal outcomes and simulator seeds. The SHA-256 of the game archive is `{hashlib.sha256(archive.read_bytes()).hexdigest()}`. [Frozen deployment assets](confirmation/candidate.json) · [Raw games](confirmation/games.csv.gz) · [Every matchup](confirmation/matchups.csv) · [Paired effects and intervals](confirmation/results.csv)",
             "",
         ]
+        lines += [
+            "<details>",
+            "<summary>Primary score for each assigned tournament team (512 games per policy)</summary>",
+            "",
+            "| Assigned team | Original PPO | First-round planner | Three-step planner |",
+            "|---|---:|---:|---:|",
+        ]
+        for team in teams:
+            counts = [sum(assigned[m, team]) for m in ("native", OLD, method)]
+            lines.append(
+                "| "
+                + team
+                + " | "
+                + " | ".join(f"{w}/512 ({100 * w / 512:.2f}%)" for w in counts)
+                + " |"
+            )
+        lines += ["", "</details>", ""]
         if affected:
             lines += [
                 "## Empty-item input and sensitivity",

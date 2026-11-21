@@ -4,6 +4,55 @@ Our first policy won 80.71% on development and 77.17% on its independent 16-rost
 
 We froze the three-step reply planner after it won 1,742 of 2,048 development games (85.06%, 95% interval 80.76%–89.06%). Across the four pilot seeds it scored 83.98 / 84.77 / 85.74 / 85.74%. All 49 deployment and evaluation assets were fingerprinted before the reserved battles. [Frozen configuration and six-way selection](confirmation/candidate.json)
 
+The frozen second-round policy won **6,969 of 8,192 (85.07%, 95% interval 81.86%–87.85%)** on its new reciprocal test. The same-schedule gain over the first-round policy was +6.13 points (+3.45 to +9.13).
+
+| Frozen evaluation | Original sampled PPO | First-round planner | Second-round planner (95% interval) | Gain vs. original PPO (95% interval) |
+|---|---:|---:|---:|---:|
+| Reciprocal vs. BC | 57.41% | 78.94% | 85.07% (81.86–87.85) | +27.66 (+23.24 to +32.18) |
+| Original Sun Room vs. BC | 57.71% | 83.20% | 87.01% (80.47–92.48) | +29.30 (+21.68 to +37.30) |
+| Reciprocal vs. independent PPO | 52.14% | 73.75% | 80.00% (75.79–84.06) | +27.87 (+23.41 to +32.07) |
+
+![Win rates and 95% intervals for the original PPO and frozen planners on both prospective tests](prospective-win-rates.png)
+
+
+The second policy reached 80% with 13 of 16 assigned rosters. It improved on the first-round planner with 16 of 16. The primary rates for pilot seeds 2–5 were 84.96 / 84.28 / 85.50 / 85.55%. Group A as learner and Group B as learner scored 87.13 / 83.01%.
+
+We checked all 52,224 game records, including starting fours, both seats, terminal outcomes and simulator seeds. The SHA-256 of the game archive is `a624469d7a98d679f6ed6168cdb95872a0e82bf511afb4bb6af6cd0086219fb7`. [Frozen deployment assets](confirmation/candidate.json) · [Raw games](confirmation/games.csv.gz) · [Every matchup](confirmation/matchups.csv) · [Paired effects and intervals](confirmation/results.csv)
+
+<details>
+<summary>Primary score for each assigned tournament team (512 games per policy)</summary>
+
+| Assigned team | Original PPO | First-round planner | Three-step planner |
+|---|---:|---:|---:|
+| MB324 | 269/512 (52.54%) | 410/512 (80.08%) | 429/512 (83.79%) |
+| MB542 | 219/512 (42.77%) | 417/512 (81.45%) | 443/512 (86.52%) |
+| MB236 | 320/512 (62.50%) | 420/512 (82.03%) | 451/512 (88.09%) |
+| MB147 | 363/512 (70.90%) | 450/512 (87.89%) | 465/512 (90.82%) |
+| MB119 | 362/512 (70.70%) | 413/512 (80.66%) | 438/512 (85.55%) |
+| MB564 | 371/512 (72.46%) | 413/512 (80.66%) | 450/512 (87.89%) |
+| MB241 | 318/512 (62.11%) | 413/512 (80.66%) | 454/512 (88.67%) |
+| MB178 | 254/512 (49.61%) | 425/512 (83.01%) | 439/512 (85.74%) |
+| MB288 | 325/512 (63.48%) | 403/512 (78.71%) | 444/512 (86.72%) |
+| MB502 | 207/512 (40.43%) | 333/512 (65.04%) | 372/512 (72.66%) |
+| MB234 | 378/512 (73.83%) | 448/512 (87.50%) | 475/512 (92.77%) |
+| MB226 | 253/512 (49.41%) | 363/512 (70.90%) | 401/512 (78.32%) |
+| MB276 | 325/512 (63.48%) | 416/512 (81.25%) | 442/512 (86.33%) |
+| MB280 | 191/512 (37.30%) | 332/512 (64.84%) | 397/512 (77.54%) |
+| MB87 | 233/512 (45.51%) | 401/512 (78.32%) | 439/512 (85.74%) |
+| MB436 | 315/512 (61.52%) | 410/512 (80.08%) | 430/512 (83.98%) |
+
+</details>
+
+## Empty-item input and sensitivity
+
+MB502's Talonflame uses Acrobatics and legally carries no item. The first-round preview reader rejected the simulator's empty field. Before reading any second-round win rates we validated the reader's existing no-item representation on a separate training roster, recorded the adapter hash and resumed the full schedule. The conversion applies only to the public tuple used to generate hypothetical sheets. Both planners then used the original roster and weights. The sampled PPO control directly accepted the empty item. [Recorded input correction](confirmation/itemless-input.json)
+
+| Evaluation | Against other teams | Against the itemless sheet | All scheduled games if every affected game counts as a loss |
+|---|---:|---:|---:|
+| primary | 6,510/7,680 (84.77%) | 459/512 (89.65%) | 79.47% |
+| custom | 828/960 (86.25%) | 63/64 (98.44%) | 80.86% |
+| transfer | 6,117/7,680 (79.65%) | 437/512 (85.35%) | 74.67% |
+
 ## Development
 
 | Method | Wins out of 2,048 | Win rate (95% interval) | Difference vs. first-round planner (points) |

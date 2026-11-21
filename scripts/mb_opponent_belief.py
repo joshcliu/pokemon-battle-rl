@@ -117,10 +117,8 @@ def possible_bench(pos, enemies, profiles, prior):
 @torch.no_grad()
 def public_beliefs(view, pos, prior, count):
     actor = players()[0]
-
     def canonical(m):
         return to_id_str(m.name)
-
     enemies = sorted(view.opponent_team.values(), key=canonical)
     friends = sorted(view.team.values(), key=canonical)
     assert len(enemies) == len(friends) == 6
