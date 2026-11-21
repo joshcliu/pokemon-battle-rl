@@ -35,8 +35,17 @@ def opponent():
 def score(task):
     seed, mode, cell = task
     i, j, d, own, foe, start = cell
-    public = public_fixture(own, foe) if mode.startswith("search-") else None
-    plan = read_plan(own, public, seed) if public is not None else None
+    public = (
+        public_fixture(own, foe) if mode.startswith("search-") or mode == "adaptive-es" else None
+    )
+    if mode == "adaptive-es":
+        from mb_mechanics_es import action
+        from mb_public_policy_search import optimize
+
+        plan = optimize(own, public, seed)
+        adapted = np.array(plan["weights"])
+    else:
+        plan = read_plan(own, public, seed) if public is not None else None
     match = Match()
     match.opponent = copy.copy(match.opponent)
     match.opponent.generator = torch.Generator()
@@ -67,13 +76,11 @@ def score(task):
         torch.manual_seed(sim + 700_000_000)
         done = False
         while not done:
-            a = decide(
-                model,
-                batch_obs(match.obs()),
-                mode.removeprefix("search-") if plan else mode,
-                seed,
-                match.view,
-            )
+            obs = batch_obs(match.obs())
+            if mode == "adaptive-es":
+                a = action(model, obs, match.view, adapted)
+            else:
+                a = decide(model, obs, mode.removeprefix("search-"), seed, match.view)
             done, r = match.step(a)
         rows.append(
             dict(
@@ -114,6 +121,7 @@ if __name__ == "__main__":
             "belief-es",
             "search-belief-es",
             "multistep-es",
+            "adaptive-es",
         ),
     )
     p.add_argument("--jobs", type=int, default=8)
