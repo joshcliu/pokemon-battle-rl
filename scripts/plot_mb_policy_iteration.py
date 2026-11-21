@@ -17,14 +17,18 @@ METHODS = {
     "es-trained": "Learned mechanics",
     "search-map": "Preview search + PPO",
     "search-es-trained": "Preview search + learned mechanics",
+    "search-context-ppo": "Preview search + state-dependent PPO",
+    "belief-es": "In-battle search with learned values",
+    "search-belief-es": "Preview and in-battle search",
 }
 
 
 def main():
     with (OUT / "development.csv").open() as f:
         scores = {(r["split"], r["method"]): r for r in csv.DictReader(f)}
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4.0), sharey=True)
-    ys = np.arange(len(METHODS))[::-1]
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4.8), sharey=True)
+    methods = {k: label for k, label in METHODS.items() if ("validation", k) in scores}
+    ys = np.arange(len(methods))[::-1]
     for ax, (split, title) in zip(
         axes,
         [
@@ -35,14 +39,14 @@ def main():
         strict=True,
     ):
         ax.axvline(80, color="#af4b36", ls="--", lw=1)
-        for y, method in zip(ys, METHODS, strict=True):
+        for y, method in zip(ys, methods, strict=True):
             if (split, method) not in scores:
                 continue
             r = scores[split, method]
             estimate, lo, hi = (float(r[k]) for k in ("win_pct", "lo95", "hi95"))
             seeds = [float(s) for s in r["seeds_pct"].split("/")]
             ax.scatter(seeds, [y + 0.13] * len(seeds), s=8, color="#95abb7", edgecolors="none")
-            color = "#11605b" if method == "search-es-trained" else "#334f65"
+            color = "#11605b" if method in ("belief-es", "search-belief-es") else "#334f65"
             ax.errorbar(
                 estimate,
                 y,
@@ -59,7 +63,7 @@ def main():
         ax.spines[["top", "right", "left"]].set_visible(False)
         ax.grid(axis="x", alpha=0.15)
         ax.tick_params(labelsize=9, axis="both", length=0, pad=6)
-    axes[0].set_yticks(ys, list(METHODS.values()))
+    axes[0].set_yticks(ys, list(methods.values()))
     fig.supxlabel("Win rate (%)", fontsize=10, y=0.10)
     fig.text(
         0.5,

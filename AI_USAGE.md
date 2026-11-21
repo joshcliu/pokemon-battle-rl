@@ -54,6 +54,8 @@ Codex selected 12 additional Regulation M-B tournament rosters using a determini
 
 Codex implemented the zero-initialized preview adapter, ran the four-seed PPO experiment with frozen battle pilots on Sketch5, and evaluated the native, learned and opponent-blinded pickers. It verified the checkpoint hashes, matched outcomes, native baseline and replay checks, enumerated the lineup distributions, and prepared the paired analysis, figure and report.
 
+Codex designed and validated the original Sun Room roster, locked separate training, development and confirmation teams, and implemented the subsequent M-B policy experiments on Sketch5. It fitted tactical weights from terminal wins and losses, evaluated PPO, action-value learning and public-information game search, checked historical and independent-opponent comparisons, and prepared the four-seed scorecard.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

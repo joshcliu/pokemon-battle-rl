@@ -147,6 +147,8 @@ The [shared, per-team and top-2 MoE PPO comparison](results/sketch5-mb-roster-pp
 The [262k training and routing experiment](results/sketch5-mb-long-ppo/README.md) tests longer training, expert-bank size and the number of active experts.
 The [team diversity experiment](results/sketch5-mb-team-diversity/README.md) compares shared PPO and four-expert top-2 routing after training on four or sixteen learner rosters with the same 262k budget.
 The [team preview PPO experiment](results/sketch5-mb-preview-ppo/README.md) tests whether learning the leads and reserves improves on BC preview with the battle policy frozen.
+
+The [Regulation M-B battle policy study](results/sketch5-mb-policy-iteration/README.md) compares terminal-reward learning, simulated lineup selection, and in-battle planning across reciprocal tournament matchups and a newly built Sun Room team. The [four-seed scorecard](results/sketch5-mb-policy-iteration/scorecard.md) also reports transfer to an independently trained opponent.
 [Reproduce the VGC-Bench experiments](docs/vgcbench.md).
 
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:

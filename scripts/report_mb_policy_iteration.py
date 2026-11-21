@@ -58,8 +58,10 @@ def report():
             assert p.name == f"{split}-{method}-{seed}.csv" and seed in seeds
             groups[method][seed] = rows
         native = None
-        equality, greedy, matrices = {}, {}, {}
-        for mode in sorted(groups, key=lambda key: (key != "native", key != "map", key)):
+        equality, greedy, searched, matrices = {}, {}, {}, {}
+        for mode in sorted(
+            groups, key=lambda key: (key != "native", key != "map", key != "search-map", key)
+        ):
             if set(groups[mode]) != set(seeds):
                 continue
             outcomes = np.full((len(seeds), len(group_a), len(group_b), directions, 8), np.nan)
@@ -98,6 +100,10 @@ def report():
                             assert r["lineup"] == equality[pos][0]
                     if mode == "map":
                         greedy[pos] = r["lineup"], r["reward"], r["turns"]
+                    if mode == "search-map":
+                        searched[pos] = r["lineup"]
+                    elif mode.startswith("search-"):
+                        assert r["lineup"] == searched[pos]
                     if (
                         mode == "opening-map"
                         and r["changed"] == "False"
@@ -150,10 +156,16 @@ def report():
             controls = [] if name in ("map", "native", "cool") else ["map"]
             if name.startswith("search-") and name != "search-map":
                 controls += ["search-map", name.removeprefix("search-")]
+                if name != "search-es-trained":
+                    controls.append("search-es-trained")
             if name in ("endgame-es", "belief-es", "context-ppo") or name.startswith("joint-ppo-"):
                 controls.append("es-trained")
             if name == "adaptive-es":
                 controls.extend(["es-trained", "search-es-trained"])
+            if name in ("multistep-es", "wide-belief-es"):
+                controls.extend(["es-trained", "belief-es"])
+            if name.startswith("distilled-ppo-"):
+                controls += ["es-trained", "belief-es", name.replace("distilled-ppo", "joint-ppo")]
             if name == "fitted-td":
                 controls.append("fitted-terminal")
             if name == "es-trained":
@@ -194,13 +206,19 @@ def report():
             "lineup-q-map": "Offline lineup value + frozen PPO",
             "opening-map": "Opening search + frozen PPO",
             "context-ppo": "State-dependent mechanics PPO",
+            "search-context-ppo": "Preview search + state-dependent PPO",
+            "search-endgame-es": "Preview search + endgame value search",
+            "search-belief-es": "Preview search + full-battle belief search",
             "adaptive-es": "Public-matchup policy search",
             "fitted-terminal": "Fitted mechanics from terminal outcomes",
             "fitted-td": "Fitted mechanics with three-step targets",
             "endgame-es": "Endgame value search + learned mechanics",
             "belief-es": "Full-battle belief search + learned mechanics",
+            "multistep-es": "Learned multi-step public value search",
+            "wide-belief-es": "Wider public search with successive halving",
             "joint-ppo-16384": "Joint-action tactical PPO (16k)",
             "joint-ppo-65536": "Joint-action tactical PPO (65k)",
+            "distilled-ppo-16384": "PPO with search distillation (16k)",
         }
         headings = {
             "validation": "Reciprocal development against released BC",

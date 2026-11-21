@@ -47,7 +47,7 @@ function patchMon(b, p, visible) {
   p.boosts={...p.boosts,...visible.boosts};
   p.item=id(visible.item); if (visible.ability) p.ability=id(visible.ability);
   p.activeTurns=visible.first?1:3; p.activeMoveActions=visible.first?0:2;
-  if (visible.last) p.lastMove=b.dex.moves.get(visible.last);
+  if (visible.last) p.lastMove=b.dex.getActiveMove(visible.last);
   for(const slot of p.moveSlots) {
     const i=visible.moves.indexOf(slot.id);
     if(i>=0) slot.pp=Math.max(0,Math.min(slot.maxpp,visible.pp[i]));
@@ -102,7 +102,11 @@ function pressure(b,p,t,move) {
   if(!t || t.fainted) return 0;
   if(!move.basePower || !b.dex.getImmunity(move.type,t)) return 0;
   const physical=move.category==="Physical";
-  const ratio=p.getStat(physical?"atk":"spa")/Math.max(1,t.getStat(physical?"def":"spd"));
+  // This ranks hypothetical replies outside the Showdown move event. Include
+  // current boosts here. The real forecasted turn applies move-specific abilities.
+  const attack = p.getStat(physical ? "atk" : "spa", false, true);
+  const defense = t.getStat(physical ? "def" : "spd", false, true);
+  const ratio = attack / Math.max(1, defense);
   const mult=2**b.dex.getEffectiveness(move.type,t) * (p.hasType(move.type)?1.5:1);
   const frac=(.44*move.basePower*ratio+2)*mult/t.maxhp;
   const hp=t.hp/t.maxhp;
@@ -146,16 +150,34 @@ function options(b,side,i){
   }
   return result;
 }
-function enemy(b,key) {
-  const [a,c]=[options(b,b.p2,0),options(b,b.p2,1)];
+function chooseModeledMove(b,side,key,temperature) {
+  const [a,c]=[options(b,side,0),options(b,side,1)];
   const choices=[];
   for(const x of a) for(const y of c) if(!(x.mega&&y.mega)){
     const cmd=x.cmd+","+y.cmd;
     const noise=-Math.log(-Math.log(uniform(key+cmd)));
-    choices.push([x.score+y.score+.20*noise,cmd]);
+    choices.push([x.score+y.score+temperature*noise,cmd]);
   }
   choices.sort((x,y)=>y[0]-x[0]);
-  for(const [,cmd] of choices) if(b.choose("p2",cmd)) return true;
+  for(const [,cmd] of choices) if(b.choose(side.id,cmd)) return true;
+  return false;
+}
+
+function nextMove(b,key) {
+  for (let phase=0; phase<12; phase++) {
+    if (b.ended) return true;
+    const state=b.requestState;
+    const pending=b.sides.filter(side=>!side.isChoiceDone());
+    if (!pending.length || !["move","switch"].includes(state)) return false;
+    for (const side of pending) {
+      if (state==="switch") {
+        if (!b.choose(side.id,"default")) return false;
+      } else if (!chooseModeledMove(b,side,key+"-"+phase+side.id,side === b.p1 ? 0.10 : 0.20)) {
+        if (!b.choose(side.id,"default")) return false;
+      }
+    }
+    if (state==="move") return true;
+  }
   return false;
 }
 function snapshot(b) {
@@ -169,19 +191,33 @@ function snapshot(b) {
           sides:b.sides.map(s=>Object.fromEntries(Object.keys(s.sideConditions).map(k=>[k,1])))};
 }
 function forecast(input){
+  const depth=input.depth ?? 1;
+  if (![1,3].includes(depth)) throw Error("Unsupported public rollout depth");
+  const samples=input.samples ?? 4;
+  if (![4,8].includes(samples)) throw Error("Unsupported hidden-world sample count");
   const worlds=[];
-  for(let rep=0;rep<4;rep++){
+  for(let rep=0;rep<samples;rep++){
     const key=input.key+"-"+rep;
     const b=world(input.position,key);
-    if(!enemy(b,key)){b.destroy();continue;}
+    if(!chooseModeledMove(b,b.p2,key,.20)){b.destroy();continue;}
     const serial=JSON.stringify(b.toJSON());
     const leaves=[];
     for(const order of input.orders){
       const c=Battle.fromJSON(serial);
+      for (const side of c.sides) for (const mon of side.pokemon) {
+        if (mon.lastMove && !mon.lastMove.flags) throw Error("Invalid cloned last move for " + mon.name);
+      }
       c.resetRNG(words(key+"turn"));
       if(!c.choose("p1",order)){c.destroy();break;}
-      leaves.push(c.ended ? (c.winner==="Us"?1:c.winner==="Them"?0:.5) : snapshot(c));
+      const valueInput=()=>c.ended ? (c.winner==="Us"?1:c.winner==="Them"?0:.5) : snapshot(c);
+      const trace=[valueInput()];
+      for (let step=1;step<depth;step++) {
+        if (!nextMove(c,key+"-continuation-"+step)) break;
+        trace.push(valueInput());
+      }
       c.destroy();
+      if (trace.length!==depth) break;
+      leaves.push(depth===1 ? trace[0] : trace);
     }
     b.destroy();
     if(leaves.length===input.orders.length)worlds.push(leaves);

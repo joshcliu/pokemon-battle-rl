@@ -102,7 +102,19 @@ if __name__ == "__main__":
     p.add_argument(
         "modes",
         nargs="+",
-        choices=("native", "map", "search-map", "es-trained", "search-es-trained"),
+        choices=(
+            "native",
+            "map",
+            "search-map",
+            "es-trained",
+            "search-es-trained",
+            "context-ppo",
+            "search-context-ppo",
+            "endgame-es",
+            "belief-es",
+            "search-belief-es",
+            "multistep-es",
+        ),
     )
     p.add_argument("--jobs", type=int, default=8)
     args = p.parse_args()

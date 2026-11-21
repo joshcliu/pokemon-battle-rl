@@ -47,10 +47,15 @@ class Forecaster:
                 self.process.wait()
         self.selector.close()
 
-    def __call__(self, position, orders):
+    def __call__(self, position, orders, *, depth=1, samples=4, salt=""):
         body = json.dumps(position, sort_keys=True, separators=(",", ":"))
-        key = hashlib.sha256(body.encode()).hexdigest()
-        self.process.stdin.write(json.dumps(dict(position=position, orders=orders, key=key)) + "\n")
+        key = hashlib.sha256((salt + body).encode()).hexdigest()
+        self.process.stdin.write(
+            json.dumps(
+                dict(position=position, orders=orders, key=key, depth=depth, samples=samples)
+            )
+            + "\n"
+        )
         self.process.stdin.flush()
         if not self.selector.select(90):
             raise TimeoutError("Endgame forecaster timed out")
@@ -67,7 +72,10 @@ def forecaster():
 
 @functools.lru_cache(maxsize=4)
 def value_model(seed):
-    return np.load(RUN / "endgame" / f"seed-{seed}" / "value.npy")
+    path = RUN / "endgame" / f"seed-{seed}" / "value.npy"
+    if not path.exists():
+        path = OUT / "weights" / f"endgame-value-seed-{seed}.npy"
+    return np.load(path)
 
 
 def decision(model, obs, view, seed, check=False):

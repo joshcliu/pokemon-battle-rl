@@ -5,6 +5,8 @@ import hashlib
 import json
 import shutil
 
+import numpy as np
+import torch
 from mb_policy_iteration_eval import OUT, RUN, SEEDS, verify
 from mb_residual_preview import DIVERSE_OUT, DIVERSE_RUN
 from vgc_posttrain import atomic_rows
@@ -29,7 +31,21 @@ def main():
             ("es", RUN / "es" / f"seed-{s}" / "weights.json"),
             ("mcq-40", RUN / "fitted" / f"seed-{s}" / "q-40.pt"),
             ("lineup-q", RUN / "lineup-value" / f"seed-{s}.npz"),
+            ("context-ppo", RUN / "context-ppo" / f"seed-{s}" / "progress.pt"),
+            ("endgame-value", RUN / "endgame" / f"seed-{s}" / "value.npy"),
+            ("midgame-value", RUN / "midgame" / f"seed-{s}" / "value.npy"),
         ):
+            if name in ("context-ppo", "endgame-value", "midgame-value") and not file.exists():
+                continue
+            if name == "context-ppo":
+                ck = torch.load(file, weights_only=True, map_location="cpu")
+                if ck["update"] < 64:
+                    continue
+                assert ck["seed"] == s and ck["update"] == 64
+            if file.suffix == ".npy":
+                values = np.load(file)
+                assert values.shape == ((14,) if name == "endgame-value" else (23,))
+                assert np.isfinite(values).all()
             if name == "es":
                 ck = json.loads(file.read_text())
                 assert ck["seed"] == s and ck["update"] == 24 and len(ck["logs"]) == 24

@@ -222,7 +222,21 @@ if __name__ == "__main__":
     p.add_argument("stage", choices=("check", "validation", "custom-dev"))
     p.add_argument("--jobs", type=int, default=8)
     p.add_argument(
-        "--battle", choices=("map", "es-initial", "es-trained", "mcq-40-8"), default="map"
+        "--battle",
+        choices=(
+            "map",
+            "es-initial",
+            "es-trained",
+            "mcq-40-8",
+            "context-ppo",
+            "endgame-es",
+            "belief-es",
+            "wide-belief-es",
+            "multistep-es",
+            "joint-ppo-16384",
+            "joint-ppo-65536",
+        ),
+        default="map",
     )
     args = p.parse_args()
     verify()

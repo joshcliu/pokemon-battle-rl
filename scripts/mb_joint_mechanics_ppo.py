@@ -91,21 +91,24 @@ def joint(model, frames, temperature=TEMP):
     return Categorical(logits=scores), value.flatten(), ids
 
 
-def folder(s):
-    return RUN / "joint-ppo" / f"seed-{s}"
+def folder(s, distill=False):
+    return RUN / ("distilled-ppo" if distill else "joint-ppo") / f"seed-{s}"
 
 
 @functools.lru_cache(maxsize=4)
-def load(seed, steps):
-    ck = torch.load(folder(seed) / f"policy-{steps}.pt", map_location="cpu", weights_only=True)
+def load(seed, steps, distill=False):
+    ck = torch.load(
+        folder(seed, distill) / f"policy-{steps}.pt", map_location="cpu", weights_only=True
+    )
     assert (ck["seed"], ck["steps"]) == (seed, steps)
+    assert ck.get("distill", False) == distill
     m = create_model("moe")
     m.load_state_dict(ck["model"])
     return m.eval().requires_grad_(False)
 
 
-def deployment(view, obs, seed, steps):
-    model = load(seed, steps)
+def deployment(view, obs, seed, steps, distill=False):
+    model = load(seed, steps, distill)
     raw = {k: v[0].numpy() for k, v in obs.items()}
     frame = options(model.base, raw, view, seed)
     dist, _, ids = joint(model, [frame])
@@ -123,8 +126,33 @@ def check(model, match, seed):
     assert torch.equal(choices[(logp + frame[2]).argmax()], ids[0, dist.logits[0].argmax()])
 
 
-def train(seed, limit):
-    dest = folder(seed)
+def teacher_label(frame, view, seed):
+    from mb_midgame_plan import estimates
+
+    raw, pair_ids, _ = frame
+    actions, scores, prior, worlds = estimates(pilot(seed), batch_obs(raw), view, seed, False, 1)
+    if worlds < 2 or len(actions) == 1:
+        return None
+    matches = (torch.tensor(actions)[:, None, :] == pair_ids[None, :, :]).all(2)
+    assert (matches.sum(1) == 1).all()
+    choices = matches.nonzero()[:, 1]
+    target = torch.tensor(scores[:, 0] + prior, dtype=torch.float32).div(0.08).softmax(0)
+    return choices, target, len(actions) * worlds
+
+
+def distillation_loss(logits, indices, labels):
+    total = logits.new_zeros(())
+    count = 0
+    for i, sample in enumerate(indices):
+        if sample in labels:
+            choices, target, _ = labels[sample]
+            total -= (target * logits[i, choices].log_softmax(0)).sum()
+            count += 1
+    return total / max(1, count)
+
+
+def train(seed, limit, distill=False):
+    dest = folder(seed, distill)
     dest.mkdir(parents=True, exist_ok=True)
     model = copy.deepcopy(pilot(seed)).eval().requires_grad_(True)
     opt = torch.optim.Adam(model.parameters(), lr=2e-5, eps=1e-5)
@@ -147,12 +175,20 @@ def train(seed, limit):
             vals = []
             dones = []
             rewards = []
+            labels = {}
             with torch.no_grad():
-                for _ in range(BLOCK // STREAMS):
+                for t in range(BLOCK // STREAMS):
                     f = [options(model.base, s.match.obs(), s.match.view, seed) for s in streams]
                     dist, v, ids = joint(model, f)
                     idx = dist.sample()
                     a = ids[torch.arange(STREAMS), idx]
+                    if distill:
+                        # Rotate the labeled stream. Students still sample every actual
+                        # battle command from the on-policy joint PPO distribution.
+                        j = t % STREAMS
+                        label = teacher_label(f[j], streams[j].match.view, seed)
+                        if label is not None:
+                            labels[len(frames) + j] = label
                     frames.extend(f)
                     actions.extend(idx.tolist())
                     old.extend(dist.log_prob(idx).tolist())
@@ -186,6 +222,8 @@ def train(seed, limit):
                     loss = (
                         -pg + 0.5 * (pred - y[ix]).square().mean() - 0.002 * dist.entropy().mean()
                     )
+                    if distill:
+                        loss = loss + 0.15 * distillation_loss(dist.logits, ix.tolist(), labels)
                     opt.zero_grad()
                     loss.backward()
                     nn.utils.clip_grad_norm_(model.parameters(), 0.5, error_if_nonfinite=True)
@@ -198,10 +236,17 @@ def train(seed, limit):
                     loss=float(loss.detach()),
                 )
             )
-            atomic_rows(OUT / "training" / f"joint-ppo-{seed}.csv", logs)
+            if distill:
+                logs[-1].update(
+                    teacher_positions=len(labels),
+                    modeled_transitions=sum(r[2] for r in labels.values()),
+                )
+                assert logs[-1]["teacher_positions"] > 0
+            atomic_rows(OUT / "training" / f"{dest.parent.name}-{seed}.csv", logs)
             if end in (16384, BUDGET):
                 save(
-                    dest / f"policy-{end}.pt", dict(seed=seed, steps=end, model=model.state_dict())
+                    dest / f"policy-{end}.pt",
+                    dict(seed=seed, steps=end, model=model.state_dict(), distill=distill),
                 )
             if end % 4096 == 0 or end == limit:
                 save_progress(dest, model, opt, sampler, streams, logs)
@@ -217,6 +262,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--seed", type=int, choices=SEEDS, required=True)
     p.add_argument("--steps", type=int, choices=(512, 16384, BUDGET), default=BUDGET)
+    p.add_argument("--distill", action="store_true")
     args = p.parse_args()
     verify()
-    train(args.seed, args.steps)
+    train(args.seed, args.steps, args.distill)

@@ -45,10 +45,28 @@ def distribution(model, obs):
 
 @torch.no_grad()
 def decide(model, obs, mode, seed, view=None):
-    if mode.startswith("joint-ppo-"):
+    if mode == "wide-belief-es":
+        from mb_midgame_plan import successive_halving
+
+        return successive_halving(model, obs, view, seed)[0]
+    if mode == "multistep-es":
+        from mb_multistep_value import deploy
+
+        return deploy(model, obs, view, seed)
+    if mode == "endgame-es":
+        from mb_endgame_plan import decision
+
+        return decision(model, obs, view, seed)[0]
+    if mode == "belief-es":
+        from mb_midgame_plan import choose
+
+        return choose(model, obs, view, seed, check=False)[0]
+    if mode.startswith(("joint-ppo-", "distilled-ppo-")):
         from mb_joint_mechanics_ppo import deployment
 
-        return deployment(view, obs, seed, int(mode.rsplit("-", 1)[1]))
+        return deployment(
+            view, obs, seed, int(mode.rsplit("-", 1)[1]), mode.startswith("distilled-")
+        )
     if mode == "context-ppo":
         from mb_context_ppo import deploy
 

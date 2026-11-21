@@ -85,7 +85,10 @@ def folder(s):
 
 @functools.lru_cache(maxsize=4)
 def checkpoint(seed):
-    state = torch.load(folder(seed) / "progress.pt", map_location="cpu", weights_only=True)
+    path = folder(seed) / "progress.pt"
+    if not path.exists():
+        path = OUT / "weights" / f"context-ppo-seed-{seed}.pt"
+    state = torch.load(path, map_location="cpu", weights_only=True)
     assert state["update"] == UPDATES and state["seed"] == seed
     head = ContextActor(seed)
     head.load_state_dict(state["model"])

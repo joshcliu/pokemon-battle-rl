@@ -228,38 +228,88 @@ def fit(seed):
 
 @functools.lru_cache(maxsize=4)
 def value(seed):
-    return np.load(RUN / "midgame" / f"seed-{seed}" / "value.npy")
+    path = RUN / "midgame" / f"seed-{seed}" / "value.npy"
+    if not path.exists():
+        path = OUT / "weights" / f"midgame-value-seed-{seed}.npy"
+    return np.load(path)
 
 
-def choose(model, obs, view, seed, check):
-    pairs, logp = distribution(model, obs)
-    phi = mechanics(view, pairs)
-    prior = logp.numpy() + phi @ fitted(seed)
-    ranks = prior.argsort()[::-1].tolist()
-    base = pairs[ranks[0]].tolist()
-    if len(pairs) < 2 or any(view.force_switch):
-        return base, 0, False
-    pos = projection(view)
-    if not valid(pos):
-        return base, 0, False
-    ids = list(dict.fromkeys([ranks[0], int(logp.argmax()), int(phi[:, 0].argmax()), *ranks]))[:4]
-    orders = [text_choice(view, pairs[i].tolist()).removeprefix("/choose ") for i in ids]
-    worlds = forecaster()(pos, orders)
-    if len(worlds) < 2:
-        return base, len(worlds), False
-    beta = np.zeros(23) if check else value(seed)
-    if check:
-        beta[1:3] = 1
-        beta[16:18] = 1
-
+def backed_up_values(worlds, beta, depth):
     def pwin(leaf):
         if isinstance(leaf, (int, float)):
             return leaf
         return 1 / (1 + np.exp(-np.clip(features(leaf) @ beta, -25, 25)))
 
-    expected = np.mean([[pwin(o) for o in w] for w in worlds], axis=0)
-    improved = int(np.argmax(expected + 0.025 * (prior[ids] - prior[ids[0]])))
-    return pairs[ids[improved]].tolist(), len(worlds), bool(improved)
+    return np.mean(
+        [
+            [[pwin(leaf) for leaf in (trace if depth > 1 else [trace])] for trace in world]
+            for world in worlds
+        ],
+        axis=0,
+    )
+
+
+def estimates(model, obs, view, seed, check, depth, *, wide=False):
+    pairs, logp = distribution(model, obs)
+    phi = mechanics(view, pairs)
+    prior = logp.numpy() + phi @ fitted(seed)
+    ranks = prior.argsort()[::-1].tolist()
+    base = pairs[ranks[0]].tolist()
+    fallback = ([base], np.zeros((1, depth)), np.zeros(1))
+    if len(pairs) < 2 or any(view.force_switch):
+        return *fallback, 0
+    pos = projection(view)
+    if not valid(pos):
+        return *fallback, 0
+    ids = list(dict.fromkeys([ranks[0], int(logp.argmax()), int(phi[:, 0].argmax()), *ranks]))[:4]
+    if wide:
+        # Expand the current shortlist with high-prior commands that cover different
+        # active Pokémon actions. The comparison uses the exact same four initial worlds.
+        candidates = pairs.numpy()
+        while len(ids) < min(8, len(ranks)):
+            distances = (candidates[:, None, :] != candidates[ids][None, :, :]).sum(2).min(1)
+            diversified = prior + 0.8 * distances
+            diversified[ids] = -np.inf
+            ids.append(int(diversified.argmax()))
+    orders = [text_choice(view, pairs[i].tolist()).removeprefix("/choose ") for i in ids]
+    worlds = forecaster()(pos, orders, depth=depth)
+    if len(worlds) < 2:
+        return *fallback, len(worlds)
+    beta = np.zeros(23) if check else value(seed)
+    if check:
+        beta[1:3] = 1
+        beta[16:18] = 1
+
+    expected = backed_up_values(worlds, beta, depth)
+    return pairs[ids].tolist(), expected, 0.025 * (prior[ids] - prior[ids[0]]), len(worlds)
+
+
+def choose(model, obs, view, seed, check, *, weights=(1.0,)):
+    actions, expected, prior, n = estimates(model, obs, view, seed, check, len(weights))
+    idx = int(np.argmax(expected @ weights + prior))
+    return actions[idx], n, bool(idx)
+
+
+def successive_halving(model, obs, view, seed, *, audit=False):
+    actions, expected, prior, n = estimates(model, obs, view, seed, False, 1, wide=True)
+    if n < 2:
+        return choose(model, obs, view, seed, False)[0], 0
+    scores = expected[:, 0] + prior
+    # Retain the winner of the original four-command search as a control and
+    # evaluate three challengers in independent hypothetical hidden worlds.
+    anchor = int(scores[:4].argmax())
+    finalists = list(dict.fromkeys([anchor, *scores.argsort()[::-1].tolist()]))[:4]
+    orders = [text_choice(view, actions[i]).removeprefix("/choose ") for i in finalists]
+    forecasts = forecaster()(projection(view), orders, samples=8, salt="halving-final-")
+    if len(forecasts) < 2:
+        return actions[anchor], n * len(actions)
+    final = backed_up_values(forecasts, value(seed), 1)[:, 0]
+    means = (n * expected[finalists, 0] + len(forecasts) * final) / (n + len(forecasts))
+    idx = finalists[int((means + prior[finalists]).argmax())]
+    count = n * len(actions) + len(forecasts) * len(finalists)
+    if audit:
+        assert 0 < count <= 64 and len(set(orders)) == len(orders)
+    return actions[idx], count
 
 
 @torch.no_grad()
