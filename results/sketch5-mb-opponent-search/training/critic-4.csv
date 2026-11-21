@@ -1,0 +1,3 @@
+seed,model,training_games,unseen_pair_games,brier
+4,original,640,64,0.11248146372850021
+4,world critic,640,64,0.12634031263626583

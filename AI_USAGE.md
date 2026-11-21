@@ -56,6 +56,8 @@ Codex implemented the zero-initialized preview adapter, ran the four-seed PPO ex
 
 Codex designed and validated the original Sun Room roster, locked separate training, development and confirmation teams, and implemented the subsequent M-B policy experiments on Sketch5. It fitted tactical weights from terminal wins and losses, evaluated PPO, action-value learning and public-information game search, checked historical and independent-opponent comparisons, and prepared the four-seed scorecard.
 
+Codex audited the first policy on 34,816 prospective game records and repeated the exact historical baseline schedule. It reserved a second tournament matrix, implemented neural predictions of opposing commands and reserves, trained a state-value model on terminal returns, and tested joint-action search on Sketch5. It also checked that changing the opponent’s private team choices and stats could not change the modeled replies on the intervention fixtures.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.

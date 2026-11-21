@@ -1,0 +1,8 @@
+{
+  "stage": "fixed before the first complete four-seed score for a new candidate",
+  "development_games_per_candidate": 2048,
+  "minimum_development_wins": 1680,
+  "methods_in_tie_break_order": ["reply", "reply-wide", "reply-critic", "coordinate", "coordinate-critic", "reply-deep"],
+  "rule": "Wait for all six named methods to finish on identical development games. Choose the highest total wins, resolving equal totals using the listed order. If it reaches the gate, freeze it once and run the reserved test. Include the original PPO and first-round winner on the exact second-round schedules.",
+  "reserved_outcome": "Reciprocal wins against the released behavior-cloned opponent on every second-round A-by-B pairing in both directions, balanced over four pilot seeds. With 8192 games, 6554 or more wins meets the 80% point-estimate target. Also report the interval, every assigned roster, Sun Room and independent PPO transfer."
+}
