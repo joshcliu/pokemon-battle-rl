@@ -69,6 +69,7 @@ def main():
         "",
     ]
     fresh = LOCK.parent / "results.csv"
+    addendum = LOCK.parent / "itemless-input.json"
     if LOCK.exists():
         lock = json.loads(LOCK.read_text())
         winner = next(r for r in summary if r["method"] == lock["method"])
@@ -99,11 +100,19 @@ def main():
                 f"| {label} | {float(t['native']['win_pct']):.2f}% | {float(t[OLD]['win_pct']):.2f}% | {float(v['win_pct']):.2f}% ({float(v['lo95']):.2f}–{float(v['hi95']):.2f}) | {float(v['baseline_gain']):+.2f} ({float(v['baseline_lo95']):+.2f} to {float(v['baseline_hi95']):+.2f}) |"
             )
         archive = LOCK.parent / "games.csv.gz"
+        affected = (
+            set(json.loads(addendum.read_text())["affected_public_sheets"])
+            if addendum.exists()
+            else set()
+        )
+        sensitivity = defaultdict(list)
         with gzip.open(archive, "rt") as f:
             assigned = defaultdict(list)
             n = 0
             for row in csv.DictReader(f):
                 n += 1
+                if row["method"] == method:
+                    sensitivity[row["split"], row["foe"] in affected].append(row["reward"] == "1")
                 if row["split"] == "primary":
                     assigned[row["method"], row["own"]].append(row["reward"] == "1")
         assert n == 52224 and all(len(z) == 512 for z in assigned.values())
@@ -117,6 +126,21 @@ def main():
             f"We checked all {n:,} game records, including starting fours, both seats, terminal outcomes and simulator seeds. The SHA-256 of the game archive is `{hashlib.sha256(archive.read_bytes()).hexdigest()}`. [Frozen deployment assets](confirmation/candidate.json) · [Raw games](confirmation/games.csv.gz) · [Every matchup](confirmation/matchups.csv) · [Paired effects and intervals](confirmation/results.csv)",
             "",
         ]
+        if affected:
+            lines += [
+                "## Empty-item input and sensitivity",
+                "",
+                "MB502's Talonflame uses Acrobatics and legally carries no item. The first-round preview reader rejected the simulator's empty field. Before reading any second-round win rates we validated the reader's existing no-item representation on a separate training roster, recorded the adapter hash and resumed the full schedule. The conversion applies only to the public tuple used to generate hypothetical sheets. Both planners then used the original roster and weights. The sampled PPO control directly accepted the empty item. [Recorded input correction](confirmation/itemless-input.json)",
+                "",
+                "| Evaluation | Against other teams | Against the itemless sheet | All scheduled games if every affected game counts as a loss |",
+                "|---|---:|---:|---:|",
+            ]
+            for split in ("primary", "custom", "transfer"):
+                regular, empty = sensitivity[split, False], sensitivity[split, True]
+                lines.append(
+                    f"| {split} | {sum(regular):,}/{len(regular):,} ({100 * np.mean(regular):.2f}%) | {sum(empty):,}/{len(empty):,} ({100 * np.mean(empty):.2f}%) | {100 * sum(regular) / (len(regular) + len(empty)):.2f}% |"
+                )
+            lines.append("")
     lines += [
         "## Development",
         "",

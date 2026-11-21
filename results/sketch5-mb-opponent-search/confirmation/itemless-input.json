@@ -1,0 +1,12 @@
+{
+  "adapter_sha256": "692320bbf93ed12bb62d3c1112251286629fdc07aa1c31bf1136981daf3d1245",
+  "affected_public_sheets": {
+    "MB502": [
+      "talonflame"
+    ]
+  },
+  "audit": "Retain every scheduled battle. Report results for affected directions and all other directions. Also report the conservative win fraction counting every affected game as a forfeit by an unwrapped planner.",
+  "candidate_sha256": "1e68b7050300ea3fcc23c11d0275a745cbc40bbb3e999f1d2e940cdb0ca193d5",
+  "intervention": "When the original open-sheet extractor encounters a legal empty held-item slot (None), map that field of the public lineup-planning tuple to the frozen generator's existing no-item sentinel. It emits no item in the hypothetical team. Leave native observations, real rosters, opponent/pilot weights, RNG, legal mask, seeds and scores unchanged.",
+  "order": "Filed after original parser exception and before observing any second-round win rates."
+}

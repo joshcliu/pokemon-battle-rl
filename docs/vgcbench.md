@@ -188,8 +188,15 @@ node scripts/lock_mb_opponent_search.cjs
 .venv/bin/python scripts/audit_mb_opponent_search.py
 .venv/bin/python scripts/mb_opponent_search.py validation reply reply-wide reply-deep coordinate reply-critic coordinate-critic --jobs 12
 .venv/bin/python scripts/confirm_mb_opponent_search.py freeze
-.venv/bin/python scripts/confirm_mb_opponent_search.py score --jobs 16
+.venv/bin/python scripts/run_mb_itemless_confirmation.py check
+for split in primary custom transfer; do
+  .venv/bin/python scripts/run_mb_itemless_confirmation.py score --split "$split" --jobs 16
+done
+.venv/bin/python scripts/confirm_mb_opponent_search.py report
 .venv/bin/python scripts/report_mb_opponent_search.py
+.venv/bin/python scripts/plot_mb_prospective.py
 ```
 
 The freeze step verifies the matched development games for all six configurations and selects the highest win count under the locked tie rule. It writes the scored model, weights and source hashes. The final report verifies both players' submitted lineups, the roster assignment, simulator seed and seat for every game. [Selection rule](../results/sketch5-mb-opponent-search/selection.json) · [Exact team matrix](../results/sketch5-mb-opponent-search/protocol.json)
+
+The MB502 open sheet includes a legal itemless Talonflame. The input adapter maps its empty public item field to the model's existing no-item representation. The fixture checks that the original player-facing observation still has an empty item and that both frozen planners receive the same matchup. [Input correction and hashes](../results/sketch5-mb-opponent-search/confirmation/itemless-input.json)
