@@ -2,13 +2,18 @@
 
 Our first policy won 80.71% on development and 77.17% on its independent 16-roster test. We retired that test, kept the original development matrix, and reserved another 16 teams before scoring any new method. Each reserved roster shares at most three species with any roster previously used in the project. [First confirmation](../sketch5-mb-policy-iteration/confirmation/README.md) · [Second-round protocol](protocol.json)
 
+We froze the three-step reply planner after it won 1,742 of 2,048 development games (85.06%, 95% interval 80.76%–89.06%). Across the four pilot seeds it scored 83.98 / 84.77 / 85.74 / 85.74%. All 49 deployment and evaluation assets were fingerprinted before the reserved battles. [Frozen configuration and six-way selection](confirmation/candidate.json)
+
 ## Development
 
 | Method | Wins out of 2,048 | Win rate (95% interval) | Difference vs. first-round planner (points) |
 |---|---:|---:|---:|
 | adaptive-belief-es | 1,653 | 80.71% (75.44–85.64) | +0.00 (+0.00 to +0.00) |
+| coordinate | 1,734 | 84.67% (79.79–88.72) | +3.96 (-1.08 to +8.94) |
+| coordinate-critic | 1,717 | 83.84% (78.91–88.48) | +3.12 (-1.71 to +8.30) |
 | reply | 1,676 | 81.84% (76.46–86.43) | +1.12 (-3.27 to +5.42) |
 | reply-critic | 1,711 | 83.54% (78.52–87.94) | +2.83 (-1.76 to +7.18) |
+| reply-deep | 1,742 | 85.06% (80.76–89.06) | +4.35 (-0.34 to +9.42) |
 | reply-wide | 1,699 | 82.96% (77.49–87.50) | +2.25 (-2.54 to +6.79) |
 
 We fixed six candidate configurations before the first complete four-seed result. The highest development win count qualifies at 1,680 of 2,048 wins (82%). A fixed order resolves ties. Every development comparison uses the incumbent’s assigned rosters, simulator seats, seeds and both submitted lineups. Intervals resample training seeds, both team axes and game replicates within seat. [Selection rule](selection.json)
@@ -24,7 +29,7 @@ All arms use the same four PPO battle pilots, trained mechanics preferences, ter
 
 Across 16 training fixtures, changing both the true hidden reserves and private stats with the public board fixed produced identical hypothesized reserves, response logits and selected commands in both seats. [Intervention records](public-input-audit.csv)
 
-Median move-selection times on the same 58 decisions from eight training-roster games were incumbent 215 ms, reply-wide 522 ms, coordinate 992 ms. These timings used the shared Sketch5 host. [Median and 95th percentile by method](move-latency.csv) · [Cached and uncached preview timing](preview-latency.csv)
+Median move-selection times on the same 58 decisions from eight training-roster games were incumbent 215 ms, reply-deep 942 ms. These timings used the shared Sketch5 host. [Median and 95th percentile by method](move-latency.csv) · [Cached and uncached preview timing](preview-latency.csv)
 
 On 282 training-roster decisions, a sampled neural response matched the actual BC command, including its target and Mega choice, on 40.29% of Pokémon slots. The old response model matched 24.38%. Exact joint-action agreement was 14.89% and 5.50%, respectively. [Per-decision predictions](reply-predictions.csv)
 

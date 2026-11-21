@@ -69,6 +69,13 @@ def main():
         "",
     ]
     fresh = LOCK.parent / "results.csv"
+    if LOCK.exists():
+        lock = json.loads(LOCK.read_text())
+        winner = next(r for r in summary if r["method"] == lock["method"])
+        lines += [
+            f"We froze the three-step reply planner after it won {winner['wins']:,} of 2,048 development games ({winner['win_pct']:.2f}%, 95% interval {winner['lo95']:.2f}%–{winner['hi95']:.2f}%). Across the four pilot seeds it scored {winner['seeds']}%. All {len(lock['frozen_assets'])} deployment and evaluation assets were fingerprinted before the reserved battles. [Frozen configuration and six-way selection](confirmation/candidate.json)",
+            "",
+        ]
     if fresh.exists():
         r = read(fresh)
         method = json.loads(LOCK.read_text())["method"]
