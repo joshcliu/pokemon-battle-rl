@@ -136,6 +136,32 @@ def main():
             f"| {LABELS[split]} | {float(old['win_pct']):.2f}% ({old['wins']}/{old['games']}) | {float(r['win_pct']):.2f}% ({float(r['lo95']):.2f}–{float(r['hi95']):.2f}), {r['wins']}/{r['games']} | {float(r['delta_pp']):+.2f} ({float(r['diff_lo95']):+.2f} to {float(r['diff_hi95']):+.2f}) |"
         )
 
+    # Pool the eight opponents for each assigned roster with equal game counts.
+    assigned = defaultdict(list)
+    for (split, mode, own, _), outcomes in pairs.items():
+        if split == "primary":
+            assigned[mode, own].extend(outcomes)
+    teams = [Path(p).stem for p in (*spec["confirmation_a"], *spec["confirmation_b"])]
+    assert all(
+        len(assigned[m, t]) == len(seeds) * 8 * 16 for m in ("native", method) for t in teams
+    )
+    at_target = sum(5 * sum(assigned[method, t]) >= 4 * len(assigned[method, t]) for t in teams)
+    improved = sum(sum(assigned[method, t]) > sum(assigned["native", t]) for t in teams)
+    lines += [
+        "",
+        "## Playing each assigned roster",
+        "",
+        f"The frozen policy reached 80% on {at_target} of the 16 learner rosters and improved on the original PPO with {improved} of 16. Each row covers the eight opposing rosters in the opposite group over four training seeds, with 512 games per policy.",
+        "",
+        "| Assigned team | Original PPO | Frozen policy | Paired gain in points |",
+        "|---|---:|---:|---:|",
+    ]
+    for t in teams:
+        original, candidate = (
+            100 * sum(assigned[m, t]) / len(assigned[m, t]) for m in ("native", method)
+        )
+        lines.append(f"| {t} | {original:.2f}% | {candidate:.2f}% | {candidate - original:+.2f} |")
+
     def names(group):
         return ", ".join(Path(t).stem for t in group)
 
