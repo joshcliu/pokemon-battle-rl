@@ -1,0 +1,59 @@
+Torkoal @ Charcoal
+Ability: Drought
+Level: 50
+EVs: 32 HP / 32 SpA / 2 SpD
+Quiet Nature
+- Eruption
+- Heat Wave
+- Earth Power
+- Protect
+
+Oranguru @ Mental Herb
+Ability: Inner Focus
+Level: 50
+EVs: 32 HP / 22 Def / 12 SpD
+Sassy Nature
+- Trick Room
+- Instruct
+- Psychic
+- Protect
+
+Mawile @ Mawilite
+Ability: Intimidate
+Level: 50
+EVs: 32 HP / 32 Atk / 2 SpD
+Brave Nature
+- Play Rough
+- Iron Head
+- Sucker Punch
+- Protect
+
+Venusaur @ Focus Sash
+Ability: Chlorophyll
+Level: 50
+EVs: 2 HP / 32 SpA / 32 Spe
+Timid Nature
+- Leaf Storm
+- Sludge Bomb
+- Sleep Powder
+- Protect
+
+Scrafty @ Sitrus Berry
+Ability: Intimidate
+Level: 50
+EVs: 32 HP / 24 Atk / 10 SpD
+Brave Nature
+- Fake Out
+- Knock Off
+- Drain Punch
+- Protect
+
+Sinistcha @ Kasib Berry
+Ability: Hospitality
+Level: 50
+EVs: 32 HP / 12 Def / 22 SpD
+Relaxed Nature
+- Matcha Gotcha
+- Rage Powder
+- Trick Room
+- Life Dew
