@@ -1,6 +1,6 @@
 # Reproducing VGC-Bench cross-play on Sketch5
 
-The project uses a pinned upstream player, checkpoint and vocabulary. The M-C test uses our existing simulator and closed sheets. The M-B test trains under M-B on the project simulator, then evaluates under M-B with the benchmark’s pinned simulator and open sheets. Our learner pilots one team and our tests report matchup win rates. The official evaluation constructs a population payoff matrix over multiple agents and runs. [Upstream evaluation](https://github.com/cameronangliss/vgc-bench/blob/d79f9532947ac114dce1dda2456a590afcd375b2/vgc_bench/eval.py) · [Paper](https://arxiv.org/abs/2506.10326)
+The project uses a pinned upstream player, checkpoint and vocabulary. The early M-C transfer test used our project simulator and closed sheets. The first M-B transfer study trained on the project simulator and evaluated on the benchmark simulator with open sheets. Later M-B training and the final planner evaluation both used the pinned benchmark simulator. We report matchup win rates with an assigned team on each side. The official evaluation constructs a population payoff matrix over multiple agents and runs. [Upstream evaluation](https://github.com/cameronangliss/vgc-bench/blob/d79f9532947ac114dce1dda2456a590afcd375b2/vgc_bench/eval.py) · [Paper](https://arxiv.org/abs/2506.10326)
 
 Run these commands from a project checkout with its analysis dependencies, Python 3.12 and the simulator already installed. The original training checkpoints live under `runs/sketch5-move-slots-v1/seed-{2,3,4,5}/fixed/train/checkpoint-262144.pt` on Sketch5. To rebuild those initializations, use the repository's `scripts/train_move_slots.py`.
 
@@ -178,9 +178,42 @@ The [team diversity report](../results/sketch5-mb-team-diversity/README.md) list
 
 Use the four completed 16-roster MoE checkpoints and the same pinned simulator and BC assets on Sketch5. From the repository root, run `bash scripts/run_mb_residual_preview.sh`. The driver checks zero-initialization parity, trains four independent lineup adapters, evaluates all four visibility and preview conditions, audits matched games and enumerates the 360 legal ordered lineups for the matchup probe. Each training seed saves its optimizer after 128 new battles. The run logs and full optimizer checkpoints are under `runs/sketch5-mb-preview-ppo/`. The [protocol](../results/sketch5-mb-preview-ppo/protocol.json) records the decision budget, data splits, controls and primary comparison.
 
-## Public opponent modeling and policy improvement
+## Reproduce the final planner
 
-Use the existing Sketch5 checkout with its four benchmark pilots, training-only fitted values and lineup models. The first-round manifest checks their exact hashes. The second-round roster lock checks the tournament sheets and excludes every prior team. The value learner trains on the 28-by-20 training pool. The development driver reuses the 4-by-8 reciprocal schedule, and the confirmation driver scores the winning method and both controls side by side.
+To check the headline result from a fresh checkout, run this from the repository root. It reads the saved games using only the Python standard library.
+
+```python
+import csv
+import gzip
+from pathlib import Path
+
+archive = Path("results/sketch5-mb-opponent-search/confirmation/games.csv.gz")
+with gzip.open(archive, "rt") as handle:
+    outcomes = [row["reward"] for row in csv.DictReader(handle)
+                if row["split"] == "primary" and row["method"] == "reply-deep"]
+print(f"{outcomes.count('1'):,}/{len(outcomes):,} wins ({outcomes.count('1') / len(outcomes):.2%})")
+# 6,969/8,192 wins (85.07%)
+```
+
+To play the evaluation again on Sketch5, install the project and pinned upstream assets at the top of this guide, including the Python overlay. Set the variables below in the same shell. The restore command checks the 17 project-trained weight files against the frozen SHA-256 manifest and puts them where the evaluation expects them. These include four battle policies (MoE seeds 2–5), their fitted tactical, lineup and position-value weights, and the independent shared PPO opponent (seed 2). The released BC checkpoint comes from the pinned upstream download. [Frozen manifest](../results/sketch5-mb-opponent-search/confirmation/candidate.json)
+
+```bash
+export PYTHONHASHSEED=0 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+export PYTHONPATH="$PWD/.cache/vgcbench-external/packages:$PWD/.cache/vgcbench-external/source"
+.venv/bin/python scripts/restore_mb_planner_weights.py
+mkdir -p runs/sketch5-mb-opponent-search
+.venv/bin/python scripts/run_mb_itemless_confirmation.py check
+for split in primary custom transfer; do
+  .venv/bin/python scripts/run_mb_itemless_confirmation.py score --split "$split" --jobs 16
+done
+.venv/bin/python scripts/confirm_mb_opponent_search.py report
+```
+
+The evaluator scores the frozen planner and both controls on matched games. A clean checkout starts a new set of score batches. An existing run resumes its completed batches. The report verifies both lineups, roster assignments, simulator seeds and seats for all 52,224 records. [Scores and intervals](../results/sketch5-mb-opponent-search/confirmation/results.csv) · [Exact team matrix](../results/sketch5-mb-opponent-search/README.md#exact-team-matrix)
+
+### Repeat development and model selection
+
+The second-round roster lock excludes previously used teams. The value learner trains on the 28-by-20 training pool. The development driver compares six new configurations on the 4-by-8 reciprocal schedule.
 
 ```bash
 node scripts/lock_mb_opponent_search.cjs
@@ -188,15 +221,8 @@ node scripts/lock_mb_opponent_search.cjs
 .venv/bin/python scripts/audit_mb_opponent_search.py
 .venv/bin/python scripts/mb_opponent_search.py validation reply reply-wide reply-deep coordinate reply-critic coordinate-critic --jobs 12
 .venv/bin/python scripts/confirm_mb_opponent_search.py freeze
-.venv/bin/python scripts/run_mb_itemless_confirmation.py check
-for split in primary custom transfer; do
-  .venv/bin/python scripts/run_mb_itemless_confirmation.py score --split "$split" --jobs 16
-done
-.venv/bin/python scripts/confirm_mb_opponent_search.py report
-.venv/bin/python scripts/report_mb_opponent_search.py
-.venv/bin/python scripts/plot_mb_prospective.py
 ```
 
-The freeze step verifies the matched development games for all six configurations and selects the highest win count under the locked tie rule. It writes the scored model, weights and source hashes. The final report verifies both players' submitted lineups, the roster assignment, simulator seed and seat for every game. [Selection rule](../results/sketch5-mb-opponent-search/selection.json) · [Exact team matrix](../results/sketch5-mb-opponent-search/protocol.json)
+The freeze step verifies the matched development games and selects the highest win count under the locked tie rule. It records the selected configuration and hashes of source and weights. After scoring the frozen policy, `scripts/report_mb_opponent_search.py` and `scripts/plot_mb_prospective.py` generate the research report and comparison figure. [Selection rule](../results/sketch5-mb-opponent-search/selection.json)
 
 The MB502 open sheet includes a legal itemless Talonflame. The input adapter maps its empty public item field to the model's existing no-item representation. The fixture checks that the original player-facing observation still has an empty item and that both frozen planners receive the same matchup. [Input correction and hashes](../results/sketch5-mb-opponent-search/confirmation/itemless-input.json)

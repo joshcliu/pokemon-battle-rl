@@ -2,13 +2,25 @@
 
 Joshua Liu and Carol Li · MIT 6.7920 final project
 
-**Question:** Does training against a mixture of opponent styles produce a battle policy that generalizes better than training against one style?
+How well can an RL policy choose four Pokémon from a team of six and play a doubles battle when both sides are given unfamiliar tournament teams? We started with PPO against scripted opponents, tested transfer across teams and opponent styles, and then added team preview and in-battle search on the VGC-Bench simulator.
 
-This repository contains a local Pokémon Champions doubles environment, heuristic opponents, a masked PPO policy, and reproducible training/evaluation commands. It uses Pokémon Showdown's battle engine rather than reimplementing Pokémon mechanics. This is a research prototype; the starter teams and early runs are engineering fixtures, not evidence of competitive playing strength.
+## Final result on held-out teams
 
-## Quick start
+Our frozen three-turn planner won **6,969 of 8,192 games (85.07%, 95% interval 81.86–87.85%)** against the released VGC-Bench behavior-cloned (BC) player. We reserved two groups of eight Regulation M-B tournament teams, played every cross-group pairing in both directions, and alternated simulator seats. Each of four independently trained policies played all 16 assigned teams.
 
-Requirements: Git, npm, and [uv](https://docs.astral.sh/uv/). Run commands from this repository. Setup downloads Python dependencies, a pinned Showdown revision, and a project-local Node runtime. macOS CPU has been tested; Linux/CUDA support is not yet verified.
+| Second held-out evaluation | Games per method | Original PPO | First planner | Three-turn planner |
+| --- | ---: | ---: | ---: | ---: |
+| Tournament teams vs. released BC, both roster assignments | 8,192 | 57.41% | 78.94% | **85.07%** |
+| Our Sun Room team vs. released BC on each tournament team | 1,024 | 57.71% | 83.20% | **87.01%** |
+| Tournament teams vs. independently trained PPO, both roster assignments | 8,192 | 52.14% | 73.75% | **80.00%** |
+
+The bot first simulates lineups to choose its two leads and two reserves. During play, a frozen PPO policy and learned tactical preferences propose moves for both active Pokémon. The planner compares up to eight joint moves across eight possible hidden states, predicts the opponent’s first reply, and uses a learned value function to score the next three turns. The three-turn planner gained **6.13 percentage points** over the first planner on the same tournament games (paired 95% interval +3.45 to +9.13).
+
+One opponent sheet, MB502, had an itemless Talonflame. We recorded a preview-reader fix before viewing the results. Excluding games against that sheet gives 84.77%. Counting every affected game as a loss gives 79.47%. [Final report and exact team matrix](results/sketch5-mb-opponent-search/README.md) · [All 52,224 game records](results/sketch5-mb-opponent-search/confirmation/games.csv.gz) · [Restore the policies and reproduce the evaluation](docs/vgcbench.md#reproduce-the-final-planner)
+
+## Quick start for the Regulation M-C environment
+
+Install Git, npm and [uv](https://docs.astral.sh/uv/). Run the commands from this repository. Setup downloads Python dependencies, a pinned Showdown revision and a project-local Node runtime. The starter environment runs on macOS CPU. The reported experiments ran on Sketch5.
 
 ```sh
 uv sync --locked
@@ -31,7 +43,7 @@ uv run pokemon-rl evaluate --checkpoint runs/pilot/checkpoint.pt \
 
 Each command requires a **new** output directory and never overwrites an existing run. Training defaults to CPU with one PyTorch thread. `--device cuda` is available for later GPU work; benchmark it before paying for a large machine, since simulator throughput may dominate.
 
-## What is implemented
+## Starter environment and PPO policy (Regulation M-C)
 
 ```text
 Pinned Showdown engine ↔ JSON-lines bridge ↔ player-visible poke-env state
@@ -149,7 +161,7 @@ The [team diversity experiment](results/sketch5-mb-team-diversity/README.md) com
 The [team preview PPO experiment](results/sketch5-mb-preview-ppo/README.md) tests whether learning the leads and reserves improves on BC preview with the battle policy frozen.
 
 The [Regulation M-B battle policy study](results/sketch5-mb-policy-iteration/README.md) compares terminal-reward learning, simulated lineup selection, and in-battle planning across reciprocal tournament matchups and a newly built Sun Room team. The [four-seed scorecard](results/sketch5-mb-policy-iteration/scorecard.md) also reports transfer to an independently trained opponent.
-The first planner won 77.17% on 16 fresh tournament rosters. In a second prospective test on 16 different rosters, a frozen three-step planner that modeled opponent replies won **85.07%** against the released VGC-Bench BC opponent (6,969/8,192, 95% interval 81.86%–87.85%). On that same second schedule, the first planner won 78.94% and the original PPO won 57.41%. The second test includes a documented reader fix for MB502's itemless Talonflame. [First held-out evaluation](results/sketch5-mb-policy-iteration/confirmation/README.md) · [Second evaluation, roster matrix and input sensitivity](results/sketch5-mb-opponent-search/README.md)
+The first planner won 77.17% on its [first independent 16-roster evaluation](results/sketch5-mb-policy-iteration/confirmation/README.md). We retired those rosters and reserved a new set of 16 before selecting the three-turn planner on development games.
 [Reproduce the VGC-Bench experiments](docs/vgcbench.md).
 
 To repeat the twelve opponent-diversity policies from scratch on Sketch5:
@@ -188,7 +200,7 @@ Python dependencies are locked in `uv.lock`. Showdown and Node are pinned in `si
 
 ## Scope and limitations
 
-This is a Showdown simulation of a particular Champions ruleset, not integration with the commercial game client. Experiments use closed sheets, fixed team selection, and two opponent rosters. The learner uses Sun by default or samples from an explicit roster pool. The encoder omits abilities, items, explicit opponent preview features, and recurrent memory. Fixed slot positions can encourage team-specific shortcuts. Broader teams, open sheets, stronger opponents, and a recurrent policy are later extensions.
+The early M-C experiments used closed sheets and fixed lineup selection. The final M-B evaluation used open team sheets, selected its own leads and reserves, and modeled unrevealed information from the player’s perspective. “Held out” refers to our training and model selection. Overlap with the upstream BC model’s replay data is unknown. The win rates measure play against the named opponents on the pinned Showdown simulator. We have no win-rate estimate against human players in the commercial game.
 
 Tests exercise action legality, deterministic seeds, a hidden-information check, terminal/truncated handling, and a short train/save/load/evaluate cycle. They do not certify every Pokémon mechanic or equivalence to the official client. The pinned poke-env action mapper uses an upstream private helper, so upgrades require rerunning integration tests.
 
@@ -196,9 +208,10 @@ Tests exercise action legality, deterministic seeds, a hidden-information check,
 
 - `simulator/bridge.cjs`: seeded simulator transport and player-perspective messages.
 - `src/pokemon_rl/`: environment, features, opponents, PPO, and CLI.
-- `teams/`: legal starter fixtures, not optimized teams.
+- `teams/` contains starter teams, tournament exports and the original Sun Room team.
 - `tests/`: unit and local simulator integration checks.
-- `scripts/`: simulator setup and explicit study runner.
-- `docs/`: reading notes and experiment design.
+- `scripts/` contains simulator setup, training, evaluation and reporting code.
+- [Results](results/) contains the reports, figures, game records and selected trained weights.
+- [VGC-Bench reproduction guide](docs/vgcbench.md) covers benchmark setup and study commands.
 
 See [AI_USAGE.md](AI_USAGE.md) for AI assistance disclosure. Upstream Showdown, poke-env, and research projects retain their own licenses and attribution. This project is not affiliated with Pokémon, Nintendo, or Pokémon Showdown.

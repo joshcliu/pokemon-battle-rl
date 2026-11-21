@@ -58,6 +58,8 @@ Codex designed and validated the original Sun Room roster, locked separate train
 
 Codex audited the first policy on 34,816 prospective game records and repeated the exact historical baseline schedule. It reserved a second tournament matrix, implemented neural predictions of opposing commands and reserves, trained a state-value model on terminal returns, and tested joint-action search on Sketch5. It also checked that changing the opponent’s private team choices and stats could not change the modeled replies on the intervention fixtures.
 
+Codex evaluated the frozen three-turn planner and both controls on the second tournament matrix. It recorded the MB502 empty-item input fix before inspecting win rates, checked all 52,224 game records, and produced the paired intervals, sensitivity analysis and figure. It also packaged the inference weights and checked their hashes against the frozen manifest.
+
 The generated code and research interpretations still require review by Joshua Liu and Carol Li. This file does not represent a claim that either author has completed that review. No text or results should be represented as independently human-authored if they were generated with assistance.
 
 For the final report, update this record with subsequent tools, affected components, human revisions, and verification performed. Cite original research separately from AI assistance. This repository disclosure does not update any previously submitted proposal or replace a course-specific disclosure requirement.
