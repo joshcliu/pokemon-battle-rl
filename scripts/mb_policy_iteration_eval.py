@@ -45,6 +45,10 @@ def distribution(model, obs):
 
 @torch.no_grad()
 def decide(model, obs, mode, seed, view=None):
+    if mode == "context-ppo":
+        from mb_context_ppo import deploy
+
+        return deploy(model, obs, view, seed)
     if mode.startswith("fitted-"):
         from mb_mechanics_es import action
         from mb_td_improvement import weights

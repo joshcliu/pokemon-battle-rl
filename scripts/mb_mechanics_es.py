@@ -215,7 +215,10 @@ def folder(s):
 
 @functools.lru_cache(maxsize=4)
 def fitted(seed):
-    ck = json.loads((folder(seed) / "weights.json").read_text())
+    path = folder(seed) / "weights.json"
+    if not path.exists():
+        path = OUT / "weights" / f"es-seed-{seed}.json"
+    ck = json.loads(path.read_text())
     assert ck["update"] == UPDATES and ck["features"] == FEATURES
     return np.array(ck["weights"])
 

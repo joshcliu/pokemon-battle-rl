@@ -218,7 +218,10 @@ def fit():
 
 @functools.lru_cache(maxsize=4)
 def weights(seed):
-    with np.load(RUN / "lineup-value" / f"seed-{seed}.npz") as state:
+    path = RUN / "lineup-value" / f"seed-{seed}.npz"
+    if not path.exists():
+        path = OUT / "weights" / f"lineup-q-seed-{seed}.npz"
+    with np.load(path) as state:
         assert int(state["seed"]) == seed
         return state["weights"]
 

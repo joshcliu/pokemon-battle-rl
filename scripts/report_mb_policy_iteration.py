@@ -172,6 +172,53 @@ def report():
     if summary:
         save("development.csv", summary)
         save("matchups.csv", by_team)
+        names = {
+            "native": "Frozen PPO, sampled",
+            "map": "Frozen PPO, most probable command",
+            "cool": "Frozen PPO, temperature 0.5",
+            "es-initial": "PPO with hand-set mechanics weights",
+            "es-trained": "PPO with learned mechanics weights",
+            "search-map": "Preview search + frozen PPO",
+            "search-es-trained": "Preview search + learned mechanics",
+            "mcq-40-2": "Monte Carlo action value (weight 2)",
+            "mcq-40-8": "Monte Carlo action value (weight 8)",
+            "lineup-q-map": "Offline lineup value + frozen PPO",
+            "opening-map": "Opening search + frozen PPO",
+            "context-ppo": "State-dependent mechanics PPO",
+            "fitted-terminal": "Fitted mechanics from terminal outcomes",
+            "fitted-td": "Fitted mechanics with three-step targets",
+            "endgame-es": "Endgame value search + learned mechanics",
+        }
+        headings = {
+            "validation": "Reciprocal development against released BC",
+            "custom-dev": "Original Sun Room on the 12 development opponents",
+            "transfer": "Reciprocal development against the independent shared PPO",
+        }
+        doc = [
+            "# Four-seed win rates",
+            "",
+            "Each row includes every scheduled game for four pilots. Intervals resample both roster axes, training seeds and games within seat. The custom-team intervals condition on that one learner team. All tables are development diagnostics. The 16 reserved confirmation teams have a separate schedule.",
+            "",
+        ]
+        for split, heading in headings.items():
+            doc += [
+                "## " + heading,
+                "",
+                "| Agent | Wins / games | Win rate (95% interval) | Four seed rates (%) |",
+                "|---|---:|---:|---|",
+            ]
+            for r in sorted(
+                (r for r in summary if r["split"] == split), key=lambda r: -r["win_pct"]
+            ):
+                doc.append(
+                    f"| {names.get(r['method'], r['method'])} | {r['wins']} / {r['games']} | {r['win_pct']:.2f}% ({r['lo95']:.2f}–{r['hi95']:.2f}) | {r['seeds_pct']} |"
+                )
+            doc.append("")
+        doc += [
+            "[Exact roster matrices and methods](README.md) · [Paired gain intervals](paired-effects.csv) · [Per-matchup wins](matchups.csv) · [Machine-readable totals](development.csv)",
+            "",
+        ]
+        (OUT / "scorecard.md").write_text("\n".join(doc))
         print(
             *(
                 f"{r['split']} {r['method']}: {r['wins']}/{r['games']} ({r['win_pct']}%)"

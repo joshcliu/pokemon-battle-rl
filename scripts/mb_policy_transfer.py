@@ -35,7 +35,7 @@ def opponent():
 def score(task):
     seed, mode, cell = task
     i, j, d, own, foe, start = cell
-    public = public_fixture(own, foe) if mode == "search-map" else None
+    public = public_fixture(own, foe) if mode.startswith("search-") else None
     plan = read_plan(own, public, seed) if public is not None else None
     match = Match()
     match.opponent = copy.copy(match.opponent)
@@ -67,7 +67,13 @@ def score(task):
         torch.manual_seed(sim + 700_000_000)
         done = False
         while not done:
-            a = decide(model, batch_obs(match.obs()), "map" if plan else mode, seed, match.view)
+            a = decide(
+                model,
+                batch_obs(match.obs()),
+                mode.removeprefix("search-") if plan else mode,
+                seed,
+                match.view,
+            )
             done, r = match.step(a)
         rows.append(
             dict(
@@ -93,7 +99,11 @@ def score(task):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("modes", nargs="+", choices=("native", "map", "search-map"))
+    p.add_argument(
+        "modes",
+        nargs="+",
+        choices=("native", "map", "search-map", "es-trained", "search-es-trained"),
+    )
     p.add_argument("--jobs", type=int, default=8)
     args = p.parse_args()
     verify()

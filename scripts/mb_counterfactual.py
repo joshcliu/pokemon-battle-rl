@@ -170,7 +170,10 @@ def fit(seed, blocks):
 
 @functools.lru_cache(maxsize=8)
 def head(seed, blocks):
-    ck = torch.load(folder(seed) / f"q-{blocks}.pt", map_location="cpu", weights_only=True)
+    path = folder(seed) / f"q-{blocks}.pt"
+    if not path.exists():
+        path = OUT / "weights" / f"mcq-{blocks}-seed-{seed}.pt"
+    ck = torch.load(path, map_location="cpu", weights_only=True)
     assert ck["seed"] == seed and ck["blocks"] == blocks
     q = JointAdvantage(pilot(seed).base.pi_features_extractor.embed_len)
     q.load_state_dict(ck["model"])
