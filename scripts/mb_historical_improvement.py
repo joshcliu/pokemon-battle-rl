@@ -1,6 +1,7 @@
 """Re-score the improved policies on the exact battles behind the historical 59.67% figure."""
 
 import argparse
+import json
 import multiprocessing
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -20,8 +21,14 @@ from vgc_posttrain import Match, atomic_rows, batch_obs
 def play(task):
     seed, mode, entry = task
     _, _, own, foe, games, _, direction = entry
-    public = public_fixture(own, foe) if mode == "search-es-trained" else None
-    picked = read_plan(own, public, seed) if public is not None else None
+    public = public_fixture(own, foe) if mode.startswith(("search-", "adaptive-")) else None
+    if mode == "adaptive-belief-es":
+        from mb_public_policy_search import optimize
+
+        picked = optimize(own, public, seed)
+    else:
+        picked = read_plan(own, public, seed) if public is not None else None
+    battle_mode = "belief-es" if mode == "adaptive-belief-es" else mode.removeprefix("search-")
     model, match = pilot(seed), Match()
     rows = []
     for sim, side in games:
@@ -37,7 +44,7 @@ def play(task):
         torch.manual_seed(sim + 700_000_000)
         done = False
         while not done:
-            a = decide(model, batch_obs(match.obs()), "es-trained", seed, match.view)
+            a = decide(model, batch_obs(match.obs()), battle_mode, seed, match.view)
             done, r = match.step(a)
         rows.append(
             dict(
@@ -57,7 +64,7 @@ def play(task):
     return rows
 
 
-def report():
+def report(frozen=None):
     ref = {
         (int(r["training_seed"]), r["cell"], int(r["seed"])): r
         for r in read(PREVIEW / "games.csv.gz")
@@ -67,7 +74,10 @@ def report():
     groups = [[Path(t).stem for t in ROSTERS[k]] for k in ("own_test", "foe_test")]
     table = {}
     totals = {}
-    for mode in ("native", "es-trained", "search-es-trained"):
+    modes = ["native", "es-trained", "search-es-trained"]
+    if frozen and frozen not in modes:
+        modes.append(frozen)
+    for mode in modes:
         if mode == "native":
             rows = list(ref.values())
         else:
@@ -85,7 +95,7 @@ def report():
             i, j = groups[0].index(own), groups[1].index(foe)
             refrow = ref[seed, cell, sim]
             assert all(r[k] == refrow[k] for k in ("own", "foe", "side", "opponent_lineup"))
-            if mode != "search-es-trained":
+            if not mode.startswith(("search-", "adaptive-")):
                 assert r["lineup"] == refrow["lineup"]
             idx = (SEEDS.index(seed), i, j, d, sim % 100)
             assert np.isnan(x[idx])
@@ -117,10 +127,18 @@ def report():
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--jobs", type=int, default=6)
+    p.add_argument("--frozen", action="store_true")
     args = p.parse_args()
     verify()
+    frozen = None
+    if args.frozen:
+        from confirm_mb_policy_iteration import LOCK, freeze
+
+        frozen = json.loads(LOCK.read_text())["method"]
+        freeze(frozen)
+        assert frozen == "adaptive-belief-es"
     with ProcessPoolExecutor(args.jobs, mp_context=multiprocessing.get_context("spawn")) as pool:
-        for mode in ("es-trained", "search-es-trained"):
+        for mode in [frozen] if frozen else ("es-trained", "search-es-trained"):
             for seed in SEEDS:
                 f = OUT / "historical" / f"{mode}-{seed}.csv"
                 if f.exists():
@@ -132,4 +150,4 @@ if __name__ == "__main__":
                 assert len(rows) == 1024
                 atomic_rows(f, rows)
                 print(mode, seed, len(rows), sum(r["reward"] == 1 for r in rows), flush=True)
-            report()
+            report(frozen)

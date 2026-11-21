@@ -25,20 +25,30 @@ def precompute(task):
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--workers", type=int, default=5)
+    p.add_argument("--historical", action="store_true")
     args = p.parse_args()
     mode = json.loads(LOCK.read_text())["method"]
     assert mode.startswith(("adaptive-", "search-"))
     freeze(mode)
-    tasks = [
-        (mode, s, c[3], c[4])
-        for split in ("primary", "custom")
-        for s in reversed(SEEDS)
-        for c, block in cells(split)
-        if block == 0
-    ]
+    if args.historical:
+        from eval_mb_long_ppo import FINAL, schedule
+
+        tasks = [
+            (mode, s, own, foe)
+            for s in reversed(SEEDS)
+            for _, _, own, foe, _, _, _ in schedule("moe", s, FINAL, "normal", diverse=True)
+        ]
+    else:
+        tasks = [
+            (mode, s, c[3], c[4])
+            for split in ("primary", "custom")
+            for s in reversed(SEEDS)
+            for c, block in cells(split)
+            if block == 0
+        ]
     # The scorer visits seeds in ascending order, while this allocation starts
     # at the opposite end. Both paths use the same deterministic atomic caches.
-    assert len(tasks) == len(set(tasks)) == 576
+    assert len(tasks) == len(set(tasks)) == (256 if args.historical else 576)
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         for n, _ in enumerate(pool.map(precompute, tasks), 1):
             if n % 32 == 0:
